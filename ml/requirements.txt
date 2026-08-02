@@ -1,0 +1,79 @@
+# FraudNet-Synth — ml/ dependencies
+#
+# Resolution method (2026-08-03): every version below was resolved via a LIVE query against
+# PyPI's index (`pip index versions <pkg>`) and, for the packages with a real cross-dependency
+# risk, cross-checked against the package's published `requires_dist` metadata
+# (https://pypi.org/pypi/<pkg>/<version>/json). This is metadata-only — nothing was installed
+# into any environment. No version below was guessed or recalled from training data.
+#
+# VERIFIED (checked against live PyPI metadata, not just "latest tag exists"):
+#   - pandas is deliberately capped at 2.3.3, NOT the current latest 3.0.5. Both `sdv==1.37.4`
+#     and `sdmetrics==0.28.2` declare a hard `pandas<3.0.0` constraint. Installing pandas 3.x
+#     here would make `pip install -r requirements.txt` unresolvable. This is not a guess —
+#     confirmed by reading both packages' requires_dist.
+#   - `sdv` pulls in `ctgan>=0.11.1` and `sdmetrics>=0.28.1` transitively — no separate `ctgan`
+#     pin is needed; CTGANSynthesizer comes from `sdv.single_table`.
+#   - `pandera` needs the `[pandas]` extra for the pandas backend (DataFrameSchema); the bare
+#     `pandera` package alone does not vendor it.
+#   - torch 2.13.0 has a published CPU-only wheel for cp313 win_amd64 on the PyTorch package
+#     index (confirmed by listing https://download.pytorch.org/whl/cpu/torch/).
+#   - numpy 2.5.1, scikit-learn 1.9.0, fastapi 0.141.1, uvicorn 0.52.1, pymongo 4.17.0,
+#     groq 1.6.0, python-dotenv 1.2.2, matplotlib 3.11.1, flwr 1.32.1, sentence-transformers
+#     5.6.1 are each the current latest stable release on PyPI as of 2026-08-03, and their
+#     declared python_requires ranges all include the dev interpreter used to resolve this file
+#     (Python 3.13.7).
+#
+# NOT VERIFIED (cannot be, without actually installing — flagged per the "do not install
+# without asking" constraint for this session):
+#   - Full transitive dependency resolution has NOT been run (no `pip install --dry-run` or
+#     equivalent was executed). Two-package pairwise checks (sdv/sdmetrics vs pandas) were done;
+#     N-way conflicts across the whole set (e.g. sentence-transformers' transformers/huggingface-hub
+#     pulls, sdv's boto3/botocore pulls) are unverified.
+#   - Flower's actual API surface at 1.32.1 was NOT executed or imported. D7 requires writing
+#     Phase 4 code only against a verified-installed API. 1.32.1 is well past the old
+#     `start_server`/`start_numpy_client` API (deprecated ~1.8) — Phase 4 code must target
+#     `flwr.server.ServerApp` / `flwr.client.ClientApp` / `flwr.simulation.run_simulation`
+#     (or the `flwr run` CLI + pyproject.toml app layout), but this must be confirmed against
+#     the installed package's actual module contents at Phase 4 kickoff, not assumed from this
+#     comment.
+#   - CTGAN's behavior/convergence on the tiny fraud-row counts Banks C/D will hold (D5) is
+#     unverified — this is a Phase 2 empirical question, not a packaging one.
+#
+# ACTION REQUIRED at Phase 1 kickoff (first real install): run
+#   pip install -r ml/requirements.txt
+# in a clean venv and resolve any conflict pip's resolver surfaces before writing code against
+# these versions. If resolution fails, update this file and the version notes above — do not
+# silently downgrade without recording why.
+#
+# Install command for the CPU-only torch wheel (plain PyPI may resolve a different/larger
+# variant on some platforms):
+#   pip install torch==2.13.0 --index-url https://download.pytorch.org/whl/cpu
+
+# --- Federated learning ---
+flwr==1.32.1
+
+# --- Classifier (D2) — CPU-only wheel, see install command above ---
+torch==2.13.0
+
+# --- Data handling ---
+pandas==2.3.3          # capped <3.0 — see VERIFIED note above (sdv/sdmetrics constraint)
+numpy==2.5.1
+scikit-learn==1.9.0
+
+# --- Synthetic data generation (Augment Mode) ---
+sdv==1.37.4             # provides CTGANSynthesizer; pulls in ctgan, sdmetrics, rdt, copulas, deepecho
+
+# --- Validation layer (Phase 3) ---
+sdmetrics==0.28.2
+pandera[pandas]==0.32.1
+sentence-transformers==5.6.1
+
+# --- Orchestration API (Phase 5) ---
+fastapi==0.141.1
+uvicorn[standard]==0.52.1
+
+# --- Persistence / LLM client / config / plotting ---
+pymongo==4.17.0
+groq==1.6.0              # Groq API client (Schema Mode, D1)
+python-dotenv==1.2.2
+matplotlib==3.11.1

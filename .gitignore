@@ -1,0 +1,43 @@
+# Secrets
+.env
+*.pem
+*.key
+
+# Data (regenerate via ml/partition/, never commit dataset or shards)
+data/*
+!data/README.md
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.eggs/
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Node
+node_modules/
+npm-debug.log*
+dist/
+build/
+
+# ML artifacts
+*.pt
+*.pth
+*.ckpt
+mlruns/
+wandb/
+
+# Experiment outputs (keep configs, ignore generated results/plots)
+experiments/results/
+experiments/plots/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.log
