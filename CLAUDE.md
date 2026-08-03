@@ -109,7 +109,7 @@ training logic.
   centralized accuracy on this benchmark; FedFraud reports F1 0.90 / AUC 0.96 under non-IID
   conditions. These frame expectations only — never tune toward them.
 
-## Decisions made during implementation (D1–D10)
+## Decisions made during implementation (D1–D11)
 
 These are not in the original design documents; they are defaults adopted during Phase 0 and
 recorded here (and in `PLAN.md`) so they can be defended or revised at review.
@@ -165,6 +165,18 @@ recorded here (and in `PLAN.md`) so they can be defended or revised at review.
   batch generation requests to reuse the stats/correlations prompt overhead instead of resending
   it per small batch, or the budget disappears fast (see `ml/augmentation/llm_engine.py`
   `rows_per_request`).
+- **D11 — Validation stack role assignment.** Confirmed with the user 2026-08-03 (Phase 3), since
+  the locked stack names technologies but not their exact roles on purely numeric (non-text)
+  data. Pandera: per-row structural/range checks. SDMetrics `QualityReport` (use the unified
+  `sdmetrics.reports.QualityReport`, not the deprecated `sdmetrics.reports.single_table.
+  QualityReport` — verified against installed `sdmetrics==0.28.2`): fidelity vs. that client's
+  real fraud rows. SDMetrics `NewRowSynthesis`: novelty *and* the PII/leakage guard in one
+  (verified: score drops when real rows are injected as synthetic duplicates). sentence-
+  transformers (`all-MiniLM-L6-v2`): embeds each row as a canonical text string, pairwise cosine
+  similarity *within* a synthetic batch measures mode collapse. Known limitation: this compresses
+  into a narrow high range (~0.95-0.9999 observed) since a general-purpose text encoder mostly
+  reflects the shared column-name template rather than fine numeric differences — still
+  discriminates at the tail, not a precise instrument in absolute terms.
 
 ## Out of scope this semester (deferred to Future Scope)
 

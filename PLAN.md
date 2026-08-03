@@ -79,11 +79,15 @@ phase starts.
   log. Approved: Bank A 79,621 rows/310 fraud, Bank B 79,349 rows/38 fraud, Bank C 34,005 rows/15
   fraud, Bank D 34,005 rows/15 fraud, global holdout 56,746 rows/95 fraud. Banks C/D are scarce in
   fraud rows only (capped at 15 each), not in overall volume — noted and accepted as-is.
-- **Validation thresholds (D6)** — SDMetrics fidelity floor, novelty/nearest-neighbour distance
-  floor, mode-collapse ceiling: no numeric values exist yet. Set and frozen in Phase 3.
-- **CTGAN epoch budget / convergence behavior on Banks C/D's tiny real fraud counts** — CTGAN is
-  known to struggle on very small training sets; whether it's even viable there vs. relying
-  entirely on Schema Mode is an empirical Phase 2 question, not assumed either way.
+- ~~Validation thresholds (D6)~~ — **resolved 2026-08-03**, see Phase 3 progress log. Frozen:
+  fidelity_floor=0.5, novelty_floor=0.95, mode_collapse_ceiling=0.998 (max pairwise similarity),
+  min_valid_rows_for_distributional_checks=5.
+- **CTGAN convergence on tiny real fraud counts** — not directly tested on Banks C/D (they use
+  Schema Mode, per the architecture, and were never run through CTGAN). Strong adjacent evidence
+  now exists, though: Bank B, nominally "rich" but with only 38 real fraud rows after the
+  Dirichlet skew, saw CTGAN fail badly (see Phase 3 progress log) despite `enforce_min_max_values
+  =True`. This supports — but doesn't directly test — the design choice to route the even-poorer
+  Banks C/D (15 real fraud rows each) to Schema Mode instead.
 - **Full transitive dependency resolution for `ml/requirements.txt`** — only pairwise
   pandas-vs-(sdv, sdmetrics) conflicts were checked (D7). Must be verified with a real
   `pip install` at Phase 1 kickoff.
@@ -148,3 +152,35 @@ phase starts.
   `run_augmentation.py`'s `generation_report.json` is overwritten (not merged) per invocation, so
   it only reflects the banks in the most recent run — each bank's candidate CSV is independently
   correct on disk regardless. Awaiting review before Phase 3 (shared validation layer) begins.
+
+- **2026-08-03 — Phase 3 complete.** Built `ml/validation/{schema,fidelity,novelty,diversity,
+  thresholds,validate,run_validation}.py`. Confirmed with the user a concrete architecture for
+  the locked validation stack (Pandera schema, SDMetrics fidelity + novelty, sentence-transformers
+  diversity) since CLAUDE.md only named the technologies, not their exact roles on purely numeric
+  (non-text) data: Pandera does per-row structural/range checks; SDMetrics `QualityReport`
+  (**verified**: use the unified `sdmetrics.reports.QualityReport` with `{table_name: df}`-wrapped
+  data and the full `Metadata.to_dict()` including `tables`, not the deprecated
+  `sdmetrics.reports.single_table.QualityReport` which takes bare DataFrames) scores fidelity
+  against that client's real fraud rows; SDMetrics `NewRowSynthesis` doubles as the novelty check
+  *and* the PII/leakage guard (verified empirically: score drops proportionally when real rows are
+  injected as synthetic duplicates); sentence-transformers (`all-MiniLM-L6-v2`) embeds each row as
+  a canonical text string and pairwise cosine similarity *within* a synthetic batch measures mode
+  collapse — noted as a real limitation that this compresses into a narrow high range (~0.95-0.9999
+  observed) since a general-purpose text encoder mostly picks up the shared column-name template
+  rather than fine numeric differences, though it still discriminates at the tail.
+  **D6 thresholds frozen** (`ml/validation/thresholds.py`), based on real values computed across
+  all four banks' actual Phase 2 candidate batches, approved by the user 2026-08-03:
+  `fidelity_floor=0.5`, `novelty_floor=0.95`, `mode_collapse_ceiling=0.998` (on max pairwise
+  similarity), `min_valid_rows_for_distributional_checks=5`.
+  Running validation against the real candidate batches produced a genuine headline result — 2 of
+  4 banks' batches rejected: **Bank A: PASS** (310/310 validated, fidelity 0.673). **Bank B:
+  REJECT_TOO_FEW_ROWS** — CTGAN, trained on only 38 real fraud rows, generated wildly
+  out-of-range `Time` values (up to 16.7M vs. a real training range of 7,526-169,142) despite
+  `enforce_min_max_values=True`; only 2/38 candidates survived the schema check, below the
+  min-rows floor for a reliable distributional judgment. **Bank C: REJECT_MODE_COLLAPSE** — schema
+  and fidelity both fine, but one near-duplicate synthetic pair pushed max similarity to 0.9999,
+  over the 0.998 ceiling. **Bank D: PASS** (7/7 validated, fidelity 0.631). Per CLAUDE.md's
+  evaluation philosophy, these rejections are reported as-is, not tuned away. Exit criterion met:
+  validation report per synthetic batch (`data/validated/validation_report.json`,
+  `docs/phase3_validation_report.md`), rejection stats logged. Awaiting review before Phase 4
+  (federated training) begins.

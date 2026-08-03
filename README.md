@@ -9,6 +9,7 @@ Four simulated banks holding non-IID shards of the ULB Credit Card Fraud dataset
 
 See [`CLAUDE.md`](CLAUDE.md) for the full project brief (locked stack, architecture, privacy invariant, evaluation philosophy) and [`PLAN.md`](PLAN.md) for the phased implementation plan and progress log.
 
-**Status:** Phase 2 (augmentation modules) complete. CTGAN Augment Mode (Banks A/B) and Groq LLM
-Schema Mode (Banks C/D) both live-verified end-to-end against real data. See `PLAN.md`'s
-progress log.
+**Status:** Phase 3 (shared validation layer) complete. Schema, fidelity, novelty, and
+mode-collapse checks run against real Phase 2 output; thresholds frozen per D6. Validation
+correctly rejected 2 of 4 banks' synthetic batches (Bank B: CTGAN failure on tiny data; Bank C:
+mode collapse) — see `docs/phase3_validation_report.md` and `PLAN.md`'s progress log.
