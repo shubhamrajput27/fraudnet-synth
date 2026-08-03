@@ -339,3 +339,38 @@ phase starts.
   only half the banks' augmentation surviving validation), not smoothed over. Exit criterion met:
   final results tables and convergence plots produced. Awaiting review before Phase 8 (testing,
   documentation, presentation) begins.
+
+- **2026-08-03 — Phase 8 complete.** Confirmed with the user, since neither `CLAUDE.md` nor
+  `PLAN.md` specified a report/deck template or tool: **report** = one consolidated
+  `docs/final_report.md`; **deck** = a structured Markdown slide outline. Both built from
+  `CLAUDE.md`/`PLAN.md` only — no fact, figure, or citation invented; the literature reference
+  points (§7 of the report) are explicitly flagged as unverified-by-this-codebase reference points
+  from the original design documents, not independently confirmed, per the "never fabricate a
+  citation" coding convention.
+  **Testing (the concrete, unambiguous part of this phase):** added a real test suite where none
+  existed before — 40 Python tests (`pytest==9.1.1`, verified latest via live PyPI query; root
+  `pytest.ini` with `pythonpath = .` so both `ml` and `orchestrator` resolve) covering the model
+  parameter round-trip, metrics correctness on known inputs (including a regression test for the
+  Phase 4 sigmoid-overflow fix), the non-IID partition's row-conservation/reproducibility/
+  poor-bank-cap guarantees, the per-client scaler discipline and its Phase-3-rejection fallback
+  (using `monkeypatch` to redirect `CONFIG` to a temp dir — no dependency on the real, gitignored
+  dataset being present), the schema validator against the exact failure shape found in Bank B,
+  the frozen D6 thresholds as a regression guard, model/scaler artifact save-load round-trips, and
+  the orchestrator's FastAPI `TestClient`-driven API contract. Plus 13 Node tests
+  (`node --test`, no new dependency — Node 22's built-in runner) covering the JWT auth logic and
+  the idempotent-upsert persistence contract D16 depends on, using a hand-rolled fake Mongo `db`
+  object rather than a live database.
+  **Two real, small bugs found by writing tests, both fixed:** (1) `orchestrator/predict.py`
+  routed the "no saved artifacts for this run_id" condition through `PredictionError` -> HTTP 400,
+  inconsistent with `/predict/manifest/{id}`'s 404 for the identical underlying condition — fixed
+  by raising `FileNotFoundError` for that specific case, reserving `PredictionError` for genuine
+  bad input (missing/unknown bank). (2) confirmed via the new tests that the initial test
+  expectation itself (not the app) was wrong once — a useful reminder that a failing test needs
+  triage, not a reflexive code change, before deciding which side is wrong.
+  Also produced: `docs/demo_script.md` (click-by-click live-demo checklist with an explicit
+  recovery plan if a live run gets stuck) and `start_demo.ps1` (one-command launcher opening three
+  labeled PowerShell windows, one per service — syntax-verified, not run interactively in this
+  session since it opens visible GUI windows).
+  Exit criterion met: submission-ready report (`docs/final_report.md`), working demo (Phases 5–7
+  already end-to-end browser-verified; this phase added the rehearsal script), and a deck
+  (`docs/presentation_deck.md`). All eight phases of the original plan are now complete.

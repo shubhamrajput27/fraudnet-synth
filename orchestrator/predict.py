@@ -37,7 +37,9 @@ def get_predict_manifest(run_id: str) -> dict | None:
 def predict(run_id: str, bank: str | None, features: dict[str, float]) -> tuple[float, str]:
     manifest = load_manifest(run_id)
     if manifest is None:
-        raise PredictionError(f"No saved model artifacts for run_id '{run_id}'")
+        # A missing resource, not bad input — mirrors get_predict_manifest()/the /predict/manifest
+        # endpoint, which the same "unknown run_id" condition already maps to 404.
+        raise FileNotFoundError(f"No saved model artifacts for run_id '{run_id}'")
 
     arm = manifest["arm"]
     needs_bank = arm.startswith("isolated") or arm.startswith("federated")

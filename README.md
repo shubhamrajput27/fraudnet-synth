@@ -9,24 +9,31 @@ Four simulated banks holding non-IID shards of the ULB Credit Card Fraud dataset
 
 See [`CLAUDE.md`](CLAUDE.md) for the full project brief (locked stack, architecture, privacy invariant, evaluation philosophy) and [`PLAN.md`](PLAN.md) for the phased implementation plan and progress log.
 
-**Status:** Phase 7 (integration & evaluation) complete. Final six-arm results table and
-convergence plots are in [`docs/phase7_results.md`](docs/phase7_results.md) (regenerate via
-`ml/.venv/Scripts/python.exe -m experiments.generate_report`). Headline finding:
-**federated_augmented** scores best (F1 0.6146), beating federated_real, both isolated arms, and
-both centralized arms. A fresh re-run reproduced Phase 4's numbers bit-for-bit, confirming the
-whole pipeline is deterministic under its fixed seed. See `PLAN.md`'s progress log for the full
-write-up, including an honest comparison to literature reference points.
+**Status:** All 8 phases complete. Headline finding: **federated_augmented** scores best (F1
+0.6146), beating federated_real, both isolated arms, and both centralized arms — see
+[`docs/final_report.md`](docs/final_report.md) for the full write-up (architecture, methodology,
+results, honest comparison to literature, limitations) and
+[`docs/phase7_results.md`](docs/phase7_results.md) for the results table and convergence plots
+(regenerate via `ml/.venv/Scripts/python.exe -m experiments.generate_report`).
+[`docs/presentation_deck.md`](docs/presentation_deck.md) has a slide-by-slide outline and
+[`docs/demo_script.md`](docs/demo_script.md) a click-by-click live-demo checklist. `PLAN.md` has
+the full dated progress log across all eight phases.
 
 **Running it locally:**
 ```
-# Terminal 1 — orchestrator (from repo root)
-ml/.venv/Scripts/python.exe -m uvicorn orchestrator.main:app --port 8000
+# One command (Windows, PowerShell) — opens three labeled windows:
+.\start_demo.ps1
 
-# Terminal 2 — gateway
-cd gateway && npm install && npm start
-
-# Terminal 3 — dashboard
-cd dashboard && npm install && npm run dev
+# ...or manually, one per terminal:
+ml/.venv/Scripts/python.exe -m uvicorn orchestrator.main:app --port 8000   # orchestrator
+cd gateway && npm install && npm start                                     # gateway
+cd dashboard && npm install && npm run dev                                 # dashboard
 ```
 Then open the dashboard's printed local URL (default `http://localhost:5173`) and sign in with
 the `ADMIN_USERNAME`/`ADMIN_PASSWORD` set in `.env`.
+
+**Running the test suite:**
+```
+ml/.venv/Scripts/python.exe -m pytest      # 40 Python tests (ml/, orchestrator/)
+cd gateway && npm test                      # 13 Node tests
+```

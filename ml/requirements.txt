@@ -78,3 +78,6 @@ pymongo==4.17.0
 groq==1.6.0              # Groq API client (Schema Mode, D1)
 python-dotenv==1.2.2
 matplotlib==3.11.1
+
+# --- Testing (Phase 8) ---
+pytest==9.1.1

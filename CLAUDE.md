@@ -109,7 +109,7 @@ training logic.
   centralized accuracy on this benchmark; FedFraud reports F1 0.90 / AUC 0.96 under non-IID
   conditions. These frame expectations only — never tune toward them.
 
-## Decisions made during implementation (D1–D18)
+## Decisions made during implementation (D1–D19)
 
 These are not in the original design documents; they are defaults adopted during Phase 0 and
 recorded here (and in `PLAN.md`) so they can be defended or revised at review.
@@ -271,6 +271,21 @@ recorded here (and in `PLAN.md`) so they can be defended or revised at review.
   `ml/augmentation/run_augmentation.py`, `experiments/generate_report.py`), not just the one that
   surfaced it — any future `write_text()` on a file with non-ASCII content must include this
   explicitly too.
+- **D19 — Phase 8 report/deck format, and the orchestrator's 400-vs-404 fix.** Confirmed with the
+  user 2026-08-03, since neither this file nor `PLAN.md` specified a template: **report** = one
+  consolidated `docs/final_report.md` built only from `CLAUDE.md`/`PLAN.md` content (no invented
+  facts; the literature reference points are explicitly flagged there as unverified-by-this-
+  codebase, per the "never fabricate a citation" convention above); **deck** =
+  `docs/presentation_deck.md`, a structured Markdown slide outline, not literal slides. Writing
+  the new orchestrator test suite (`orchestrator/tests/test_api.py`) surfaced a real, small
+  inconsistency: `POST /predict` routed "no saved artifacts for this run_id" through
+  `PredictionError` -> HTTP 400, while `GET /predict/manifest/{id}` already treated the identical
+  condition as 404. Fixed in `orchestrator/predict.py` by raising `FileNotFoundError` (a missing
+  resource) for that specific case, keeping `PredictionError` -> 400 for genuine bad input
+  (missing/unknown `bank`). `pytest.ini` at the repo root (`pythonpath = .`) lets both `ml` and
+  `orchestrator` resolve as packages for `python -m pytest` from anywhere; gateway tests run via
+  `node --test` (Node 22's built-in runner, no new dependency) against a hand-rolled fake Mongo
+  `db` object rather than a live database, keeping the whole suite fast and dependency-free.
 
 ## Out of scope this semester (deferred to Future Scope)
 
