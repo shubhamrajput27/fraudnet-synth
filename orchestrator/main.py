@@ -7,8 +7,9 @@ Run with (from repo root, so both `ml` and `orchestrator` resolve as packages):
 """
 from fastapi import FastAPI, HTTPException
 
+from orchestrator.predict import PredictionError, get_predict_manifest, predict
 from orchestrator.run_manager import get_run_status, start_run
-from orchestrator.schemas import RunRequest, RunStatusResponse
+from orchestrator.schemas import PredictRequest, PredictResponse, RunRequest, RunStatusResponse
 
 app = FastAPI(title="FraudNet-Synth Orchestrator", version="0.1.0")
 
@@ -36,3 +37,22 @@ def read_run(run_id: str) -> RunStatusResponse:
     if status is None:
         raise HTTPException(status_code=404, detail=f"Unknown run_id '{run_id}'")
     return RunStatusResponse(**status)
+
+
+@app.get("/predict/manifest/{run_id}")
+def read_predict_manifest(run_id: str) -> dict:
+    manifest = get_predict_manifest(run_id)
+    if manifest is None:
+        raise HTTPException(status_code=404, detail=f"No saved model artifacts for run_id '{run_id}'")
+    return manifest
+
+
+@app.post("/predict", response_model=PredictResponse)
+def create_prediction(request: PredictRequest) -> PredictResponse:
+    try:
+        probability, label = predict(request.run_id, request.bank, request.features)
+    except PredictionError as exc:
+        raise HTTPException(status_code=400, detail=str(exc))
+    except FileNotFoundError as exc:
+        raise HTTPException(status_code=404, detail=str(exc))
+    return PredictResponse(run_id=request.run_id, bank=request.bank, probability=probability, prediction=label)

@@ -109,7 +109,7 @@ training logic.
   centralized accuracy on this benchmark; FedFraud reports F1 0.90 / AUC 0.96 under non-IID
   conditions. These frame expectations only — never tune toward them.
 
-## Decisions made during implementation (D1–D14)
+## Decisions made during implementation (D1–D17)
 
 These are not in the original design documents; they are defaults adopted during Phase 0 and
 recorded here (and in `PLAN.md`) so they can be defended or revised at review.
@@ -224,6 +224,41 @@ recorded here (and in `PLAN.md`) so they can be defended or revised at review.
   registry before pinning (same rigor as D7's PyPI checks) — Express is currently major version 5
   (not 4.x, which most existing tutorials/training data assume); verified compatible by actually
   running the server, not assumed.
+- **D15 — Chart library: Recharts** (confirmed with the user 2026-08-03, Phase 6 kickoff — PLAN.md
+  had explicitly deferred this). Component-based React API fit this dashboard's chart types (live
+  round line chart, six-arm comparison bar chart) with less boilerplate than Chart.js.
+- **D16 — Live FL round charts are real push-based WebSocket, not Phase 5's polling** (confirmed
+  with the user). The WebSocket *server* lives in `gateway/` (Tier 2), not `orchestrator/` (Tier
+  3) — matches the architecture diagram's own arrow ("TIER 1 <-> TIER 2: REST / WebSocket").
+  `gateway/src/liveRuns.js` runs one internal poll loop per actively-watched run_id (polling the
+  still-HTTP-only orchestrator, unchanged from D14) and broadcasts each newly-seen round/client
+  metric to subscribed browser clients. Browsers can't set a custom `Authorization` header on a
+  WebSocket handshake, so the JWT travels as a `?token=` query param instead, verified with the
+  same `jsonwebtoken.verify` as `requireAuth`. Because both the REST poll path (`GET /api/runs/
+  :id`) and the WS watcher can observe and persist the same round concurrently while a run is in
+  progress, `gateway/src/persistence.js` centralizes all `round_metrics`/`client_metrics` writes
+  as idempotent upserts (keyed on `run_id`+`round`[+`bank`]) instead of the blind inserts Phase 5
+  used — makes the race harmless instead of producing duplicate documents.
+- **D17 — Model/scaler artifact persistence, added in Phase 6** (`ml/common/artifacts.py`),
+  because nothing before Phase 6 ever saved a trained model to disk (Phase 4's CLI runs
+  train/evaluate purely in-memory) and the dashboard's "test a transaction" demo needs one to
+  load. Save shape mirrors D13's per-client evaluation design rather than inventing a new rule:
+  isolated saves one model *and* one scaler per bank (no shared model exists at all); federated
+  saves one shared model but a scaler per bank (D4 — no pooled scaler exists); centralized saves
+  one model and one pooled scaler. `orchestrator/predict.py`'s `/predict` picks the right file(s)
+  from a per-run `manifest.json` and requires a `bank` argument for isolated/federated, rejecting
+  centralized. `save_artifacts` is an opt-in flag (`ml.run_experiment.run_arm` defaults to
+  `False`) so the existing Phase 4 CLI workflow (`python -m ml.run_experiment`) stays exactly as
+  fast and side-effect-free as before; `orchestrator/run_manager.py` always passes `True` since
+  every dashboard-triggered run needs its artifacts for the demo.
+- **D8 completion note (Phase 6):** `validation_reports` is now populated (`gateway/src/routes/
+  quality.js`, upserted from `data/validated/validation_report.json` on each request). Deliberate
+  simplification: `synthetic_batches` was **not** implemented as a literal Mongo collection —
+  Phase 2's `generation_report.json` is stale/partial (documented in the Phase 2 progress log:
+  each `run_augmentation.py` invocation overwrites rather than merges it), so the quality panel
+  instead computes candidate/validated row counts directly from the `data/synthetic/`/`data/
+  validated/` CSVs on disk, which is strictly more accurate than trusting that stale log. Flagged
+  here rather than silently skipped.
 
 ## Out of scope this semester (deferred to Future Scope)
 

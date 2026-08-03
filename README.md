@@ -9,10 +9,12 @@ Four simulated banks holding non-IID shards of the ULB Credit Card Fraud dataset
 
 See [`CLAUDE.md`](CLAUDE.md) for the full project brief (locked stack, architecture, privacy invariant, evaluation philosophy) and [`PLAN.md`](PLAN.md) for the phased implementation plan and progress log.
 
-**Status:** Phase 5 (FastAPI orchestrator + Express gateway + MongoDB) complete. A full training
-run can be triggered and persisted end-to-end via API alone — `POST /auth/login`, `POST
-/api/runs`, `GET /api/runs/:id` — verified against a real local MongoDB instance. See `PLAN.md`'s
-progress log for the full six-arm results table (Phase 4) and the Phase 5 API test.
+**Status:** Phase 6 (React dashboard) complete. The full stack — login, trigger a run, watch it
+train live via WebSocket, browse history, compare all six arms, inspect synthetic data quality,
+export synthetic CSVs, and test a transaction against a trained model — is drivable end-to-end
+from the browser. Browser-tested with Playwright against real running services (zero console
+errors). See `PLAN.md`'s progress log for the full six-arm results table (Phase 4) and the
+Phase 6 browser-test writeup.
 
 **Running it locally:**
 ```
@@ -21,4 +23,9 @@ ml/.venv/Scripts/python.exe -m uvicorn orchestrator.main:app --port 8000
 
 # Terminal 2 — gateway
 cd gateway && npm install && npm start
+
+# Terminal 3 — dashboard
+cd dashboard && npm install && npm run dev
 ```
+Then open the dashboard's printed local URL (default `http://localhost:5173`) and sign in with
+the `ADMIN_USERNAME`/`ADMIN_PASSWORD` set in `.env`.

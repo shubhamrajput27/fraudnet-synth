@@ -3,13 +3,16 @@ one model, one pooled StandardScaler. Non-privacy-preserving upper bound — del
 the privacy invariant by design (that's the point of this arm: an upper-bound reference), so
 pooling here is not a defect the way it would be for the isolated/federated arms.
 """
+from ml.common.artifacts import save_manifest, save_model, save_scaler
 from ml.common.data import fit_scaler, load_holdout, load_pooled_training_data, to_arrays
 from ml.common.metric_logger import RunLogger
 from ml.common.model import new_model
 from ml.common.train import evaluate, train_local
 
 
-def run_centralized(augmented: bool, seed: int, epochs: int = 20, run_id: str | None = None) -> dict:
+def run_centralized(
+    augmented: bool, seed: int, epochs: int = 20, run_id: str | None = None, save_artifacts: bool = False
+) -> dict:
     arm = "centralized_augmented" if augmented else "centralized_real"
     logger = RunLogger(arm=arm, seed=seed, config={"augmented": augmented, "epochs": epochs}, run_id=run_id)
 
@@ -30,4 +33,10 @@ def run_centralized(augmented: bool, seed: int, epochs: int = 20, run_id: str | 
 
     logger.log_round_metric(round_num=None, metrics=metrics)
     logger.finalize(metrics)
+
+    if save_artifacts:
+        save_model(logger.run_id, model)
+        save_scaler(logger.run_id, scaler)
+        save_manifest(logger.run_id, arm, banks=None)
+
     return {"run_id": logger.run_id, "arm": arm, "final_metrics": metrics}

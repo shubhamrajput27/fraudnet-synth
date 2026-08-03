@@ -16,10 +16,11 @@ and every round's per-client numbers are logged for the eventual live round char
 from flwr.common import Code, FitRes, Status, ndarrays_to_parameters, parameters_to_ndarrays
 from flwr.server.strategy import FedAvg
 
+from ml.common.artifacts import save_manifest, save_model, save_scaler
 from ml.common.data import BANKS, fit_scaler, load_client_training_data, load_holdout, to_arrays
 from ml.common.metric_logger import RunLogger
 from ml.common.metrics import macro_average
-from ml.common.model import get_parameters, new_model
+from ml.common.model import get_parameters, new_model, set_parameters
 from ml.federated.client import FedClient
 
 
@@ -32,12 +33,17 @@ def _build_clients(augmented: bool, seed: int) -> list[FedClient]:
         X_train, y_train = to_arrays(train_df, scaler)
         X_eval, y_eval = to_arrays(holdout, scaler)
         model = new_model(seed)
-        clients.append(FedClient(bank, model, X_train, y_train, X_eval, y_eval, seed))
+        clients.append(FedClient(bank, model, X_train, y_train, X_eval, y_eval, seed, scaler=scaler))
     return clients
 
 
 def run_federated(
-    augmented: bool, seed: int, num_rounds: int = 10, local_epochs: int = 2, run_id: str | None = None
+    augmented: bool,
+    seed: int,
+    num_rounds: int = 10,
+    local_epochs: int = 2,
+    run_id: str | None = None,
+    save_artifacts: bool = False,
 ) -> dict:
     arm = "federated_augmented" if augmented else "federated_real"
     logger = RunLogger(
@@ -80,4 +86,13 @@ def run_federated(
 
     final = macro_average(last_round_metrics)
     logger.finalize(final)
+
+    if save_artifacts:
+        global_model = new_model(seed)
+        set_parameters(global_model, global_params)
+        save_model(logger.run_id, global_model)  # one shared model — federated has no per-bank model
+        for client in clients:
+            save_scaler(logger.run_id, client.scaler, bank=client.bank)
+        save_manifest(logger.run_id, arm, banks=BANKS)
+
     return {"run_id": logger.run_id, "arm": arm, "final_metrics": final, "per_client": last_round_metrics}

@@ -14,12 +14,14 @@ from ml.common.train import evaluate, train_local
 
 
 class FedClient(NumPyClient):
-    def __init__(self, bank: str, model: FraudMLP, X_train, y_train, X_eval, y_eval, seed: int):
+    def __init__(self, bank: str, model: FraudMLP, X_train, y_train, X_eval, y_eval, seed: int, scaler=None):
         self.bank = bank
         self.model = model
         self.X_train, self.y_train = X_train, y_train
         self.X_eval, self.y_eval = X_eval, y_eval
         self.seed = seed
+        self.scaler = scaler  # kept only so callers can persist it (Phase 6 /predict) — never
+        # used inside fit()/evaluate() itself, which only ever touch this client's own arrays.
 
     def get_parameters(self, config):
         return get_parameters(self.model)

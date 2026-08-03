@@ -4,6 +4,7 @@
 // whatever comes back, matching the architecture's tier split.
 import { Router } from "express";
 import { getDb } from "../db.js";
+import { finalizeRun, upsertClientMetric, upsertRoundMetric } from "../persistence.js";
 
 const router = Router();
 
@@ -77,21 +78,10 @@ router.get("/:runId", async (req, res) => {
 });
 
 async function persistCompletedRun(db, live) {
-  const { run_id, arm, status, round_metrics, client_metrics, final_metrics } = live;
-
-  if (round_metrics.length) {
-    await db.collection("round_metrics").deleteMany({ run_id });
-    await db.collection("round_metrics").insertMany(round_metrics);
-  }
-  if (client_metrics.length) {
-    await db.collection("client_metrics").deleteMany({ run_id });
-    await db.collection("client_metrics").insertMany(client_metrics);
-  }
-
-  await db.collection("runs").updateOne(
-    { run_id },
-    { $set: { status, final_metrics, arm, updated_at: new Date() } }
-  );
+  const { round_metrics, client_metrics } = live;
+  for (const doc of round_metrics) await upsertRoundMetric(db, doc);
+  for (const doc of client_metrics) await upsertClientMetric(db, doc);
+  await finalizeRun(db, live);
 }
 
 export default router;

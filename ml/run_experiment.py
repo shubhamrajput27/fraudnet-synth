@@ -24,22 +24,28 @@ ARMS = [
 
 
 def run_arm(
-    arm: str, seed: int, epochs: int, num_rounds: int, local_epochs: int, run_id: str | None = None
+    arm: str,
+    seed: int,
+    epochs: int,
+    num_rounds: int,
+    local_epochs: int,
+    run_id: str | None = None,
+    save_artifacts: bool = False,
 ) -> dict:
     set_seed(seed)
     print(f"\n=== {arm} (seed={seed}) ===")
     if arm == "isolated_real":
-        return run_isolated(augmented=False, seed=seed, epochs=epochs, run_id=run_id)
+        return run_isolated(augmented=False, seed=seed, epochs=epochs, run_id=run_id, save_artifacts=save_artifacts)
     if arm == "isolated_augmented":
-        return run_isolated(augmented=True, seed=seed, epochs=epochs, run_id=run_id)
+        return run_isolated(augmented=True, seed=seed, epochs=epochs, run_id=run_id, save_artifacts=save_artifacts)
     if arm == "centralized_real":
-        return run_centralized(augmented=False, seed=seed, epochs=epochs, run_id=run_id)
+        return run_centralized(augmented=False, seed=seed, epochs=epochs, run_id=run_id, save_artifacts=save_artifacts)
     if arm == "centralized_augmented":
-        return run_centralized(augmented=True, seed=seed, epochs=epochs, run_id=run_id)
+        return run_centralized(augmented=True, seed=seed, epochs=epochs, run_id=run_id, save_artifacts=save_artifacts)
     if arm == "federated_real":
-        return run_federated(augmented=False, seed=seed, num_rounds=num_rounds, local_epochs=local_epochs, run_id=run_id)
+        return run_federated(augmented=False, seed=seed, num_rounds=num_rounds, local_epochs=local_epochs, run_id=run_id, save_artifacts=save_artifacts)
     if arm == "federated_augmented":
-        return run_federated(augmented=True, seed=seed, num_rounds=num_rounds, local_epochs=local_epochs, run_id=run_id)
+        return run_federated(augmented=True, seed=seed, num_rounds=num_rounds, local_epochs=local_epochs, run_id=run_id, save_artifacts=save_artifacts)
     raise ValueError(f"Unknown arm '{arm}', expected one of {ARMS + ['all']}")
 
 

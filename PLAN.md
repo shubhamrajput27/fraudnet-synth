@@ -94,8 +94,7 @@ phase starts.
 - **Groq free-tier rate limits** at the time of actual Phase 2 development — not looked up this
   session; must be checked against Groq's current published limits before designing the LLM
   client's retry/backoff behavior.
-- **React chart library: Recharts vs Chart.js** — design documents list both as acceptable; not
-  decided. Defer to Phase 6 kickoff.
+- ~~React chart library: Recharts vs Chart.js~~ — **resolved 2026-08-03** (D15): Recharts.
 
 ## Progress log
 
@@ -253,3 +252,49 @@ phase starts.
   through the API) that `runs`/`round_metrics`/`client_metrics` documents landed correctly in
   MongoDB. Both test servers stopped after verification. Awaiting review before Phase 6
   (React dashboard) begins.
+
+- **2026-08-03 — Phase 6 complete.** Confirmed with the user: chart library **Recharts** (D15,
+  resolves the open question PLAN.md had deferred to this kickoff) and **real push-based
+  WebSocket** for live round charts rather than reusing Phase 5's polling (D16).
+  Closed two real gaps surfaced by the dashboard's own feature list before building it: (1) no
+  `/predict` endpoint existed anywhere, and (2) no trained model was ever saved to disk (Phase 4's
+  CLI trains/evaluates purely in-memory) — both needed for "test a transaction". Built
+  `ml/common/artifacts.py` (D17: model/scaler save-shape mirrors D13 — isolated saves a model
+  *and* scaler per bank, federated saves one shared model + a scaler per bank, centralized saves
+  one model + one pooled scaler), wired as an opt-in `save_artifacts` flag through `ml.baselines.
+  {isolated,centralized}` and `ml.federated.run_federated` (default `False`, so the Phase 4 CLI
+  workflow is unaffected). Added `orchestrator/predict.py` (`POST /predict`, `GET /predict/
+  manifest/{run_id}`) and `gateway/src/routes/predict.js`. Added `gateway/src/liveRuns.js` (D16:
+  WebSocket server in `gateway/`, per-run internal poll loop against the still-HTTP-only
+  orchestrator, broadcasts new round/client metrics to subscribed browser clients; JWT travels as
+  a `?token=` query param since browsers can't set custom headers on a WS handshake) and
+  `gateway/src/persistence.js` (idempotent upserts, replacing Phase 5's blind inserts, since the
+  REST poll path and the new WS watcher can now race on the same run). Added `gateway/src/routes/
+  quality.js` for the synthetic quality panel + CSV export, populating D8's `validation_reports`
+  collection for the first time; deliberately did *not* implement `synthetic_batches` as a literal
+  collection since Phase 2's `generation_report.json` is known-stale, and reading current row
+  counts straight from `data/synthetic/`/`data/validated/` CSVs is more accurate (flagged, not
+  silently skipped — see CLAUDE.md's D8 completion note).
+  Scaffolded `dashboard/` with Vite + React 19 + Recharts. Built all seven Tier-1 features:
+  login, trigger-run form with live per-bank mode indicators + live WebSocket round chart, run
+  history, six-arm comparison grid (bar chart from the most recently completed run per arm), the
+  synthetic quality panel with CSV export, and the "test a transaction" predict demo (with a
+  server-provided random holdout sample to avoid hand-typing 30 PCA values).
+  **Browser-tested end-to-end** (per this project's own standing instruction for UI work, not
+  just "it compiles"): used Playwright (no project skill existed for this; `chromium-cli` wasn't
+  available in this environment, so drove a headless Chromium directly) against the real running
+  orchestrator + gateway + MongoDB + Vite dev server. Found and fixed one genuine app bug (the
+  gateway process was stale after a mid-session edit added the `/predict/sample` route — a
+  process-restart gap, not a code defect) and two test-script-only bugs (an ambiguous Playwright
+  selector matching both the "Trigger Run" nav tab and the form's submit button; a couple of
+  screenshots taken before an async fetch had resolved) — both diagnosed by inspecting actual
+  network/console output rather than guessing. Final run: login -> trigger `isolated_real` ->
+  live per-bank status -> completion -> run history -> six-arm comparison grid (rendered correctly
+  once completed runs existed) -> synthetic quality panel with working CSV export -> full predict
+  flow (sample load -> predict -> correct low-probability "legitimate" result). A second targeted
+  run against `federated_augmented` confirmed the live WebSocket round chart specifically: mode
+  indicators correctly showed Augment(CTGAN)/Schema(LLM) per bank, and the line chart updated
+  live across all 4 rounds before showing "Complete". Zero browser console errors across every
+  screenshot. Exit criterion met: the dashboard drives and displays a complete live run, started
+  and finished entirely through the UI. Awaiting review before Phase 7 (integration & evaluation)
+  begins.

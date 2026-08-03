@@ -6,6 +6,7 @@ locally-fit scaler (never a pooled scaler — D4), then macro-averaged for a sin
 number, alongside the full per-client breakdown. This mirrors how the federated arm is evaluated
 (ml/federated/run_federated.py) so the two are comparable.
 """
+from ml.common.artifacts import save_manifest, save_model, save_scaler
 from ml.common.data import BANKS, fit_scaler, load_client_training_data, load_holdout, to_arrays
 from ml.common.metric_logger import RunLogger
 from ml.common.metrics import macro_average
@@ -13,7 +14,9 @@ from ml.common.model import new_model
 from ml.common.train import evaluate, train_local
 
 
-def run_isolated(augmented: bool, seed: int, epochs: int = 20, run_id: str | None = None) -> dict:
+def run_isolated(
+    augmented: bool, seed: int, epochs: int = 20, run_id: str | None = None, save_artifacts: bool = False
+) -> dict:
     arm = "isolated_augmented" if augmented else "isolated_real"
     logger = RunLogger(arm=arm, seed=seed, config={"augmented": augmented, "epochs": epochs}, run_id=run_id)
 
@@ -35,6 +38,13 @@ def run_isolated(augmented: bool, seed: int, epochs: int = 20, run_id: str | Non
         per_client_metrics.append(metrics)
         print(f"  Bank {bank}: n_train={len(train_df)} f1={metrics['f1']:.4f} "
               f"precision={metrics['precision']:.4f} recall={metrics['recall']:.4f}")
+
+        if save_artifacts:
+            save_model(logger.run_id, model, bank=bank)  # isolated has no shared model
+            save_scaler(logger.run_id, scaler, bank=bank)
+
+    if save_artifacts:
+        save_manifest(logger.run_id, arm, banks=BANKS)
 
     final = macro_average(per_client_metrics)
     logger.finalize(final)

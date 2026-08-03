@@ -20,6 +20,7 @@ class Config:
     holdout_path: Path = DATA_DIR / "processed" / "global_test_holdout.csv"
     synthetic_dir: Path = DATA_DIR / "synthetic"
     validated_dir: Path = DATA_DIR / "validated"
+    models_dir: Path = DATA_DIR / "models"
     groq_api_key: str | None = os.getenv("GROQ_API_KEY") or None
     groq_model: str = os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile")
 

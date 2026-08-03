@@ -26,3 +26,16 @@ class RunStatusResponse(BaseModel):
     client_metrics: list[dict]
     final_metrics: dict | None = None
     error: str | None = None
+
+
+class PredictRequest(BaseModel):
+    run_id: str
+    bank: str | None = None  # required for isolated/federated (D4: no pooled scaler); ignored for centralized
+    features: dict[str, float]  # keys: Time, V1..V28, Amount
+
+
+class PredictResponse(BaseModel):
+    run_id: str
+    bank: str | None
+    probability: float
+    prediction: Literal["fraud", "legitimate"]

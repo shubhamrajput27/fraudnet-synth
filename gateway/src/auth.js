@@ -29,6 +29,13 @@ export function login(username, password) {
   return jwt.sign({ sub: username }, process.env.JWT_SECRET, { expiresIn: TOKEN_TTL });
 }
 
+// Shared by requireAuth (HTTP) and the WebSocket handshake (liveRuns can't send an Authorization
+// header — browsers don't support custom headers on the WebSocket handshake — so its token
+// travels as a query param instead, verified with this same function).
+export function verifyToken(token) {
+  return jwt.verify(token, process.env.JWT_SECRET); // throws if invalid/expired
+}
+
 export function requireAuth(req, res, next) {
   const header = req.headers.authorization ?? "";
   const [scheme, token] = header.split(" ");
@@ -37,7 +44,7 @@ export function requireAuth(req, res, next) {
   }
 
   try {
-    req.user = jwt.verify(token, process.env.JWT_SECRET);
+    req.user = verifyToken(token);
     next();
   } catch {
     res.status(401).json({ error: "Invalid or expired token" });

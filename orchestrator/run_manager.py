@@ -24,7 +24,7 @@ def start_run(arm: str, seed: int, epochs: int, num_rounds: int, local_epochs: i
 
     def _worker() -> None:
         try:
-            run_arm(arm, seed, epochs, num_rounds, local_epochs, run_id=run_id)
+            run_arm(arm, seed, epochs, num_rounds, local_epochs, run_id=run_id, save_artifacts=True)
             with _lock:
                 _jobs[run_id]["status"] = "complete"
         except Exception:
