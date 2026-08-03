@@ -227,3 +227,29 @@ phase starts.
   logs (D8-shaped documents) written to `experiments/results/<run_id>/{run,round_metrics,
   client_metrics,final_metrics}.{json,jsonl}` (gitignored, regenerable). Awaiting review before
   Phase 5 (FastAPI orchestration + Express gateway + MongoDB) begins.
+
+- **2026-08-03 — Phase 5 complete.** Verified environment first (Node v22.19.0, MongoDB 8.0.13
+  running locally as a Windows service on port 27017 — confirmed via `pymongo`, not assumed; this
+  instance also hosts unrelated `expense-tracker`/`pesitm-cse` databases from other local
+  projects, so all writes are scoped to `fraudnet_synth` only).
+  Built `orchestrator/{main,run_manager,schemas}.py` (FastAPI, Tier 3): `POST /runs` starts an
+  arm in a background thread and returns immediately with a `run_id`; `GET /runs/{id}` reads
+  live progress from `experiments/results/<run_id>/` (Phase 4's `RunLogger`, extended with an
+  optional pre-generated `run_id` so the orchestrator can know the id before the run finishes —
+  see D14). Built `gateway/{package.json,src/{server,db,auth,routes/runs}.js}` (Express 5, Tier
+  2): `POST /auth/login` issues a JWT for the single env-sourced admin credential (D9); `POST
+  /api/runs` (protected) calls the orchestrator then writes an initial `runs` doc to MongoDB;
+  `GET /api/runs/:id` (protected) forwards live orchestrator state while running, and on first
+  seeing `complete`/`failed` persists `round_metrics`/`client_metrics` documents and the final
+  `runs` doc update, serving straight from Mongo on every poll after that (no duplicate
+  inserts). `GET /api/runs` lists all runs. D14 records the tier split (orchestrator never
+  touches Mongo; gateway never runs ML code) and the npm dependency verification (Express 5 is
+  current latest, not the 4.x most tutorials assume — verified by actually running the server).
+  **End-to-end exit-criterion test** (exit criterion: a full run can be triggered and persisted
+  via API alone — no CLI, no manual DB write): logged in via `POST /auth/login`, triggered
+  `centralized_real` and `isolated_real` runs via `POST /api/runs`, polled `GET /api/runs/:id`
+  until `complete`, confirmed live partial `client_metrics` mid-run (3/4 banks before
+  completion) then 4/4 after, and independently confirmed via a direct `pymongo` query (not just
+  through the API) that `runs`/`round_metrics`/`client_metrics` documents landed correctly in
+  MongoDB. Both test servers stopped after verification. Awaiting review before Phase 6
+  (React dashboard) begins.

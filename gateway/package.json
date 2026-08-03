@@ -1,0 +1,18 @@
+{
+  "name": "fraudnet-synth-gateway",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Node.js + Express API gateway: JWT auth, run management, MongoDB persistence (CLAUDE.md Tier 2).",
+  "type": "module",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js"
+  },
+  "dependencies": {
+    "cors": "2.8.6",
+    "dotenv": "17.4.2",
+    "express": "5.2.1",
+    "jsonwebtoken": "9.0.3",
+    "mongodb": "7.5.0"
+  }
+}

@@ -15,8 +15,11 @@ RESULTS_DIR = REPO_ROOT / "experiments" / "results"
 
 
 class RunLogger:
-    def __init__(self, arm: str, seed: int, config: dict):
-        self.run_id = f"{arm}_{uuid.uuid4().hex[:8]}"
+    def __init__(self, arm: str, seed: int, config: dict, run_id: str | None = None):
+        """`run_id`: pass a pre-generated id (e.g. from orchestrator/run_manager.py) so a caller
+        can know the id — and start polling experiments/results/<run_id>/ — before this run
+        finishes. Defaults to auto-generating one, as before."""
+        self.run_id = run_id or f"{arm}_{uuid.uuid4().hex[:8]}"
         self.arm = arm
         self.run_dir = RESULTS_DIR / self.run_id
         self.run_dir.mkdir(parents=True, exist_ok=True)

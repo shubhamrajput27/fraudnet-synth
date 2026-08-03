@@ -109,7 +109,7 @@ training logic.
   centralized accuracy on this benchmark; FedFraud reports F1 0.90 / AUC 0.96 under non-IID
   conditions. These frame expectations only — never tune toward them.
 
-## Decisions made during implementation (D1–D13)
+## Decisions made during implementation (D1–D14)
 
 These are not in the original design documents; they are defaults adopted during Phase 0 and
 recorded here (and in `PLAN.md`) so they can be defended or revised at review.
@@ -201,6 +201,29 @@ recorded here (and in `PLAN.md`) so they can be defended or revised at review.
   statistics are ever pooled, even for evaluation. Applied identically to isolated and federated
   arms so the two stay comparable; centralized needs no such split (one pooled scaler by design,
   since centralized is deliberately the non-privacy-preserving arm).
+- **D14 — Phase 5 tier split and run-tracking mechanism.** `orchestrator/` (FastAPI) computes and
+  logs only — it runs a background thread per triggered arm and never touches MongoDB itself;
+  `gateway/` (Express) is the only thing that writes to Mongo, matching the architecture diagram's
+  own tier labels ("Federated Training Layer: ...round orchestration · metric logging" vs.
+  "MongoDB persistence"). Progress "streaming" at this phase is poll-based, not push-based: the
+  orchestrator exposes `GET /runs/{id}` reading whatever `ml/common/metric_logger.py` has written
+  to `experiments/results/<run_id>/` so far (mid-run, this can show a partial `client_metrics`
+  list — e.g. 3 of 4 banks done); the gateway forwards that live snapshot until the run
+  completes, at which point it persists final documents to Mongo once and serves from Mongo
+  afterward, never re-inserting duplicates on repeated polls. Real push-based streaming
+  (WebSocket) to a browser is Tier 1/Phase 6's job, not this one. `RunLogger` (Phase 4) was
+  extended with an optional pre-generated `run_id` param so the orchestrator can know a run's id
+  — and start polling its directory — before the run finishes; this is backward-compatible
+  (defaults to auto-generating, as before), verified by re-running a Phase 4 smoke test after the
+  change. Auth (D9): single env-sourced credential pair, compared with `crypto.timingSafeEqual`
+  rather than bcrypt-hashed — there's no separate at-rest store to protect (the only "storage" is
+  the gitignored `.env` file), so hashing would add ceremony without adding real protection here.
+  MongoDB access uses the native Node `mongodb` driver, not an ODM (Mongoose), matching the locked
+  stack's own stated rationale for choosing MongoDB ("flexible schema" — document shapes already
+  vary slightly across the six arms). npm package versions were checked against the live npm
+  registry before pinning (same rigor as D7's PyPI checks) — Express is currently major version 5
+  (not 4.x, which most existing tutorials/training data assume); verified compatible by actually
+  running the server, not assumed.
 
 ## Out of scope this semester (deferred to Future Scope)
 

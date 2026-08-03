@@ -13,9 +13,9 @@ from ml.common.model import new_model
 from ml.common.train import evaluate, train_local
 
 
-def run_isolated(augmented: bool, seed: int, epochs: int = 20) -> dict:
+def run_isolated(augmented: bool, seed: int, epochs: int = 20, run_id: str | None = None) -> dict:
     arm = "isolated_augmented" if augmented else "isolated_real"
-    logger = RunLogger(arm=arm, seed=seed, config={"augmented": augmented, "epochs": epochs})
+    logger = RunLogger(arm=arm, seed=seed, config={"augmented": augmented, "epochs": epochs}, run_id=run_id)
 
     holdout = load_holdout()
     per_client_metrics = []

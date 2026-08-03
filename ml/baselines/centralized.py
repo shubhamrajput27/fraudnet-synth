@@ -9,9 +9,9 @@ from ml.common.model import new_model
 from ml.common.train import evaluate, train_local
 
 
-def run_centralized(augmented: bool, seed: int, epochs: int = 20) -> dict:
+def run_centralized(augmented: bool, seed: int, epochs: int = 20, run_id: str | None = None) -> dict:
     arm = "centralized_augmented" if augmented else "centralized_real"
-    logger = RunLogger(arm=arm, seed=seed, config={"augmented": augmented, "epochs": epochs})
+    logger = RunLogger(arm=arm, seed=seed, config={"augmented": augmented, "epochs": epochs}, run_id=run_id)
 
     train_df = load_pooled_training_data(augmented)
     holdout = load_holdout()

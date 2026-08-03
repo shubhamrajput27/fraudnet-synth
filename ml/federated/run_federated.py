@@ -36,11 +36,14 @@ def _build_clients(augmented: bool, seed: int) -> list[FedClient]:
     return clients
 
 
-def run_federated(augmented: bool, seed: int, num_rounds: int = 10, local_epochs: int = 2) -> dict:
+def run_federated(
+    augmented: bool, seed: int, num_rounds: int = 10, local_epochs: int = 2, run_id: str | None = None
+) -> dict:
     arm = "federated_augmented" if augmented else "federated_real"
     logger = RunLogger(
         arm=arm, seed=seed,
         config={"augmented": augmented, "num_rounds": num_rounds, "local_epochs": local_epochs},
+        run_id=run_id,
     )
 
     clients = _build_clients(augmented, seed)
