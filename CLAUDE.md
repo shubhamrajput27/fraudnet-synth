@@ -109,7 +109,7 @@ training logic.
   centralized accuracy on this benchmark; FedFraud reports F1 0.90 / AUC 0.96 under non-IID
   conditions. These frame expectations only — never tune toward them.
 
-## Decisions made during implementation (D1–D9)
+## Decisions made during implementation (D1–D10)
 
 These are not in the original design documents; they are defaults adopted during Phase 0 and
 recorded here (and in `PLAN.md`) so they can be defended or revised at review.
@@ -120,6 +120,9 @@ recorded here (and in `PLAN.md`) so they can be defended or revised at review.
   top-k pairwise correlations computed locally from that client's own fraud rows, plus a small
   number of few-shot examples. Never send raw rows to the API. Let the validation layer judge the
   result honestly — **a low Schema Mode pass rate is a publishable finding, not a bug to hide.**
+  Few-shot examples are synthetic prototype rows (per-column median / 25th-percentile /
+  75th-percentile combinations) — **never real transaction rows** — resolving the apparent
+  tension between "include few-shot examples" and "never send raw rows to the API". See D10.
 - **D2 — Classifier: small PyTorch MLP**, not scikit-learn `LogisticRegression`. Architecture:
   input(30) -> 64 -> 32 -> 1, ReLU, dropout, `BCEWithLogitsLoss` with positive-class weighting.
   Chosen for real local epochs per FedAvg round and clean `state_dict()` <-> list-of-NumPy-arrays
@@ -154,6 +157,14 @@ recorded here (and in `PLAN.md`) so they can be defended or revised at review.
 - **D9 — Auth is minimal and scope-trimmable.** A single JWT-issuing login in the Express gateway
   is sufficient for a single-machine demo. If Phase 6 runs short on time, trim dashboard scope
   before pipeline scope.
+- **D10 — Schema Mode few-shot examples are synthetic prototype rows, not real rows.** Confirmed
+  with the user 2026-08-03 (Phase 2). Built from that client's own aggregate stats: a "typical"
+  row (per-column median), a "low-tail" row (25th percentile), a "high-tail" row (75th
+  percentile). No real transaction row is ever included in a Groq prompt. Also: Groq free-tier
+  has a shared daily token budget (100k TPD as of 2026-08-03) across all requests for a model —
+  batch generation requests to reuse the stats/correlations prompt overhead instead of resending
+  it per small batch, or the budget disappears fast (see `ml/augmentation/llm_engine.py`
+  `rows_per_request`).
 
 ## Out of scope this semester (deferred to Future Scope)
 

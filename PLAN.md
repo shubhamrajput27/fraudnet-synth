@@ -119,3 +119,32 @@ phase starts.
   rows/15 fraud, global holdout 56,746 rows/95 fraud (D5 open question resolved). Exit criterion
   met: reproducible partition script (`python -m ml.partition.run_partition --seed 42`), shard
   statistics documented. Awaiting review before Phase 2 (augmentation modules) begins.
+
+- **2026-08-03 — Phase 2 complete.** Built `ml/augmentation/{ctgan_engine,llm_engine,
+  run_augmentation}.py`. **D10 (new decision) — Schema Mode few-shot examples are synthetic
+  prototype rows** (per-column median / 25th-percentile / 75th-percentile combinations), never
+  real transaction rows — resolves the apparent tension in D1 between "include few-shot examples"
+  and "never send raw rows to the API". Confirmed explicitly with the user 2026-08-03; CLAUDE.md
+  D1 updated to match.
+  CTGAN engine (`sdv==1.37.4` `CTGANSynthesizer`, `enable_gpu=False`): verified empirically that
+  `batch_size` must be a multiple of `pac` (default 10) or `ctgan` raises a bare `AssertionError`
+  — not documented anywhere, found by testing against Bank B's real 38 fraud rows. Live-verified
+  end-to-end on Banks A (310 real fraud rows -> 310 candidates) and B (38 -> 38 candidates).
+  LLM engine (`groq==1.6.0`, model `llama-3.3-70b-versatile`, `response_format=json_object`,
+  exponential-backoff retry on `RateLimitError`/`APIConnectionError`/`APITimeoutError`/
+  `InternalServerError`): live-verified end-to-end on Bank C (15 real fraud rows -> 100/100
+  candidates generated, 0 malformed). First Bank D attempt failed with `groq.RateLimitError`
+  (429, tokens-per-day) — **not a code defect**: `rows_per_request=10` (initial default) re-sent
+  the ~1.8k-token stats/correlations block on every request, and Bank C's 10 requests alone
+  consumed 96,844 of the free tier's 100,000 TPD budget, leaving nothing for Bank D. Fixed by
+  raising `rows_per_request` to 50 and adding an explicit `max_completion_tokens` cap. The daily
+  quota was still not fully reset on the next attempt (92,584/100,000 used, a rolling window, not
+  an instant reset), so Bank D was live-confirmed with a reduced one-off request
+  (`--llm-target-rows 15`, fits under the remaining budget) rather than waiting out the full
+  reset: **15 requested, 7 valid candidates generated, 8 rows dropped as malformed** (logged in
+  `generation_report.json`, not hidden — consistent with the project's "low pass rate is a
+  reportable finding" philosophy, though this is raw parse validity, not Phase 3 fidelity
+  validation). Exit criterion met for all four banks with real API/engine calls. Known minor gap:
+  `run_augmentation.py`'s `generation_report.json` is overwritten (not merged) per invocation, so
+  it only reflects the banks in the most recent run — each bank's candidate CSV is independently
+  correct on disk regardless. Awaiting review before Phase 3 (shared validation layer) begins.

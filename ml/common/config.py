@@ -18,6 +18,9 @@ class Config:
     processed_dir: Path = DATA_DIR / "processed"
     shards_dir: Path = DATA_DIR / "shards"
     holdout_path: Path = DATA_DIR / "processed" / "global_test_holdout.csv"
+    synthetic_dir: Path = DATA_DIR / "synthetic"
+    groq_api_key: str | None = os.getenv("GROQ_API_KEY") or None
+    groq_model: str = os.getenv("GROQ_MODEL", "llama-3.3-70b-versatile")
 
 
 CONFIG = Config()
