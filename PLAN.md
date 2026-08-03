@@ -298,3 +298,44 @@ phase starts.
   screenshot. Exit criterion met: the dashboard drives and displays a complete live run, started
   and finished entirely through the UI. Awaiting review before Phase 7 (integration & evaluation)
   begins.
+
+- **2026-08-03 — Phase 7 complete.** Ran a fresh, dedicated six-arm sweep (`python -m
+  ml.run_experiment --arm all`, seed 42, defaults) rather than reusing Phase 4's numbers outright
+  — deliberately, as a reproducibility check: the fresh run matched the already-committed Phase 4
+  table **bit-for-bit** on every metric, confirming the pipeline is fully deterministic under a
+  fixed seed (a citable fact for the report, not assumed). Built `experiments/generate_report.py`:
+  auto-detects the latest *full-configuration* run per arm under `experiments/results/`
+  (epochs=20 for isolated/centralized, num_rounds=10 for federated — deliberately excluding the
+  many small smoke-test runs Phase 6's dashboard testing left behind, e.g. epochs=2-4), and
+  generates `docs/phase7_results.md` plus three committed figures under `docs/phase7_figures/`:
+  a six-arm F1/precision/recall bar chart and round-by-round convergence line charts for both
+  federated arms (matplotlib, already pinned in `ml/requirements.txt`).
+  **Found and fixed a real, previously-unnoticed bug while writing the report**: every
+  `Path.write_text()` call across the codebase that writes a `.md`/`.json` report file was missing
+  an explicit `encoding="utf-8"`, so on this Windows environment they silently used the cp1252
+  locale default. Harmless for pure-ASCII content, but any em-dash in generated text became a
+  single invalid byte (0x97) instead of valid UTF-8 — caught because `docs/phase7_results.md`
+  itself has several. Confirmed via direct byte inspection that this had *already* corrupted one
+  character in the committed `docs/phase1_shard_stats.md` (Phase 1) unnoticed until now (Phase 3's
+  report happened to contain no non-ASCII characters, so it wasn't affected). Fixed at the root
+  (added `encoding="utf-8"` to all nine `write_text()` call sites: `ml/partition/stats.py`,
+  `ml/validation/run_validation.py`, `ml/common/{metric_logger,artifacts}.py`,
+  `ml/run_experiment.py`, `ml/augmentation/run_augmentation.py`,
+  `experiments/generate_report.py`) rather than just removing the offending character, and
+  regenerated `docs/phase1_shard_stats.md` and `docs/phase3_validation_report.md` to confirm both
+  are now valid UTF-8 with identical content (another incidental reproducibility confirmation for
+  Phases 1 and 3).
+  **Results and headline finding** (see `docs/phase7_results.md` for full detail): federated >
+  isolated on every metric (matches literature's qualitative expectation); federated_augmented is
+  the best arm overall (F1 0.6146) despite only Banks A and D's synthetic batches surviving Phase
+  3 validation; centralized_real's low F1 despite strong AUC is the same class-imbalance/
+  threshold artifact investigated in Phase 4, reported again here rather than hidden.
+  **Literature comparison** (PLAN.md reference points, never tuned toward): our accuracy figures
+  exceed the ~91%/~95% literature reference, but accuracy is explicitly flagged as not meaningful
+  here (>94% trivially for all six arms). Against FedFraud's F1 0.90/AUC 0.96 non-IID benchmark,
+  our federated_augmented AUC (0.9544) is close but F1 (0.6146) is well below it — reported as a
+  genuine, unresolved gap with three named, unconfirmed plausible contributors (the deliberately
+  more extreme non-IID partition, far fewer local epochs/rounds than a literature-scale run, and
+  only half the banks' augmentation surviving validation), not smoothed over. Exit criterion met:
+  final results tables and convergence plots produced. Awaiting review before Phase 8 (testing,
+  documentation, presentation) begins.

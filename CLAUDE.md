@@ -109,7 +109,7 @@ training logic.
   centralized accuracy on this benchmark; FedFraud reports F1 0.90 / AUC 0.96 under non-IID
   conditions. These frame expectations only — never tune toward them.
 
-## Decisions made during implementation (D1–D17)
+## Decisions made during implementation (D1–D18)
 
 These are not in the original design documents; they are defaults adopted during Phase 0 and
 recorded here (and in `PLAN.md`) so they can be defended or revised at review.
@@ -259,6 +259,18 @@ recorded here (and in `PLAN.md`) so they can be defended or revised at review.
   instead computes candidate/validated row counts directly from the `data/synthetic/`/`data/
   validated/` CSVs on disk, which is strictly more accurate than trusting that stale log. Flagged
   here rather than silently skipped.
+- **D18 — Every `Path.write_text()` writing a report must pass `encoding="utf-8"` explicitly.**
+  Found in Phase 7 while building `experiments/generate_report.py`: without it, Python falls back
+  to the OS locale encoding, which on this Windows environment is cp1252 — harmless for pure-ASCII
+  content, but any em-dash in generated text silently became one invalid byte (0x97) instead of
+  valid UTF-8. Confirmed by direct byte inspection that this had already corrupted one character
+  in the committed `docs/phase1_shard_stats.md` unnoticed since Phase 1 (Phase 3's report
+  happened to contain no non-ASCII characters, so it was unaffected). Fixed at all nine call
+  sites project-wide (`ml/partition/stats.py`, `ml/validation/run_validation.py`,
+  `ml/common/{metric_logger,artifacts}.py`, `ml/run_experiment.py`,
+  `ml/augmentation/run_augmentation.py`, `experiments/generate_report.py`), not just the one that
+  surfaced it — any future `write_text()` on a file with non-ASCII content must include this
+  explicitly too.
 
 ## Out of scope this semester (deferred to Future Scope)
 

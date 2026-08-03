@@ -45,7 +45,7 @@ def _write_markdown_report(reports: list[dict], path: Path) -> None:
         )
     lines.append("")
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text("\n".join(lines))
+    path.write_text("\n".join(lines), encoding="utf-8")
 
 
 def main() -> None:
@@ -80,7 +80,7 @@ def main() -> None:
         reports.append(report.to_dict())
 
     report_json_path = CONFIG.validated_dir / "validation_report.json"
-    report_json_path.write_text(json.dumps(reports, indent=2))
+    report_json_path.write_text(json.dumps(reports, indent=2), encoding="utf-8")
     _write_markdown_report(reports, REPO_ROOT / "docs" / "phase3_validation_report.md")
 
     print(f"\nValidation report written to {report_json_path} and docs/phase3_validation_report.md")

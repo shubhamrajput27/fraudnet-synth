@@ -42,7 +42,7 @@ def save_manifest(run_id: str, arm: str, banks: list[str] | None) -> None:
     run_dir = run_artifacts_dir(run_id)
     run_dir.mkdir(parents=True, exist_ok=True)
     manifest = {"run_id": run_id, "arm": arm, "banks": banks}
-    (run_dir / "manifest.json").write_text(json.dumps(manifest, indent=2))
+    (run_dir / "manifest.json").write_text(json.dumps(manifest, indent=2), encoding="utf-8")
 
 
 def load_manifest(run_id: str) -> dict | None:

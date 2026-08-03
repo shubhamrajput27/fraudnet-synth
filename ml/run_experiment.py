@@ -71,7 +71,7 @@ def main() -> None:
             print(f"{arm:<22}{m['f1']:>8.4f}{m['precision']:>12.4f}{m['recall']:>10.4f}{m['auc']:>8.4f}")
 
         summary_path = CONFIG.processed_dir / "phase4_six_arm_summary.json"
-        summary_path.write_text(json.dumps({a: r["final_metrics"] for a, r in results.items()}, indent=2))
+        summary_path.write_text(json.dumps({a: r["final_metrics"] for a, r in results.items()}, indent=2), encoding="utf-8")
         print(f"\nSummary written to {summary_path}")
 
 

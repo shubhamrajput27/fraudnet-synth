@@ -91,7 +91,7 @@ def main() -> None:
         reports.append(log)
 
     report_path = CONFIG.synthetic_dir / "generation_report.json"
-    report_path.write_text(json.dumps(reports, indent=2))
+    report_path.write_text(json.dumps(reports, indent=2), encoding="utf-8")
     print(f"\nGeneration report written to {report_path}")
 
 

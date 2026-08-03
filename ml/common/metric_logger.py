@@ -31,7 +31,7 @@ class RunLogger:
             "config": config,
             "created_at": time.time(),
         }
-        (self.run_dir / "run.json").write_text(json.dumps(run_doc, indent=2))
+        (self.run_dir / "run.json").write_text(json.dumps(run_doc, indent=2), encoding="utf-8")
 
     def log_round_metric(self, round_num: int | None, metrics: dict) -> None:
         doc = {"run_id": self.run_id, "arm": self.arm, "round": round_num, "metrics": metrics}
@@ -42,7 +42,7 @@ class RunLogger:
         self._append_jsonl(self.run_dir / "client_metrics.jsonl", doc)
 
     def finalize(self, final_metrics: dict) -> None:
-        (self.run_dir / "final_metrics.json").write_text(json.dumps(final_metrics, indent=2))
+        (self.run_dir / "final_metrics.json").write_text(json.dumps(final_metrics, indent=2), encoding="utf-8")
 
     @staticmethod
     def _append_jsonl(path: Path, doc: dict) -> None:
