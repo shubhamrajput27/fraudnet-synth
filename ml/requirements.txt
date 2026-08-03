@@ -29,13 +29,14 @@
 #     equivalent was executed). Two-package pairwise checks (sdv/sdmetrics vs pandas) were done;
 #     N-way conflicts across the whole set (e.g. sentence-transformers' transformers/huggingface-hub
 #     pulls, sdv's boto3/botocore pulls) are unverified.
-#   - Flower's actual API surface at 1.32.1 was NOT executed or imported. D7 requires writing
-#     Phase 4 code only against a verified-installed API. 1.32.1 is well past the old
-#     `start_server`/`start_numpy_client` API (deprecated ~1.8) — Phase 4 code must target
-#     `flwr.server.ServerApp` / `flwr.client.ClientApp` / `flwr.simulation.run_simulation`
-#     (or the `flwr run` CLI + pyproject.toml app layout), but this must be confirmed against
-#     the installed package's actual module contents at Phase 4 kickoff, not assumed from this
-#     comment.
+#   - RESOLVED at Phase 4 kickoff (2026-08-03, see PLAN.md D12): confirmed flwr 1.32.1 exposes
+#     ServerApp/ClientApp/run_simulation as expected, past the deprecated start_server API. But
+#     run_simulation's default `ray` backend has NO Windows wheel for Python 3.13 (verified via
+#     live PyPI metadata — latest ray 2.56.1 ships only cp310/cp311/cp312 for Windows), so
+#     ml/federated/ uses a hand-rolled sequential loop with real flwr.client.NumPyClient +
+#     flwr.server.strategy.FedAvg.aggregate_fit instead of run_simulation. ray is intentionally
+#     NOT added to this file — do not add it without re-checking Windows/Python-version wheel
+#     availability first.
 #   - CTGAN's behavior/convergence on the tiny fraud-row counts Banks C/D will hold (D5) is
 #     unverified — this is a Phase 2 empirical question, not a packaging one.
 #

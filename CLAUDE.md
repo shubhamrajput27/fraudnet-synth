@@ -109,7 +109,7 @@ training logic.
   centralized accuracy on this benchmark; FedFraud reports F1 0.90 / AUC 0.96 under non-IID
   conditions. These frame expectations only — never tune toward them.
 
-## Decisions made during implementation (D1–D11)
+## Decisions made during implementation (D1–D13)
 
 These are not in the original design documents; they are defaults adopted during Phase 0 and
 recorded here (and in `PLAN.md`) so they can be defended or revised at review.
@@ -177,6 +177,30 @@ recorded here (and in `PLAN.md`) so they can be defended or revised at review.
   into a narrow high range (~0.95-0.9999 observed) since a general-purpose text encoder mostly
   reflects the shared column-name template rather than fine numeric differences — still
   discriminates at the tail, not a precise instrument in absolute terms.
+- **D12 — Federated simulation is a hand-rolled sequential loop, not `flwr.simulation.
+  run_simulation`.** Confirmed with the user 2026-08-03 (Phase 4). `run_simulation`'s default
+  backend is `ray`, and live PyPI metadata confirms `ray` (latest 2.56.1 as of 2026-08-03) ships
+  no Windows wheel for Python 3.13 — a real blocker, not a formality, despite D7 flagging this
+  exact API as needing confirmation at Phase 4 kickoff. Rather than downgrading the whole venv to
+  Python 3.12 to get a ray wheel, `ml/federated/run_federated.py` loops through the 4 clients
+  in-process each round — reasonable for 4 toy clients on one laptop, which is all the "single-
+  machine simulation" hard constraint ever required. The aggregation itself is still genuine
+  Flower: `flwr.client.NumPyClient` subclasses and `flwr.server.strategy.FedAvg.aggregate_fit`
+  (verified empirically that `aggregate_fit` never touches the paired `ClientProxy` object, only
+  `FitRes.parameters`/`.num_examples`, so a `None` placeholder stands in for it). This is a
+  deviation from the textbook `ServerApp`/`ClientApp`/`flwr run` workflow, documented here rather
+  than silently substituted, per standing rule 2.
+- **D13 — Federated/isolated evaluation: per-client, macro-averaged, never a pooled scaler.**
+  Confirmed with the user 2026-08-03 (Phase 4). D4 fits one `StandardScaler` per client on that
+  client's own training rows only — so there is no single canonical scaler to evaluate a shared
+  global model (federated) or to compare across banks (isolated) against the global holdout.
+  Resolution: evaluate the same model/parameters once per client, each using that client's own
+  locally-fit scaler on the identical holdout rows, then macro-average for one headline number
+  per arm while keeping the full per-client breakdown. Mirrors real federated deployment (local
+  preprocessing at each site) and keeps D4's privacy-invariant spirit fully intact — no scaler
+  statistics are ever pooled, even for evaluation. Applied identically to isolated and federated
+  arms so the two stay comparable; centralized needs no such split (one pooled scaler by design,
+  since centralized is deliberately the non-privacy-preserving arm).
 
 ## Out of scope this semester (deferred to Future Scope)
 
