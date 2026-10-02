@@ -1,0 +1,28 @@
+# --- Data: the raw Kaggle file and all generated shards stay local only ---
+data/raw/*
+data/processed/*
+data/clients/**/*.csv
+!**/.gitkeep
+
+# --- Secrets ---
+.env
+
+# --- Python ---
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+*.egg-info/
+
+# --- Models / large artifacts ---
+*.pkl
+*.pt
+*.pth
+
+# --- Node ---
+node_modules/
+
+# --- OS / editor ---
+.DS_Store
+Thumbs.db
+.vscode/
