@@ -28,3 +28,12 @@ Terms are added as each step introduces them. The step number is in brackets.
 | **Mode collapse** [0] | When a generator keeps producing the same few outputs instead of varied ones. |
 | **Six arms** [0] | Our experiment grid: {isolated, federated, centralized} × {real only, real + synthetic}. |
 | **Data leakage** [0] | Test information sneaking into training, which makes results look falsely good. |
+| **EDA (Exploratory Data Analysis)** [1] | Studying a dataset's size, quality and patterns with statistics and charts before modelling. |
+| **PCA (Principal Component Analysis)** [1] | A transformation that mixes original columns into new uncorrelated "components", ordered by how much variation they capture. In ULB it anonymizes the features (V1–V28). |
+| **Accuracy paradox** [1] | On imbalanced data, a useless model (always "genuine") gets very high accuracy. Here it is 99.83%. |
+| **Confusion matrix (TP/FP/FN/TN)** [1] | The 2×2 count of correct and wrong predictions: frauds caught, false alarms, frauds missed, genuine passed. |
+| **Decision threshold** [1] | The fraud-score cut-off above which a transaction is flagged. Moving it trades precision against recall. |
+| **ROC-AUC** [1] | Area under the true-positive vs false-positive rate curve. Secondary here, because it can look flattering on very imbalanced data. |
+| **Cohen's d** [1] | Difference between two group means divided by a pooled standard deviation. Used in EDA to rank which features separate fraud from genuine. |
+| **Duplicate rows** [1] | Identical rows. If copies fall in both train and test sets, test scores are inflated (a form of leakage). |
+| **Stratified split** [1→2] | A split that keeps the same class proportions (fraud %) in every part. |

@@ -1,0 +1,15 @@
+Shape: 284,807 rows x 31 columns
+Dtypes: {'float64': 30, 'int64': 1}
+Missing values (all cells): 0
+Genuine (0): 284,315 | Fraud (1): 492
+Fraud percentage: 0.1727%  (1 fraud per 577.9 genuine)
+'Always genuine' accuracy: 99.8273%  <- catches 0 frauds
+Duplicate rows: {'total': 1081, 'genuine': 1062, 'fraud': 19}
+Time span: 48.0 hours
+Amount [genuine]: mean=88.29 median=22.0 max=25691.16
+Amount [fraud]: mean=122.21 median=9.25 max=2125.87
+Zero-amount transactions: {'genuine': 1798, 'fraud': 27}
+V1-V28 std range: [0.33, 1.959], max |mean|: 0.0
+Top 6 separating V-features (Cohen's d): V17=-8.318, V14=-7.644, V12=-6.5, V10=-5.35, V16=-4.827, V3=-4.736
+Weakest 3: V25=0.08, V23=-0.065, V22=0.019
+Saved charts + eda_summary.json to results\eda

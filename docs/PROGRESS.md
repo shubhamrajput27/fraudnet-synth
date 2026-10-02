@@ -3,7 +3,7 @@
 | Step | Name | Phase | Status | Doc |
 |---|---|---|---|---|
 | 0 | Environment setup & project orientation | Prereq | ✅ Done (2026-10-02). Dataset placed | [STEP_00](steps/STEP_00_environment_setup.md) |
-| 1 | Data ingestion & EDA | 1 | Not started | |
+| 1 | Data ingestion & EDA | 1 | ✅ Done (2026-10-02) | [STEP_01](steps/STEP_01_data_eda.md) |
 | 2 | Global split & non-IID partitioning | 1 | Not started | |
 | 3 | Shared classifier & sanity baseline | 1→4 | Not started | |
 | 4 | Augment Mode: CTGAN (Banks A, B) | 2 | Not started | |

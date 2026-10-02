@@ -21,3 +21,18 @@ Each entry records the decision, the alternatives considered, the reason and the
 - **Date:** 2026-10-02 (Step 0)
 - **Decision:** use the MongoDB Community Server 8.0.13 already running as a Windows service at `mongodb://localhost:27017`.
 - **Reason:** zero cost, single machine, already installed.
+
+## D-003: Global random seed = 42
+- **Date:** 2026-10-02 (Step 1)
+- **Decision:** a single base seed of 42 in `configs/data.yaml`, used for all randomness.
+- **Alternatives:** any other fixed integer.
+- **Reason:** the value itself is arbitrary. What matters is that it is fixed and recorded. Multi-seed repeats for the final results are decided in Step 9.
+
+## D-004: EDA is descriptive only and runs on the full dataset
+- **Date:** 2026-10-02 (Step 1)
+- **Decision:** Step 1 statistics and plots use all 284,807 rows. Nothing computed here (e.g. the Cohen's d ranking) is used to select features or fit any transformation.
+- **Alternatives:** run EDA only on the training portion after the Step 2 split.
+- **Reason:** describing the raw dataset is standard and needed for the report. Leakage happens only if test information shapes the model, and nothing here does. All fitted components (scalers, generators, thresholds) are fitted on training/validation data only.
+
+## Open for Step 2: handling the 1,081 duplicate rows (19 fraud)
+- Found in Step 1. To be decided with Shubham before splitting.

@@ -1,0 +1,4 @@
+# Data configuration (Step 1+)
+raw_path: data/raw/creditcard.csv
+seed: 42                 # fixed seed used everywhere for reproducibility
+eda_output_dir: results/eda
