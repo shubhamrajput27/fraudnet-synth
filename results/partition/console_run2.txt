@@ -1,0 +1,23 @@
+Rows before dedup: 284,807 | after: 283,726
+   set  part   rows  fraud  genuine  fraud_pct
+global train 198607    331   198276     0.1667
+global   val  28373     47    28326     0.1657
+global  test  56746     95    56651     0.1674
+bank_a shard  69546    149    69397     0.2142
+bank_a train  48682    105    48577     0.2157
+bank_a   val  10432     22    10410     0.2109
+bank_a  test  10432     22    10410     0.2109
+bank_b shard  59599    116    59483     0.1946
+bank_b train  41719     82    41637     0.1966
+bank_b   val   8940     17     8923     0.1902
+bank_b  test   8940     17     8923     0.1902
+bank_c shard  39695     40    39655     0.1008
+bank_c train  27785     28    27757     0.1008
+bank_c   val   5955      6     5949     0.1008
+bank_c  test   5955      6     5949     0.1008
+bank_d shard  29767     26    29741     0.0873
+bank_d train  20836     18    20818     0.0864
+bank_d   val   4465      4     4461     0.0896
+bank_d  test   4466      4     4462     0.0896
+
+Files written: 15 | combined SHA-256 of all CSVs: 14afc6399f1b0624a11d7228d2dcd564e0041e2b739f4dad268d262a4cdf99e7

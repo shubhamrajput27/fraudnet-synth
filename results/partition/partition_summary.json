@@ -1,0 +1,197 @@
+{
+  "seed": 42,
+  "rows_before_dedup": 284807,
+  "rows_after_dedup": 283726,
+  "config": {
+    "drop_duplicates": true,
+    "global_split": {
+      "train": 0.7,
+      "val": 0.1,
+      "test": 0.2
+    },
+    "banks": {
+      "bank_a": {
+        "fraud_share": 0.45,
+        "genuine_share": 0.35,
+        "mode": "augment"
+      },
+      "bank_b": {
+        "fraud_share": 0.35,
+        "genuine_share": 0.3,
+        "mode": "augment"
+      },
+      "bank_c": {
+        "fraud_share": 0.12,
+        "genuine_share": 0.2,
+        "mode": "schema"
+      },
+      "bank_d": {
+        "fraud_share": 0.08,
+        "genuine_share": 0.15,
+        "mode": "schema"
+      }
+    },
+    "local_split": {
+      "train": 0.7,
+      "val": 0.15,
+      "test": 0.15
+    },
+    "processed_dir": "data/processed",
+    "clients_dir": "data/clients",
+    "results_dir": "results/partition"
+  },
+  "stats": [
+    {
+      "set": "global",
+      "part": "train",
+      "rows": 198607,
+      "fraud": 331,
+      "genuine": 198276,
+      "fraud_pct": 0.1667
+    },
+    {
+      "set": "global",
+      "part": "val",
+      "rows": 28373,
+      "fraud": 47,
+      "genuine": 28326,
+      "fraud_pct": 0.1657
+    },
+    {
+      "set": "global",
+      "part": "test",
+      "rows": 56746,
+      "fraud": 95,
+      "genuine": 56651,
+      "fraud_pct": 0.1674
+    },
+    {
+      "set": "bank_a",
+      "part": "shard",
+      "rows": 69546,
+      "fraud": 149,
+      "genuine": 69397,
+      "fraud_pct": 0.2142
+    },
+    {
+      "set": "bank_a",
+      "part": "train",
+      "rows": 48682,
+      "fraud": 105,
+      "genuine": 48577,
+      "fraud_pct": 0.2157
+    },
+    {
+      "set": "bank_a",
+      "part": "val",
+      "rows": 10432,
+      "fraud": 22,
+      "genuine": 10410,
+      "fraud_pct": 0.2109
+    },
+    {
+      "set": "bank_a",
+      "part": "test",
+      "rows": 10432,
+      "fraud": 22,
+      "genuine": 10410,
+      "fraud_pct": 0.2109
+    },
+    {
+      "set": "bank_b",
+      "part": "shard",
+      "rows": 59599,
+      "fraud": 116,
+      "genuine": 59483,
+      "fraud_pct": 0.1946
+    },
+    {
+      "set": "bank_b",
+      "part": "train",
+      "rows": 41719,
+      "fraud": 82,
+      "genuine": 41637,
+      "fraud_pct": 0.1966
+    },
+    {
+      "set": "bank_b",
+      "part": "val",
+      "rows": 8940,
+      "fraud": 17,
+      "genuine": 8923,
+      "fraud_pct": 0.1902
+    },
+    {
+      "set": "bank_b",
+      "part": "test",
+      "rows": 8940,
+      "fraud": 17,
+      "genuine": 8923,
+      "fraud_pct": 0.1902
+    },
+    {
+      "set": "bank_c",
+      "part": "shard",
+      "rows": 39695,
+      "fraud": 40,
+      "genuine": 39655,
+      "fraud_pct": 0.1008
+    },
+    {
+      "set": "bank_c",
+      "part": "train",
+      "rows": 27785,
+      "fraud": 28,
+      "genuine": 27757,
+      "fraud_pct": 0.1008
+    },
+    {
+      "set": "bank_c",
+      "part": "val",
+      "rows": 5955,
+      "fraud": 6,
+      "genuine": 5949,
+      "fraud_pct": 0.1008
+    },
+    {
+      "set": "bank_c",
+      "part": "test",
+      "rows": 5955,
+      "fraud": 6,
+      "genuine": 5949,
+      "fraud_pct": 0.1008
+    },
+    {
+      "set": "bank_d",
+      "part": "shard",
+      "rows": 29767,
+      "fraud": 26,
+      "genuine": 29741,
+      "fraud_pct": 0.0873
+    },
+    {
+      "set": "bank_d",
+      "part": "train",
+      "rows": 20836,
+      "fraud": 18,
+      "genuine": 20818,
+      "fraud_pct": 0.0864
+    },
+    {
+      "set": "bank_d",
+      "part": "val",
+      "rows": 4465,
+      "fraud": 4,
+      "genuine": 4461,
+      "fraud_pct": 0.0896
+    },
+    {
+      "set": "bank_d",
+      "part": "test",
+      "rows": 4466,
+      "fraud": 4,
+      "genuine": 4462,
+      "fraud_pct": 0.0896
+    }
+  ]
+}

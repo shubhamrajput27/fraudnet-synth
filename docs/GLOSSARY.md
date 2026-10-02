@@ -37,3 +37,12 @@ Terms are added as each step introduces them. The step number is in brackets.
 | **Cohen's d** [1] | Difference between two group means divided by a pooled standard deviation. Used in EDA to rank which features separate fraud from genuine. |
 | **Duplicate rows** [1] | Identical rows. If copies fall in both train and test sets, test scores are inflated (a form of leakage). |
 | **Stratified split** [1→2] | A split that keeps the same class proportions (fraud %) in every part. |
+| **Hold-out test set** [2] | Data locked away until final evaluation. Ours is the global test set shared by all six arms. |
+| **Validation set** [2] | Data used for tuning (e.g. thresholds) so the test set stays untouched. |
+| **Label skew** [2] | Non-IID type where clients differ in class proportions (fraud %). |
+| **Quantity skew** [2] | Non-IID type where clients differ in the number of rows. |
+| **Explicit quota partition** [2] | Assigning each client a fixed share of each class. Our method for Banks A–D. |
+| **Dirichlet partition** [2] | Drawing random unequal client shares from a Dirichlet distribution. α controls how unequal they are. Considered, not used. |
+| **Largest-remainder rounding** [2] | Rounding shares down, then giving leftover units to the largest fractions, so whole counts sum exactly. |
+| **Shard** [2] | One client's private slice of the data. |
+| **SHA-256 hash / manifest** [2] | A fingerprint of a file. Identical hashes prove two runs produced byte-identical data. |

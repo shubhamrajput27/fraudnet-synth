@@ -1,0 +1,17 @@
+{
+  "data/processed/global_train.csv": "aa3c2442a81bcd60621f4fa25115f2d08668aefd44d524238f7916ac3a7105fb",
+  "data/processed/global_val.csv": "3ee19eda2aa032fa80045eedadbd59eaa92d4b62e2aad898052d3e0907009b28",
+  "data/processed/global_test.csv": "e39f0869d7e4ba5cdb30a300d1c7157b51cefb3d76b6c8a7324274b255375bb7",
+  "data/clients/bank_a/train.csv": "53b0b040a145aed8cd628741c19659df7fc0120df114fe430f2ea7aa5fa6a1cd",
+  "data/clients/bank_a/val.csv": "1e06360c2b6da716ca7abb5eedb699d743929c5568b5776fb408bcaadc19049a",
+  "data/clients/bank_a/test.csv": "1b586671481fb8740e7d3162a9b9c173a60f42fc2d584d103085e42e6d509df4",
+  "data/clients/bank_b/train.csv": "1b35d87983e478052b2cb9c03378b3620156002b52bb55b5197d1337f6259740",
+  "data/clients/bank_b/val.csv": "4baaca0d0dd86056a1521f1806d5a1d866fbeb20c1a2d59cc252928cd4af1bd0",
+  "data/clients/bank_b/test.csv": "d85fab8d49aadb50c3a44e2c7f9f948e1d5f599208a1959ecd681dac3c703679",
+  "data/clients/bank_c/train.csv": "aab422d023223b70536c1f73ea934ccd962dfef4c99fb93053e5b4dc83144941",
+  "data/clients/bank_c/val.csv": "8620099635cf15cfbd7196b4af2aa174e571f260d9220ce54fd4ed5b1713d7f2",
+  "data/clients/bank_c/test.csv": "8f81838c889ae8e84c6eafc88c77fbec9fea5afb96a2ac38dc7af2b4ba2155f3",
+  "data/clients/bank_d/train.csv": "da6b318167bce1637e454e35ceb0dd7a663767ad7e483153b48cf6d9698be7d4",
+  "data/clients/bank_d/val.csv": "0f3baa5cc6d54f4dab76eba69d637a2261457ed75c0b3bd0201f29a6232dba27",
+  "data/clients/bank_d/test.csv": "414c350dae931801355b5c884c198ecaad3d2682327e5669972d759dae360a70"
+}

@@ -34,5 +34,26 @@ Each entry records the decision, the alternatives considered, the reason and the
 - **Alternatives:** run EDA only on the training portion after the Step 2 split.
 - **Reason:** describing the raw dataset is standard and needed for the report. Leakage happens only if test information shapes the model, and nothing here does. All fitted components (scalers, generators, thresholds) are fitted on training/validation data only.
 
-## Open for Step 2: handling the 1,081 duplicate rows (19 fraud)
-- Found in Step 1. To be decided with Shubham before splitting.
+## D-005: Drop exact duplicate rows before splitting
+- **Date:** 2026-10-02 (Step 2). **Approved by:** Shubham.
+- **Decision:** `drop_duplicates: true`. Keep the first copy of each of the 1,081 duplicate rows, leaving 283,726 rows / 473 fraud.
+- **Alternatives:** keep all rows but force copies into the same split (keeps 19 more fraud rows, but double-weights them); keep as-is (leakage risk).
+- **Reason:** guarantees no identical transaction is in both train and test. Simple, standard, easy to explain.
+
+## D-006: Global split 70 / 10 / 20 (train / val / test), stratified by Class
+- **Date:** 2026-10-02 (Step 2). **Approved by:** Shubham.
+- **Decision:** test is carved off first, then val, before any partitioning. Result: 331 / 47 / 95 fraud.
+- **Alternatives:** 60/20/20 (fewer fraud rows for banks); 80/10/10 (only ~47 test fraud, so arm comparisons are too noisy).
+- **Reason:** a test set of 95 fraud rows keeps the six-arm comparison reasonably stable while leaving 331 fraud rows for the banks.
+
+## D-007: Non-IID partition by explicit per-class quotas
+- **Date:** 2026-10-02 (Step 2). **Approved by:** Shubham.
+- **Decision:** fraud shares A 45% / B 35% / C 12% / D 8%; genuine shares 35 / 30 / 20 / 15%, with largest-remainder rounding. Result: fraud 149 / 116 / 40 / 26.
+- **Alternatives:** Dirichlet label skew (α e.g. 0.5), with the two largest draws assigned to A/B; more extreme quotas (50/38/8/4).
+- **Reason:** deterministic, guarantees the rich (A, B) vs poor (C, D) contrast the dual-mode design needs, easy to justify. The shares themselves are our choice, not a project specification, and are configurable in `configs/partition.yaml`.
+
+## D-008: Local per-bank split 70 / 15 / 15, stratified
+- **Date:** 2026-10-02 (Step 2). **Approved by:** Shubham.
+- **Decision:** each bank splits its own shard. Local fraud train/val/test: A 105/22/22, B 82/17/17, C 28/6/6, D 18/4/4.
+- **Alternatives:** 60/20/20; 80/10/10.
+- **Reason:** balance between training fraud rows and having any local val/test fraud at all for C and D. Known limitation: C/D local metrics are very noisy.

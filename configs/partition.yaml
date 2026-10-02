@@ -1,0 +1,27 @@
+# Step 2: global split and non-IID partitioning (decisions D-005 to D-008).
+# The random seed comes from configs/data.yaml so that the whole pipeline shares one seed.
+
+drop_duplicates: true           # D-005: keep one copy of each exact-duplicate row
+
+global_split:                   # D-006: stratified by Class, done BEFORE partitioning
+  train: 0.70
+  val: 0.10
+  test: 0.20
+
+# D-007: explicit quotas. Shares are fractions of the GLOBAL TRAIN pool, per class.
+# Fraud shares create label skew (A, B rich; C, D poor); genuine shares create quantity skew.
+# `mode` records which generator the bank will use later (Steps 4-5).
+banks:
+  bank_a: {fraud_share: 0.45, genuine_share: 0.35, mode: augment}
+  bank_b: {fraud_share: 0.35, genuine_share: 0.30, mode: augment}
+  bank_c: {fraud_share: 0.12, genuine_share: 0.20, mode: schema}
+  bank_d: {fraud_share: 0.08, genuine_share: 0.15, mode: schema}
+
+local_split:                    # D-008: each bank splits its own shard, stratified by Class
+  train: 0.70
+  val: 0.15
+  test: 0.15
+
+processed_dir: data/processed
+clients_dir: data/clients
+results_dir: results/partition
