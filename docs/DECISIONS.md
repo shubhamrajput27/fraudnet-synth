@@ -57,3 +57,27 @@ Each entry records the decision, the alternatives considered, the reason and the
 - **Decision:** each bank splits its own shard. Local fraud train/val/test: A 105/22/22, B 82/17/17, C 28/6/6, D 18/4/4.
 - **Alternatives:** 60/20/20; 80/10/10.
 - **Reason:** balance between training fraud rows and having any local val/test fraud at all for C and D. Known limitation: C/D local metrics are very noisy.
+
+## D-009: Shared classifier = small PyTorch MLP
+- **Date:** 2026-10-05 (Step 3). **Approved by:** Shubham.
+- **Decision:** `FraudMLP`, 31 → 64 → 32 → 1, ReLU, dropout 0.1 (4,161 weights). Used by all six arms.
+- **Alternatives:** scikit-learn logistic regression (SGDClassifier).
+- **Reason:** non-linear capacity, weights average naturally under FedAvg, matches Flower's PyTorch examples, trains in about 26 s on CPU for 15 epochs over the full global train set.
+
+## D-010: Class imbalance via a balanced weighted loss
+- **Date:** 2026-10-05 (Step 3). **Approved by:** Shubham.
+- **Decision:** BCEWithLogitsLoss with pos_weight = #genuine / #fraud of the model's own training data (computed locally), plus threshold tuning on validation data.
+- **Alternatives:** random oversampling (overlaps with augmentation and muddies the comparison); no weighting with threshold tuning only.
+- **Reason:** equal total weight for both classes. When synthetic fraud is added, the weight re-balances automatically, so augmentation is tested for *new examples* rather than extra emphasis. Known side effect: scores are pushed toward 1 (tuned threshold 0.9997 in the sanity run).
+
+## D-011: Fixed feature transforms (nothing fitted)
+- **Date:** 2026-10-05 (Step 3). **Approved by:** Shubham.
+- **Decision:** V1–V28 as-is; Amount → log1p; Time → hour-of-day as (sin, cos). 31 inputs.
+- **Alternatives:** StandardScaler fitted on training data (needs federated aggregation of statistics in FL); fixed transforms with Time dropped.
+- **Reason:** no leakage, identical inputs in every arm and bank, no scaler statistics shared in FL, and keeps the night-time fraud signal seen in Step 1.
+
+## D-012: Training settings (proposed values)
+- **Date:** 2026-10-05 (Step 3).
+- **Decision:** Adam, learning rate 0.001, batch 512, 15 epochs for centralized training, dropout 0.1, threshold = max F1 on validation data. Configurable in `configs/model.yaml`.
+- **Alternatives:** early stopping on validation PR-AUC; more or fewer epochs.
+- **Reason:** common, conservative defaults that converge in seconds on CPU. Fixed epochs keep runs simple and reproducible. These are our choices, not project specifications, and may be revisited in Step 7 (with you) if per-bank training shows problems. FL local epochs are decided in Step 8.

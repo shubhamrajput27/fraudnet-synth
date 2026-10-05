@@ -1,0 +1,19 @@
+# Step 3: shared classifier used by EVERY arm (decisions D-009 to D-012).
+
+features:                    # D-011: fixed transforms, nothing fitted -> no leakage, identical in every arm
+  amount: log1p              # log(1 + Amount) tames the long right tail
+  time: hour_of_day_sin_cos  # Time -> hour-of-day on a 24h circle (sin, cos)
+
+mlp:                         # D-009: small PyTorch MLP
+  hidden_sizes: [64, 32]
+  dropout: 0.1
+
+training:                    # D-012: proposed values (ours, not project specifications)
+  optimizer: adam
+  learning_rate: 0.001
+  batch_size: 512
+  epochs: 15                 # centralized sanity run; FL local epochs are decided in Step 8
+  pos_weight: balanced       # D-010: #genuine / #fraud of the model's OWN training data
+
+threshold:
+  strategy: max_f1_on_val    # tuned on validation data, never on test data

@@ -46,3 +46,15 @@ Terms are added as each step introduces them. The step number is in brackets.
 | **Largest-remainder rounding** [2] | Rounding shares down, then giving leftover units to the largest fractions, so whole counts sum exactly. |
 | **Shard** [2] | One client's private slice of the data. |
 | **SHA-256 hash / manifest** [2] | A fingerprint of a file. Identical hashes prove two runs produced byte-identical data. |
+| **MLP (multi-layer perceptron)** [3] | A small neural network of stacked layers. Ours: 31 → 64 → 32 → 1, with 4,161 weights. |
+| **ReLU** [3] | An activation function, max(0, x), that lets a network learn non-linear boundaries. |
+| **Dropout** [3] | Randomly switching off some neurons during training to reduce memorising. |
+| **Loss function / BCE** [3] | The penalty a model minimises. Binary Cross-Entropy is the standard loss for yes/no labels. |
+| **pos_weight (weighted loss)** [3] | A multiplier on the fraud-class loss. Ours = #genuine / #fraud of the model's own training data. |
+| **Epoch / batch / learning rate** [3] | One full data pass / rows processed per update / size of each weight update. |
+| **Adam** [3] | An optimiser that adapts the update size for each weight. |
+| **Logit / sigmoid** [3] | The raw model output / the function that squashes it into a 0–1 score. |
+| **Feature transform** [3] | Converting raw columns into model inputs (log1p for Amount, sin/cos hour for Time). |
+| **Average Precision** [3] | How we compute PR-AUC: a step-wise summary of the precision–recall curve. |
+| **Calibration** [3] | Whether a score of 0.9 really means a 90% chance. Our weighted model's scores are not calibrated; they are used for ranking and thresholding. |
+| **get_weights / set_weights** [3] | Export and import model weights as NumPy arrays. This is what FL clients exchange. |
