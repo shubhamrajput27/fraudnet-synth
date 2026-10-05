@@ -1,0 +1,247 @@
+{
+  "config": {
+    "epochs": 2000,
+    "batch_size": 500,
+    "pac": 10,
+    "enforce_min_max_values": true,
+    "enable_gpu": false
+  },
+  "bank": "bank_b",
+  "seed": 43,
+  "n_real_fraud": 82,
+  "n_candidates": 1000,
+  "fit_seconds": 81.2,
+  "sample_seconds": 0.19,
+  "final_100_epochs_mean_loss": {
+    "generator": 0.391,
+    "discriminator": -0.042
+  },
+  "mean_ks_stat": 0.223,
+  "max_ks_stat": 0.613,
+  "mean_abs_corr_diff": 0.153,
+  "exact_copies_of_real_rows": 0,
+  "duplicate_synthetic_rows": 0,
+  "edge_clamped": {
+    "pct_cells_at_real_min_or_max": 5.7,
+    "pct_rows_with_any_edge_value": 79.7,
+    "worst_columns_pct": {
+      "Amount": 55.5,
+      "Time": 13.8,
+      "V9": 11.2,
+      "V7": 11.1,
+      "V17": 9.4
+    }
+  },
+  "per_column": {
+    "Time": {
+      "real_mean": 77361.427,
+      "synth_mean": 106186.898,
+      "real_std": 48393.137,
+      "synth_std": 45154.797,
+      "ks_stat": 0.288
+    },
+    "V1": {
+      "real_mean": -3.699,
+      "synth_mean": -7.207,
+      "real_std": 5.466,
+      "synth_std": 7.481,
+      "ks_stat": 0.406
+    },
+    "V2": {
+      "real_mean": 2.777,
+      "synth_mean": 2.569,
+      "real_std": 3.319,
+      "synth_std": 3.057,
+      "ks_stat": 0.118
+    },
+    "V3": {
+      "real_mean": -5.687,
+      "synth_mean": -10.544,
+      "real_std": 5.724,
+      "synth_std": 8.746,
+      "ks_stat": 0.349
+    },
+    "V4": {
+      "real_mean": 4.011,
+      "synth_mean": 4.14,
+      "real_std": 2.613,
+      "synth_std": 2.998,
+      "ks_stat": 0.067
+    },
+    "V5": {
+      "real_mean": -2.519,
+      "synth_mean": -2.599,
+      "real_std": 4.352,
+      "synth_std": 4.606,
+      "ks_stat": 0.116
+    },
+    "V6": {
+      "real_mean": -1.441,
+      "synth_mean": -1.498,
+      "real_std": 1.418,
+      "synth_std": 1.202,
+      "ks_stat": 0.093
+    },
+    "V7": {
+      "real_mean": -4.228,
+      "synth_mean": -8.368,
+      "real_std": 4.842,
+      "synth_std": 6.395,
+      "ks_stat": 0.424
+    },
+    "V8": {
+      "real_mean": 1.372,
+      "synth_mean": 4.424,
+      "real_std": 4.182,
+      "synth_std": 6.172,
+      "ks_stat": 0.301
+    },
+    "V9": {
+      "real_mean": -2.014,
+      "synth_mean": -3.496,
+      "real_std": 2.215,
+      "synth_std": 2.415,
+      "ks_stat": 0.27
+    },
+    "V10": {
+      "real_mean": -4.906,
+      "synth_mean": -4.582,
+      "real_std": 3.863,
+      "synth_std": 4.382,
+      "ks_stat": 0.173
+    },
+    "V11": {
+      "real_mean": 3.753,
+      "synth_mean": 4.654,
+      "real_std": 2.494,
+      "synth_std": 2.771,
+      "ks_stat": 0.158
+    },
+    "V12": {
+      "real_mean": -6.02,
+      "synth_mean": -8.341,
+      "real_std": 4.302,
+      "synth_std": 4.918,
+      "ks_stat": 0.256
+    },
+    "V13": {
+      "real_mean": 0.074,
+      "synth_mean": -0.788,
+      "real_std": 1.145,
+      "synth_std": 0.902,
+      "ks_stat": 0.357
+    },
+    "V14": {
+      "real_mean": -6.78,
+      "synth_mean": -5.173,
+      "real_std": 4.01,
+      "synth_std": 4.499,
+      "ks_stat": 0.234
+    },
+    "V15": {
+      "real_mean": -0.228,
+      "synth_mean": -0.14,
+      "real_std": 1.069,
+      "synth_std": 0.857,
+      "ks_stat": 0.099
+    },
+    "V16": {
+      "real_mean": -3.929,
+      "synth_mean": -3.823,
+      "real_std": 3.909,
+      "synth_std": 4.588,
+      "ks_stat": 0.154
+    },
+    "V17": {
+      "real_mean": -6.652,
+      "synth_mean": -10.238,
+      "real_std": 6.97,
+      "synth_std": 6.524,
+      "ks_stat": 0.326
+    },
+    "V18": {
+      "real_mean": -2.088,
+      "synth_mean": -1.821,
+      "real_std": 2.945,
+      "synth_std": 3.123,
+      "ks_stat": 0.093
+    },
+    "V19": {
+      "real_mean": 0.704,
+      "synth_mean": 2.906,
+      "real_std": 1.494,
+      "synth_std": 1.255,
+      "ks_stat": 0.613
+    },
+    "V20": {
+      "real_mean": 0.229,
+      "synth_mean": 0.189,
+      "real_std": 0.854,
+      "synth_std": 0.642,
+      "ks_stat": 0.076
+    },
+    "V21": {
+      "real_mean": 0.879,
+      "synth_mean": 1.051,
+      "real_std": 1.572,
+      "synth_std": 1.162,
+      "ks_stat": 0.125
+    },
+    "V22": {
+      "real_mean": 0.033,
+      "synth_mean": -0.0,
+      "real_std": 0.835,
+      "synth_std": 0.685,
+      "ks_stat": 0.085
+    },
+    "V23": {
+      "real_mean": -0.026,
+      "synth_mean": -0.056,
+      "real_std": 0.638,
+      "synth_std": 0.552,
+      "ks_stat": 0.067
+    },
+    "V24": {
+      "real_mean": -0.12,
+      "synth_mean": 0.044,
+      "real_std": 0.526,
+      "synth_std": 0.424,
+      "ks_stat": 0.195
+    },
+    "V25": {
+      "real_mean": 0.102,
+      "synth_mean": 0.058,
+      "real_std": 0.637,
+      "synth_std": 0.499,
+      "ks_stat": 0.102
+    },
+    "V26": {
+      "real_mean": 0.067,
+      "synth_mean": 0.086,
+      "real_std": 0.472,
+      "synth_std": 0.36,
+      "ks_stat": 0.122
+    },
+    "V27": {
+      "real_mean": 0.248,
+      "synth_mean": -0.039,
+      "real_std": 0.973,
+      "synth_std": 1.042,
+      "ks_stat": 0.19
+    },
+    "V28": {
+      "real_mean": 0.131,
+      "synth_mean": 0.393,
+      "real_std": 0.437,
+      "synth_std": 0.356,
+      "ks_stat": 0.322
+    },
+    "Amount": {
+      "real_mean": 120.09,
+      "synth_mean": 46.13,
+      "real_std": 207.291,
+      "synth_std": 101.511,
+      "ks_stat": 0.501
+    }
+  }
+}

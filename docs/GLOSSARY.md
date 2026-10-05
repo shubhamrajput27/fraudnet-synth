@@ -58,3 +58,11 @@ Terms are added as each step introduces them. The step number is in brackets.
 | **Average Precision** [3] | How we compute PR-AUC: a step-wise summary of the precision–recall curve. |
 | **Calibration** [3] | Whether a score of 0.9 really means a 90% chance. Our weighted model's scores are not calibrated; they are used for ranking and thresholding. |
 | **get_weights / set_weights** [3] | Export and import model weights as NumPy arrays. This is what FL clients exchange. |
+| **Generator / discriminator** [4] | The two networks in a GAN: the forger that makes rows / the detective that judges real vs fake. |
+| **Mode-specific normalisation** [4] | CTGAN's way of modelling each numeric column as a mix of bell curves, so skewed columns are handled. |
+| **PacGAN (pac)** [4] | The discriminator judges several rows at once (10 here), which discourages mode collapse. |
+| **Synthesizer** [4] | SDV's name for a trained generative model (here `CTGANSynthesizer`). |
+| **Candidate rows** [4] | Synthetic rows before validation. Only gate-approved rows may be used for training. |
+| **KS statistic** [4] | Kolmogorov–Smirnov distance between two distributions of one column (0 = identical, 1 = completely different). |
+| **Edge clamping** [4] | Forcing out-of-range synthetic values onto the real min/max, which creates spikes at the edges. |
+| **Memorisation / near-copy** [4] | A synthetic row almost identical to a real one, which is a privacy risk. Checked in Step 6. |

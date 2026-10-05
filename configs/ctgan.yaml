@@ -1,0 +1,14 @@
+# Step 4: Augment Mode (decisions D-013, D-014). Applies to banks with mode: augment in partition.yaml.
+
+synthesizer:                     # D-013
+  epochs: 2000                   # ~100 fraud rows -> ctgan runs 1 step per epoch, so many epochs are needed
+  batch_size: 500                # SDV default; must be divisible by pac
+  pac: 10                        # SDV default (PacGAN: discriminator judges 10 rows at once)
+  enforce_min_max_values: true   # SDV default: clamp synthetic values to the real rows' min/max
+  enable_gpu: false              # hard constraint: CPU only
+  # Everything else (network sizes 256x256, learning rates 2e-4, embedding 128) = SDV 1.38.5 defaults.
+
+n_candidates: 1000               # D-014: candidate rows per bank, BEFORE the Step 6 validation gate
+
+compare_columns: [V17, V14, V12, V10, Amount, Time]   # plotted real vs synthetic (strong separators from Step 1 + Amount, Time)
+results_dir: results/ctgan

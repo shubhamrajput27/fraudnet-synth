@@ -1,0 +1,25 @@
+[bank_a] training CTGAN on 105 real fraud rows (2000 epochs, CPU)...
+[bank_a] fit 82.5s | sampled 1000 rows in 0.15s | mean KS 0.219 (max 0.466) | mean |corr diff| 0.148 | exact copies of real rows 0 | duplicate synthetic rows 0
+[bank_a] edge-clamped: 4.0% of cells, 63.7% of rows | worst: {'V3': 19.3, 'Amount': 14.0, 'V4': 9.6, 'V16': 8.3, 'V18': 7.1}
+[bank_b] training CTGAN on 82 real fraud rows (2000 epochs, CPU)...
+[bank_b] fit 81.2s | sampled 1000 rows in 0.19s | mean KS 0.223 (max 0.613) | mean |corr diff| 0.153 | exact copies of real rows 0 | duplicate synthetic rows 0
+[bank_b] edge-clamped: 5.7% of cells, 79.7% of rows | worst: {'Amount': 55.5, 'Time': 13.8, 'V9': 11.2, 'V7': 11.1, 'V17': 9.4}
+
+Per-column KS statistic (0 = identical distributions, 1 = completely different):
+         Time     V1     V2     V3     V4     V5     V6     V7     V8     V9    V10    V11    V12    V13    V14    V15    V16    V17    V18    V19    V20    V21    V22    V23    V24    V25    V26    V27    V28  Amount
+bank_a  0.118  0.079  0.089  0.393  0.129  0.171  0.172  0.220  0.371  0.329  0.086  0.102  0.063  0.118  0.296  0.392  0.100  0.193  0.332  0.347  0.113  0.466  0.420  0.117  0.144  0.323  0.367  0.061  0.162   0.297
+bank_b  0.288  0.406  0.118  0.349  0.067  0.116  0.093  0.424  0.301  0.270  0.173  0.158  0.256  0.357  0.234  0.099  0.154  0.326  0.093  0.613  0.076  0.125  0.085  0.067  0.195  0.102  0.122  0.190  0.322   0.501
+
+Mean real vs synthetic for plotted columns:
+  bank_a V17    real   -6.344 +/- 6.554    synth    -9.25 +/- 7.492
+  bank_a V14    real   -7.019 +/- 3.749    synth   -5.087 +/- 3.966
+  bank_a V12    real   -5.946 +/- 4.519    synth   -6.154 +/- 4.956
+  bank_a V10    real   -5.684 +/- 4.458    synth   -6.407 +/- 5.469
+  bank_a Amount real  159.743 +/- 346.59   synth  139.191 +/- 254.126
+  bank_a Time   real 89102.038 +/- 50058.175 synth 85574.487 +/- 48935.746
+  bank_b V17    real   -6.652 +/- 6.97     synth  -10.238 +/- 6.524
+  bank_b V14    real    -6.78 +/- 4.01     synth   -5.173 +/- 4.499
+  bank_b V12    real    -6.02 +/- 4.302    synth   -8.341 +/- 4.918
+  bank_b V10    real   -4.906 +/- 3.863    synth   -4.582 +/- 4.382
+  bank_b Amount real   120.09 +/- 207.291  synth    46.13 +/- 101.511
+  bank_b Time   real 77361.427 +/- 48393.137 synth 106186.898 +/- 45154.797

@@ -81,3 +81,16 @@ Each entry records the decision, the alternatives considered, the reason and the
 - **Decision:** Adam, learning rate 0.001, batch 512, 15 epochs for centralized training, dropout 0.1, threshold = max F1 on validation data. Configurable in `configs/model.yaml`.
 - **Alternatives:** early stopping on validation PR-AUC; more or fewer epochs.
 - **Reason:** common, conservative defaults that converge in seconds on CPU. Fixed epochs keep runs simple and reproducible. These are our choices, not project specifications, and may be revisited in Step 7 (with you) if per-bank training shows problems. FL local epochs are decided in Step 8.
+
+## D-013: CTGAN settings for Augment Mode
+- **Date:** 2026-10-05 (Step 4). **Approved by:** Shubham.
+- **Decision:** 2,000 epochs, batch 500, pac 10, `enable_gpu=False`. All other settings are SDV 1.38.5 defaults (including `enforce_min_max_values=True`). Seed = base seed + bank index.
+- **Alternatives:** 500 epochs (likely under-trained); 5,000 epochs (more memorisation risk).
+- **Reason:** with ~100 fraud rows ctgan performs 1 step per epoch, so many epochs are needed. Measured cost is ~1.5–2 min per bank on CPU. Losses settled without divergence.
+- **Open issue found:** edge clamping affects 63.7% / 79.7% of candidate rows. How to handle it is to be decided with Shubham in Step 6.
+
+## D-014: 1,000 candidate rows per data-rich bank
+- **Date:** 2026-10-05 (Step 4). **Approved by:** Shubham.
+- **Decision:** generate 1,000 candidates per bank before validation.
+- **Alternatives:** 500; equal to the real fraud count (105 / 82).
+- **Reason:** a large pool lets the Step 6 gate reject freely. How many validated rows join training (the augmentation ratio) is decided separately in Step 6/7.
