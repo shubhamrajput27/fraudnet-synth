@@ -107,7 +107,8 @@ def plot_losses(losses: pd.DataFrame, bank: str, out: Path):
     plt.close(fig)
 
 
-def plot_distributions(real: pd.DataFrame, synth: pd.DataFrame, cols, bank: str, out: Path):
+def plot_distributions(real: pd.DataFrame, synth: pd.DataFrame, cols, bank: str, out: Path,
+                       synth_label: str = "CTGAN"):
     fig = plt.figure(figsize=(11, 6.2), facecolor=SURFACE)
     for i, c in enumerate(cols):
         ax = fig.add_subplot(2, 3, i + 1)
@@ -118,14 +119,14 @@ def plot_distributions(real: pd.DataFrame, synth: pd.DataFrame, cols, bank: str,
         lo, hi = min(r.min(), s.min()), max(r.max(), s.max())
         bins = np.linspace(lo, hi, 30)
         for vals, color, label in ((r, REAL_COLOR, f"Real fraud (n={len(real)})"),
-                                   (s, SYNTH_COLOR, f"CTGAN (n={len(synth)})")):
+                                   (s, SYNTH_COLOR, f"{synth_label} (n={len(synth)})")):
             ax.hist(vals, bins=bins, density=True, histtype="stepfilled", alpha=0.3, color=color)
             ax.hist(vals, bins=bins, density=True, histtype="step", linewidth=2, color=color, label=label)
         ax.set_title("log10(Amount+1)" if c == "Amount" else c, loc="left", color=INK, fontsize=10)
         ax.set_yticks([])
         if i == 0:
             ax.legend(frameon=False, fontsize=8, labelcolor=INK)
-    fig.suptitle(f"{bank}: real training fraud vs CTGAN candidates (density)", x=0.01, ha="left",
+    fig.suptitle(f"{bank}: real training fraud vs {synth_label} candidates (density)", x=0.01, ha="left",
                  color=INK, fontsize=12)
     fig.tight_layout()
     fig.savefig(out, dpi=150)

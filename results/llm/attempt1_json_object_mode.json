@@ -1,0 +1,33 @@
+{
+  "response_format": "json_object",
+  "outcome": "all rows rejected (wrong row count / wrong row length); run stopped",
+  "batches": [
+    {
+      "batch": 1,
+      "rows_requested": 25,
+      "rows_returned": 30,
+      "row_lengths_seen": [
+        29
+      ],
+      "expected_row_length": 30,
+      "prompt_tokens": 1370,
+      "completion_tokens": 4395,
+      "seconds": 18.0,
+      "created_utc": "2026-10-07T13:05:35.644165+00:00"
+    },
+    {
+      "batch": 2,
+      "rows_requested": 25,
+      "rows_returned": 22,
+      "row_lengths_seen": [
+        30,
+        31
+      ],
+      "expected_row_length": 30,
+      "prompt_tokens": 1370,
+      "completion_tokens": 2665,
+      "seconds": 6.2,
+      "created_utc": "2026-10-07T13:06:13.274823+00:00"
+    }
+  ]
+}

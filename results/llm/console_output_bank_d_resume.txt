@@ -1,0 +1,40 @@
+[bank_d] Schema Mode with openai/gpt-oss-120b
+  [bank_d] batch  1 (cache): +12 valid, 0 rejected -> 12/300
+  [bank_d] batch  2 (cache): +13 valid, 0 rejected -> 25/300
+  [bank_d] batch  3 (cache): +12 valid, 0 rejected -> 37/300
+  [bank_d] batch  4 (cache): +14 valid, 0 rejected -> 51/300
+  [bank_d] batch  5 (cache): +13 valid, 0 rejected -> 64/300
+  [bank_d] batch  6 (cache): +12 valid, 0 rejected -> 76/300
+  [bank_d] batch  7 (cache): +12 valid, 0 rejected -> 88/300
+  [bank_d] batch  8 (cache): +12 valid, 0 rejected -> 100/300
+  [bank_d] batch  9 (cache): +13 valid, 0 rejected -> 113/300
+  [bank_d] batch 10 (cache): +13 valid, 0 rejected -> 126/300
+  [bank_d] batch 11 (cache): +14 valid, 0 rejected -> 140/300
+  [bank_d] batch 12 (cache): +14 valid, 0 rejected -> 154/300
+  [bank_d] batch 13 (api): +13 valid, 0 rejected -> 167/300
+  [bank_d] batch 14 (api): +13 valid, 0 rejected -> 180/300
+  [bank_d] batch 15 (api): +13 valid, 0 rejected -> 193/300
+  [bank_d] batch 16 (api): +12 valid, 0 rejected -> 205/300
+  [bank_d] batch 17 (api): +13 valid, 0 rejected -> 218/300
+  [bank_d] batch 18 (api): +12 valid, 1 rejected -> 230/300
+  [bank_d] batch 19 (api): +14 valid, 0 rejected -> 244/300
+  [bank_d] batch 20 (api): +13 valid, 0 rejected -> 257/300
+  [bank_d] batch 21 (api): +13 valid, 0 rejected -> 270/300
+  [bank_d] batch 22 (api): +0 valid, 1 rejected -> 270/300
+  [bank_d] batch 23 (api): +12 valid, 0 rejected -> 282/300
+  [bank_d] batch 24 (api): +13 valid, 0 rejected -> 295/300
+  [bank_d] batch 25 (api): +12 valid, 0 rejected -> 307/300
+[bank_d] 300 candidates from 25 batches | tokens 125,848 | API time 5041.3s | parse rejects {'bad_json': 1, 'wrong_shape': 0, 'non_numeric': 0, 'time_out_of_range': 1, 'negative_amount': 0}
+[bank_d] mean KS 0.252 (max 0.493) | mean |corr diff| 0.493 | exact copies 0 | duplicate rows 0 | rows outside real min/max 21.3% (cells 1.8%)
+
+Per-column KS statistic (0 = identical distributions, 1 = completely different):
+         Time     V1     V2     V3     V4     V5     V6     V7     V8     V9    V10    V11    V12   V13    V14    V15    V16    V17    V18    V19   V20    V21    V22    V23    V24    V25    V26    V27    V28  Amount
+bank_d  0.202  0.147  0.212  0.153  0.218  0.269  0.204  0.187  0.493  0.258  0.119  0.324  0.199  0.26  0.191  0.201  0.207  0.199  0.269  0.354  0.35  0.294  0.212  0.298  0.269  0.159  0.321  0.326  0.261   0.401
+
+Mean real vs synthetic for plotted columns:
+  bank_d V17    real     -8.865 +/- 8.001      synth     -9.749 +/- 6.34
+  bank_d V14    real     -7.858 +/- 4.88       synth     -7.797 +/- 3.546
+  bank_d V12    real      -7.46 +/- 4.902      synth     -8.401 +/- 4.061
+  bank_d V10    real     -6.395 +/- 4.69       synth     -6.606 +/- 4.06
+  bank_d Amount real    125.643 +/- 196.2      synth    206.982 +/- 196.457
+  bank_d Time   real  55664.111 +/- 35984.528  synth   64298.33 +/- 41004.526

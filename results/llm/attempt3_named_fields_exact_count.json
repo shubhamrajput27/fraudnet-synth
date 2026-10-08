@@ -1,0 +1,5 @@
+{
+  "response_format": "json_schema strict (named-field rows, exactly 15 rows required)",
+  "outcome": "batches 1-2 rejected with HTTP 400 json_validate_failed; diagnostic call: 'minItems: got 12, want 15'; run stopped",
+  "fix": "keep strict per-row shape; allow 1..15 rows per reply"
+}

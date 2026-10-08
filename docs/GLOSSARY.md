@@ -66,3 +66,13 @@ Terms are added as each step introduces them. The step number is in brackets.
 | **KS statistic** [4] | Kolmogorov–Smirnov distance between two distributions of one column (0 = identical, 1 = completely different). |
 | **Edge clamping** [4] | Forcing out-of-range synthetic values onto the real min/max, which creates spikes at the edges. |
 | **Memorisation / near-copy** [4] | A synthetic row almost identical to a real one, which is a privacy risk. Checked in Step 6. |
+| **Prompt engineering** [5] | Designing an LLM's instructions so it returns exactly what you need, in the format you need. |
+| **Zero-shot / few-shot** [5] | Prompting without / with example answers. Ours is zero-shot plus aggregate statistics: no real row is shown. |
+| **Aggregate statistics** [5] | Summaries over many rows (mean, std, percentiles) rather than any single row's values. |
+| **Percentile (p10/p50/p90)** [5] | The value below which 10% / 50% (median) / 90% of the data falls. |
+| **Token** [5] | The unit LLMs read and write (roughly a short word or number fragment). Free-tier limits are counted in tokens. |
+| **Rate limit / exponential backoff** [5] | An API's cap on usage per minute or day / waiting 2, 4, 8 … seconds before retrying after "too fast". |
+| **Structured output (JSON schema, strict)** [5] | Making the API check the reply against an exact JSON shape and reject replies that don't fit. |
+| **Reasoning model** [5] | An LLM that "thinks" (generates hidden reasoning tokens) before answering. Slower, and uses more tokens. |
+| **Response cache** [5] | Saved API replies, so reruns and demos need no live API call. |
+| **Patterned decimals** [5] | Values like −3.210 or 5.432 whose digits form runs. A sign that an LLM is writing number-shaped text rather than irregular values. |

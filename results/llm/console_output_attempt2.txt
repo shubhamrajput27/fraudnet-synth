@@ -1,0 +1,24 @@
+[bank_c] Schema Mode with openai/gpt-oss-120b
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "C:\Users\shubh\Desktop\Shubham Major Project\fraudnet-synth\ml\augmentation\llm_engine.py", line 284, in <module>
+    main()
+  File "C:\Users\shubh\Desktop\Shubham Major Project\fraudnet-synth\ml\augmentation\llm_engine.py", line 263, in main
+    s = generate_for_bank(bank, cfg, seed + order.index(bank))
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shubh\Desktop\Shubham Major Project\fraudnet-synth\ml\augmentation\llm_engine.py", line 190, in generate_for_bank
+    resp, retries = call_with_backoff(client, request, rl)
+                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shubh\Desktop\Shubham Major Project\fraudnet-synth\ml\augmentation\llm_engine.py", line 131, in call_with_backoff
+    return client.chat.completions.create(**request), attempt
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shubh\Desktop\Shubham Major Project\fraudnet-synth\.venv\Lib\site-packages\groq\resources\chat\completions.py", line 466, in create
+    return self._post(
+           ^^^^^^^^^^^
+  File "C:\Users\shubh\Desktop\Shubham Major Project\fraudnet-synth\.venv\Lib\site-packages\groq\_base_client.py", line 1284, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\shubh\Desktop\Shubham Major Project\fraudnet-synth\.venv\Lib\site-packages\groq\_base_client.py", line 1071, in request
+    raise self._make_status_error_from_response(err.response) from None
+groq.BadRequestError: 400 json_validate_failed (failed_generation omitted; summary in attempt2_json_schema_array_mode.json)

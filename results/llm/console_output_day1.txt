@@ -1,0 +1,50 @@
+[bank_c] Schema Mode with openai/gpt-oss-120b
+  [bank_c] batch  1 (api): +13 valid, 0 rejected -> 13/300
+  [bank_c] batch  2 (api): +13 valid, 0 rejected -> 26/300
+  [bank_c] batch  3 (api): +12 valid, 0 rejected -> 38/300
+  [bank_c] batch  4 (api): +13 valid, 0 rejected -> 51/300
+  [bank_c] batch  5 (api): +13 valid, 0 rejected -> 64/300
+  [bank_c] batch  6 (api): +13 valid, 0 rejected -> 77/300
+  [bank_c] batch  7 (api): +14 valid, 0 rejected -> 91/300
+  [bank_c] batch  8 (api): +13 valid, 0 rejected -> 104/300
+  [bank_c] batch  9 (api): +13 valid, 0 rejected -> 117/300
+  [bank_c] batch 10 (api): +13 valid, 0 rejected -> 130/300
+  [bank_c] batch 11 (api): +13 valid, 0 rejected -> 143/300
+  [bank_c] batch 12 (api): +12 valid, 0 rejected -> 155/300
+  [bank_c] batch 13 (api): +13 valid, 0 rejected -> 168/300
+  [bank_c] batch 14 (api): +13 valid, 0 rejected -> 181/300
+  [bank_c] batch 15 (api): +0 valid, 1 rejected -> 181/300
+  [bank_c] batch 16 (api): +12 valid, 0 rejected -> 193/300
+  [bank_c] batch 17 (api): +12 valid, 0 rejected -> 205/300
+  [bank_c] batch 18 (api): +12 valid, 0 rejected -> 217/300
+  [bank_c] batch 19 (api): +13 valid, 0 rejected -> 230/300
+  [bank_c] batch 20 (api): +14 valid, 0 rejected -> 244/300
+  [bank_c] batch 21 (api): +13 valid, 0 rejected -> 257/300
+  [bank_c] batch 22 (api): +12 valid, 0 rejected -> 269/300
+  [bank_c] batch 23 (api): +12 valid, 0 rejected -> 281/300
+  [bank_c] batch 24 (api): +12 valid, 0 rejected -> 293/300
+  [bank_c] batch 25 (api): +13 valid, 0 rejected -> 306/300
+[bank_c] 300 candidates from 25 batches | tokens 127,683 | API time 263.0s | parse rejects {'bad_json': 1, 'wrong_shape': 0, 'non_numeric': 0, 'time_out_of_range': 0, 'negative_amount': 0}
+[bank_c] mean KS 0.26 (max 0.595) | mean |corr diff| 0.493 | exact copies 0 | duplicate rows 0 | rows outside real min/max 23.3% (cells 1.6%)
+[bank_d] Schema Mode with openai/gpt-oss-120b
+  [bank_d] batch  1 (api): +12 valid, 0 rejected -> 12/300
+  [bank_d] batch  2 (api): +13 valid, 0 rejected -> 25/300
+  [bank_d] batch  3 (api): +12 valid, 0 rejected -> 37/300
+  [bank_d] batch  4 (api): +14 valid, 0 rejected -> 51/300
+  [bank_d] batch  5 (api): +13 valid, 0 rejected -> 64/300
+  [bank_d] batch  6 (api): +12 valid, 0 rejected -> 76/300
+  [bank_d] batch  7 (api): +12 valid, 0 rejected -> 88/300
+    RateLimitError; retry 1/6 in 1182s
+  [bank_d] batch  8 (api): +12 valid, 0 rejected -> 100/300
+    RateLimitError; retry 1/6 in 781s
+    RateLimitError; retry 2/6 in 4s
+    RateLimitError; retry 3/6 in 21s
+  [bank_d] batch  9 (api): +13 valid, 0 rejected -> 113/300
+    RateLimitError; retry 1/6 in 920s
+    RateLimitError; retry 2/6 in 29s
+  [bank_d] batch 10 (api): +13 valid, 0 rejected -> 126/300
+    RateLimitError; retry 1/6 in 936s
+  [bank_d] batch 11 (api): +14 valid, 0 rejected -> 140/300
+    RateLimitError; retry 1/6 in 926s
+  [bank_d] batch 12 (api): +14 valid, 0 rejected -> 154/300
+    RateLimitError; retry 1/6 in 911s

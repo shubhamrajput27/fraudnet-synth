@@ -1,0 +1,12 @@
+{
+  "response_format": "json_schema strict (array rows)",
+  "outcome": "HTTP 400 json_validate_failed; run stopped",
+  "rows_requested": 25,
+  "rows_returned": 27,
+  "row_length_counts": {
+    "30": 9,
+    "31": 18
+  },
+  "rows_with_identical_V1_to_V28_to_another_row": 6,
+  "note": "rows contain patterned digit runs such as -3.210, 5.432, -9.876, 4.321"
+}

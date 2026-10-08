@@ -1,0 +1,32 @@
+# Step 5: Schema Mode (decisions D-015 to D-018). Applies to banks with mode: schema in partition.yaml.
+# GROQ_API_KEY and GROQ_MODEL are read from .env, never hardcoded.
+
+privacy_mode: aggregate_stats_only     # D-015: no real row is ever placed in a prompt
+
+stats:                                 # D-016: what may leave the bank (per column, from training fraud rows only)
+  include: [mean, std, p10, p50, p90]  # NO min/max: with 18-28 rows those are single real rows' exact values
+  decimals: 2
+
+# Public schema facts (true for the whole ULB dataset, not derived from any bank's rows)
+schema:
+  time_range_seconds: [0, 172792]      # the dataset spans 48 hours
+  amount_min: 0
+
+generation:                            # D-017
+  n_candidates: 300                    # per bank
+  rows_per_call: 15                    # named fields cost more tokens per row (D-019)
+  temperature: 1.0                     # higher = more varied rows
+  reasoning_effort: low                # gpt-oss reasoning tokens count toward the per-minute limit
+  max_completion_tokens: 6000
+  value_decimals: 3                    # asked-for precision of generated numbers (fewer tokens)
+  response_format: json_schema_strict  # D-019: json_object mode returned wrong row counts/lengths
+
+rate_limit:                            # D-018: free tier reported 8,000 tokens/min, 1,000 requests/day
+  tokens_per_minute_budget: 7000       # pace calls to stay safely under the limit
+  max_retries: 6
+  backoff_base_seconds: 2              # waits 2, 4, 8, 16, ... seconds (capped)
+  backoff_cap_seconds: 60
+  max_calls_per_bank: 40               # hard stop so a misbehaving model can't burn the daily quota
+
+compare_columns: [V17, V14, V12, V10, Amount, Time]
+results_dir: results/llm
