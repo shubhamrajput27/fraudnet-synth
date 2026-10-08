@@ -1,0 +1,33 @@
+bank                                             bank_a           bank_b        bank_c        bank_d
+mode                                    Augment (CTGAN)  Augment (CTGAN)  Schema (LLM)  Schema (LLM)
+candidates                                         1000             1000           300           300
+validated                                           868              814           234           264
+pass_%                                             86.8             81.4          78.0          88.0
+Out of range / schema                                 0                0            29            27
+Edge-clamped (3+ values)                            132              186             0             0
+Too close to a real row                               0                0             0             0
+Identical text embedding                              0                0             0             0
+Near-duplicate of a kept synthetic row                0                0            37             9
+Batch fidelity below minimum                          0                0             0             0
+fidelity_all                                     0.8331           0.8434        0.7552         0.753
+fidelity_validated                               0.8041           0.8002        0.7461        0.7559
+shapes_validated                                 0.7766           0.7763        0.7143        0.7397
+pairs_validated                                  0.8317           0.8242         0.778         0.772
+dcr_threshold                                    0.4949            1.582         1.067         0.922
+Pass rate by mode:
+                 candidates  validated  pass_%
+mode                                          
+Augment (CTGAN)        2000       1682    84.1
+Schema (LLM)            600        498    83.0
+[bank_a] all rejection reasons (a row can have several): {'edge_clamped': 132}
+[bank_a] DCR synth->real {'p1': 2.86, 'p5': 3.146, 'p50': 4.447} | real->real {'p1': 0.351, 'p5': 0.495, 'p50': 2.677} | synth->synth {'p1': 2.358, 'p5': 2.59, 'p50': 3.522}
+[bank_a] embedding cosine {'synth_to_real_median': 0.986, 'synth_to_real_max': 0.9942, 'real_to_real_median': 0.9861} | edge-clamped rows {'any': 63.7, '3_or_more': 13.2} | patterned decimals (report only) {'candidates': 1.5, 'validated': 1.5, 'real': 1.5}
+[bank_b] all rejection reasons (a row can have several): {'edge_clamped': 186}
+[bank_b] DCR synth->real {'p1': 2.899, 'p5': 3.287, 'p50': 4.595} | real->real {'p1': 0.197, 'p5': 1.582, 'p50': 2.975} | synth->synth {'p1': 2.406, 'p5': 2.657, 'p50': 3.475}
+[bank_b] embedding cosine {'synth_to_real_median': 0.9872, 'synth_to_real_max': 0.9936, 'real_to_real_median': 0.9868} | edge-clamped rows {'any': 79.7, '3_or_more': 18.6} | patterned decimals (report only) {'candidates': 1.7, 'validated': 1.7, 'real': 1.7}
+[bank_c] all rejection reasons (a row can have several): {'near_duplicate_synthetic': 37, 'out_of_range:Amount': 19, 'out_of_range:V11': 1, 'out_of_range:V12': 3, 'out_of_range:V14': 1, 'out_of_range:V18': 1, 'out_of_range:V2': 9, 'out_of_range:V22': 1, 'out_of_range:V24': 1, 'out_of_range:V26': 1, 'out_of_range:V28': 1, 'out_of_range:V9': 1}
+[bank_c] DCR synth->real {'p1': 2.052, 'p5': 2.18, 'p50': 3.87} | real->real {'p1': 0.232, 'p5': 1.067, 'p50': 3.574} | synth->synth {'p1': 0.738, 'p5': 0.823, 'p50': 1.394}
+[bank_c] embedding cosine {'synth_to_real_median': 0.9863, 'synth_to_real_max': 0.9927, 'real_to_real_median': 0.984} | edge-clamped rows {'any': 0.0, '3_or_more': 0.0} | patterned decimals (report only) {'candidates': 68.9, 'validated': 68.4, 'real': 1.8}
+[bank_d] all rejection reasons (a row can have several): {'near_duplicate_synthetic': 9, 'out_of_range:Amount': 2, 'out_of_range:Time': 19, 'out_of_range:V1': 3, 'out_of_range:V10': 2, 'out_of_range:V11': 2, 'out_of_range:V12': 1, 'out_of_range:V13': 1, 'out_of_range:V15': 2, 'out_of_range:V19': 1, 'out_of_range:V20': 6, 'out_of_range:V24': 1, 'out_of_range:V27': 1, 'out_of_range:V5': 3, 'out_of_range:V9': 1}
+[bank_d] DCR synth->real {'p1': 2.57, 'p5': 2.828, 'p50': 3.692} | real->real {'p1': 0.922, 'p5': 0.922, 'p50': 3.512} | synth->synth {'p1': 0.774, 'p5': 0.896, 'p50': 1.445}
+[bank_d] embedding cosine {'synth_to_real_median': 0.9853, 'synth_to_real_max': 0.9909, 'real_to_real_median': 0.9869} | edge-clamped rows {'any': 0.0, '3_or_more': 0.0} | patterned decimals (report only) {'candidates': 63.6, 'validated': 62.8, 'real': 1.6}

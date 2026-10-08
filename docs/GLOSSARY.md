@@ -76,3 +76,12 @@ Terms are added as each step introduces them. The step number is in brackets.
 | **Reasoning model** [5] | An LLM that "thinks" (generates hidden reasoning tokens) before answering. Slower, and uses more tokens. |
 | **Response cache** [5] | Saved API replies, so reruns and demos need no live API call. |
 | **Patterned decimals** [5] | Values like −3.210 or 5.432 whose digits form runs. A sign that an LLM is writing number-shaped text rather than irregular values. |
+| **Validation gate** [6] | The shared sequence of checks every synthetic row must pass before it may be used for training. |
+| **Pandera** [6] | A Python library for declaring what a valid table looks like (columns, types, ranges) and checking data against it. |
+| **Standardisation (z-score)** [6] | (value − mean) / std per column, so every column counts equally in a distance. |
+| **DCR (distance to closest record)** [6] | Distance from a synthetic row to the nearest real row. Too small suggests a near-copy (privacy risk). |
+| **Nearest-neighbour distance** [6] | Distance from a row to the most similar other row. Real-to-real spacing sets our thresholds. |
+| **Greedy de-duplication** [6] | Go through rows in order and keep one only if it isn't too close to any row already kept. |
+| **SDMetrics QualityReport** [6] | Set-level fidelity score (0–1): Column Shapes (per-column distributions) and Column Pair Trends (relationships between columns). |
+| **Sentence embedding / cosine similarity** [6] | A vector representing text meaning / a 0–1 measure of how similar two such vectors are. |
+| **Pass rate** [6] | Share of candidate rows admitted by the gate. |

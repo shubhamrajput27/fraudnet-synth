@@ -8,7 +8,7 @@
 | 3 | Shared classifier & sanity baseline | 1→4 | ✅ Done (2026-10-05) | [STEP_03](steps/STEP_03_classifier_baseline.md) |
 | 4 | Augment Mode: CTGAN (Banks A, B) | 2 | ✅ Done (2026-10-05) | [STEP_04](steps/STEP_04_ctgan_augment_mode.md) |
 | 5 | Schema Mode: LLM (Banks C, D) | 2 | ✅ Done (2026-10-08). Privacy option (b): aggregate stats only | [STEP_05](steps/STEP_05_llm_schema_mode.md) |
-| 6 | Shared validation layer | 3 | Not started | |
+| 6 | Shared validation layer | 3 | ✅ Done (2026-10-08) | [STEP_06](steps/STEP_06_validation_gate.md) |
 | 7 | Isolated & centralized arms | 4 | Not started | |
 | 8 | Federated arms (Flower) | 4 | Not started | |
 | 8B | Multi-device federated demo (live demo only, D-020) | 4 → demo | Not started. Planned 2026-10-07 at guide's request | |

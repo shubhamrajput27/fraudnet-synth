@@ -1,0 +1,27 @@
+# Step 6: shared validation gate (decisions D-021 to D-024). The SAME rules apply to both modes.
+# Every threshold that depends on data is derived from the bank's OWN real training fraud rows, locally.
+
+schema:                                  # D-022 (Pandera)
+  range_margin_fraction: 0.10            # valid range = real [min, max] widened by 10% of (max - min)
+  max_edge_clamped_values: 2             # reject rows with 3+ values sitting exactly on a real min/max
+  time_range_seconds: [0, 172792]        # public schema fact
+  amount_min: 0
+
+privacy:                                 # D-024: numeric distance to closest real record (DCR)
+  real_nn_percentile: 5                  # threshold = 5th percentile of real-to-real nearest distances
+
+diversity:                               # D-024: near-duplicate synthetic rows (mode collapse)
+  use_privacy_threshold: true            # same distance as the privacy threshold
+
+embedding:                               # D-021: sentence-transformers, kept as specified but diagnostic
+  model: sentence-transformers/all-MiniLM-L6-v2
+  decimals_in_text: 3
+  reject_cosine_at_or_above: 0.999       # only essentially identical text is rejected
+
+fidelity:                                # D-024: SDMetrics QualityReport on the admitted rows vs real fraud
+  min_overall_score: 0.70                # below this, the bank's whole batch is refused
+
+report_only:                             # D-023: measured and reported, never used to reject
+  patterned_decimals: true
+
+results_dir: results/validation

@@ -96,19 +96,20 @@ Each entry records the decision, the alternatives considered, the reason and the
 - **Reason:** a large pool lets the Step 6 gate reject freely. How many validated rows join training (the augmentation ratio) is decided separately in Step 6/7.
 
 ## D-015: Schema Mode privacy = option (b), aggregate statistics only
-- **Date:** 2026-10-07 (Step 5). Resolves CLAUDE.md Section 2, point 5.
+- **Date:** 2026-10-07 (Step 5). Resolves CLAUDE.md Section 2, point 5. **Decided by:** Shubham (to be confirmed with guide).
 - **Decision:** prompts to Groq contain only public schema facts plus per-column aggregate statistics computed inside the bank. No real row is ever placed in a prompt. `build_prompt()` receives only the stats dict, never the bank's dataframe.
 - **Alternatives:** (a) the bank's own rows as few-shot examples (better fidelity, but real rows leave the client boundary); a locally hosted LLM (no data leaves, but heavy on CPU).
 - **Reason:** keeps the privacy invariant intact, even toward an external API. Expected cost: weaker fidelity, which we measure and report.
+- **Enforced in code:** `aggregate_stats()` refuses non-whitelisted statistics; tests check that no real value or bound appears in the prompt.
 
 ## D-016: Which statistics may leave the bank
-- **Date:** 2026-10-07 (Step 5).
+- **Date:** 2026-10-07 (Step 5). **Approved by:** Shubham.
 - **Decision:** per column: mean, std, p10, p50, p90, rounded to 2 decimals, from training fraud rows only. **No min/max.**
-- **Alternatives:** include min/max; send only mean and std.
-- **Reason:** with 18–28 fraud rows, a min or max is one real row's exact value, which is a leak. Percentiles at 10/50/90 still describe the shape. What was sent is saved in `results/llm/bank_x_stats_sent.json` for audit.
+- **Alternatives:** include min/max; send only mean and std; add the top correlations (aggregate, but a larger prompt).
+- **Reason:** with 18–28 fraud rows, a min or max is one real row's exact value, which is a leak. Percentiles at 10/50/90 still describe the shape. What was sent is saved in `results/llm/bank_x_stats_sent.json` for audit. Known cost: no correlation information reaches the LLM (mean |corr diff| ≈ 0.49 resulted).
 
 ## D-017: Schema Mode generation settings
-- **Date:** 2026-10-07 (Step 5). The model is chosen by Shubham in `.env` (`GROQ_MODEL=openai/gpt-oss-120b`), not hardcoded.
+- **Date:** 2026-10-07 (Step 5). **Candidate count approved by:** Shubham. The model is chosen by Shubham in `.env` (`GROQ_MODEL=openai/gpt-oss-120b`), not hardcoded.
 - **Decision:** 300 candidates per bank, up to 15 rows per call, temperature 1.0, reasoning effort low, values to 3 decimals, max 6,000 completion tokens.
 - **Alternatives:** 1,000 candidates (to match CTGAN; at the measured ~426 tokens/row that is ~425k tokens per bank, far beyond what the free tier allowed in a day); 25 rows per call (outputs got truncated or malformed).
 - **Reason:** fits the free tier. 300 is about 10× the real fraud count of C/D, which leaves the Step 6 gate room to reject.
@@ -139,31 +140,26 @@ Each entry records the decision, the alternatives considered, the reason and the
 - **Achieves the guide's goal:** the model visibly moves between separate machines, while the data stays put.
 - **Follow-up:** update the project report and synopsis to describe this demo setup. Confirm the design with the guide.
 
-## D-015: Schema Mode privacy: aggregate statistics only (CLAUDE.md §2.5, option b)
-- **Date:** 2026-10-07 (Step 5). **Decided by:** Shubham (to be confirmed with guide).
-- **Decision:** Groq prompts contain only public schema facts and per-column aggregate statistics computed inside the bank. No real row (few-shot example) is ever sent.
-- **Alternatives:** (a) the bank's own rows as few-shot examples (acceptable only because ULB is public; would need disclosure); (c) a locally hosted LLM (no CPU-friendly option at the required quality and zero cost).
-- **Reason:** keeps the privacy invariant intact even towards an external API. Enforced in code: `build_prompt()` never receives the dataframe, `aggregate_stats()` refuses non-whitelisted statistics, and tests check no real value or bound appears in the prompt.
+## D-021: sentence-transformers kept as a diagnostic; numeric DCR makes the privacy/diversity decisions
+- **Date:** 2026-10-08 (Step 6). **Approved by:** Shubham.
+- **Decision:** embed each row as text with `all-MiniLM-L6-v2` (CPU), report cosine similarities, and reject only essentially identical text (cosine ≥ 0.999). Add a numeric distance-to-closest-record (DCR) check that decides privacy and diversity rejections.
+- **Alternatives:** gate on embeddings only (as originally specified); drop embeddings entirely.
+- **Reason:** measured cosine similarity was 0.96–0.995 for synthetic↔real, real↔real and synthetic↔synthetic alike, so text embeddings of numeric rows cannot separate near-copies. The specified tool stays in the pipeline (no silent substitution), and the added check is documented.
 
-## D-016: Statistics allowed to leave the bank
-- **Date:** 2026-10-07 (Step 5). **Approved by:** Shubham.
-- **Decision:** per column: mean, std, p10, p50, p90, rounded to 2 decimals, plus the fraud row count. **No min/max.**
-- **Alternatives:** include min/max (each is one real row's exact value); add the top correlations (aggregate, but a larger prompt).
-- **Reason:** with only 18–28 rows, min/max reveal single real values. Exact bounds stay local for Step 6. Known cost: the LLM gets no correlation information (mean |corr diff| ≈ 0.49 resulted).
+## D-022: Schema/range rules (Pandera)
+- **Date:** 2026-10-08 (Step 6). **Approved by:** Shubham.
+- **Decision:** exact column set (strict), numeric, no missing values, Class = 1; each value within the bank's real training-fraud [min, max] widened by 10% of the range (Time also within 0–172,792; Amount ≥ 0); reject rows with 3+ values exactly on a real min/max (edge clamping).
+- **Alternatives:** reject any clamped value (keeps only 36% / 20% of A / B); ignore clamping.
+- **Reason:** removes CTGAN's artificial boundary spikes while tolerating occasional extremes. Bounds are computed locally and never shared. Observed side effect: CTGAN validated-set fidelity dropped (0.833 → 0.804 for A, 0.843 → 0.800 for B).
 
-## D-017: LLM generation settings
-- **Date:** 2026-10-07 (Step 5). **Candidate count approved by:** Shubham.
-- **Decision:** model from `.env` (`openai/gpt-oss-120b`, chosen by Shubham); 300 candidates per data-poor bank; temperature 1.0; reasoning_effort low; up to 15 rows per call (originally 25, reduced under D-019).
-- **Alternatives:** 1,000 per bank (exceeds the free-tier daily token budget); 150 per bank.
-- **Reason:** fits the free-tier token limits with caching and resumability. Pool size differs from CTGAN's 1,000, which is reported.
+## D-023: Patterned decimals are report-only
+- **Date:** 2026-10-08 (Step 6). **Approved by:** Shubham.
+- **Decision:** measure and report the share of patterned decimals; never reject on it.
+- **Alternatives:** reject rows with > 25% or > 50% patterned decimals (would keep only ~18–32% of LLM rows).
+- **Reason:** the pattern is in the 3rd decimal, which barely affects model inputs. The harm it signals (clumped rows) is addressed by the diversity check.
 
-## D-018: Rate limiting and caching
-- **Date:** 2026-10-07 (Step 5).
-- **Decision:** pace calls to 7,000 of the reported 8,000 tokens/min; exponential backoff (2, 4, 8 … s, capped at 60 s, or the server's retry-after); at most 40 calls per bank; every response cached in `data/clients/bank_x/llm_cache/` (git-ignored); reruns resume from the cache.
-- **Reason:** the free tier's limits, demo reliability, and no repeated spending. Observed: a daily token cap (~200k tokens/day, inferred, not confirmed in documentation) was hit during Bank D, and generation resumed from the cache the next day.
-
-## D-019: Output format: strict JSON schema, named fields, flexible row count
-- **Date:** 2026-10-07 (Step 5).
-- **Decision:** Groq `json_schema` with `strict: true`. Each row is an object with exactly the 30 named columns; 1–15 rows per reply. Replies failing the schema are logged as failed batches and skipped.
-- **Alternatives tried (evidence in `results/llm/attempt*.json`):** (1) plain JSON mode with 30-number arrays: wrong row counts (30/22 instead of 25) and lengths (29/31), all rows rejected; (2) strict schema with arrays: Groq rejected it (18/27 rows had 31 numbers); (3) named fields with an exact count of 15: rejected (12 rows returned).
-- **Reason:** the LLM cannot reliably count long unlabelled arrays. Named slots fixed the row shape, and allowing a flexible count fixed the rest (~13 valid rows per call, ~0 rejected).
+## D-024: Data-driven privacy/diversity thresholds and a fidelity minimum
+- **Date:** 2026-10-08 (Step 6). **Approved by:** Shubham.
+- **Decision:** DCR threshold = 5th percentile of real-to-real nearest-neighbour distances in the bank (standardised with the bank's real fraud mean/std). Rows below it are rejected as too close to real; rows within it of an already-kept synthetic row are dropped as near-duplicates (greedy, in file order). SDMetrics overall quality of the admitted set must be ≥ 0.70, otherwise the whole batch is refused.
+- **Alternatives:** privacy only, without the diversity filter; stricter 25th percentile.
+- **Reason:** thresholds adapt to each bank's own data rather than being invented constants. Result: thresholds 0.495 / 1.582 / 1.067 / 0.922; 0 rows too close to real; 37 / 9 LLM near-duplicates removed; all banks ≥ 0.746 fidelity.
