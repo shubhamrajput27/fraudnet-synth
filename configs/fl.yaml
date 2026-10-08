@@ -1,0 +1,17 @@
+# Step 8: federated arms (decisions D-029 to D-031). Model + optimiser settings come from configs/model.yaml.
+
+num_rounds: 30                 # D-029 (chosen by Shubham): 2x the 15 epochs of the non-federated arms
+local_epochs: 1                # D-030 (chosen by Shubham): least client drift for very unequal banks
+fraction_train: 1.0            # all four banks every round
+fraction_evaluate: 1.0
+
+threshold_grid:                # D-031 (chosen by Shubham): fixed BEFORE training, no data used
+  logit_min: -10.0             # banks return only TP/FP counts at each of these cut-offs
+  logit_max: 50.0
+  step: 0.25                   # 241 candidate thresholds
+
+simulation:
+  backend: ray
+  num_cpus_per_client: 2       # 4 banks x 2 = 8 of the laptop's 12 logical CPUs
+
+results_dir: results/federated

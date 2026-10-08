@@ -1,0 +1,3 @@
+arm,threshold_logit,precision,recall,f1,pr_auc,roc_auc,accuracy,tp,fp,fn,train_s
+arm3_federated_real,3.75,0.8642,0.7368,0.7955,0.7261,0.9584,0.9994,70,11,25,39.0
+arm4_federated_aug,3.75,0.8,0.7579,0.7784,0.7231,0.9622,0.9993,72,18,23,38.9

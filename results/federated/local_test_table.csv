@@ -1,0 +1,9 @@
+arm,local_test_of,precision,recall,f1,pr_auc,tp,fp,fn,n_fraud
+arm3_federated_real,bank_a,0.8947,0.7727,0.8293,0.7547,17,2,5,22
+arm3_federated_real,bank_b,0.6818,0.8824,0.7692,0.6561,15,7,2,17
+arm3_federated_real,bank_c,1.0,0.8333,0.9091,1.0,5,0,1,6
+arm3_federated_real,bank_d,0.75,0.75,0.75,0.6458,3,1,1,4
+arm4_federated_aug,bank_a,0.8095,0.7727,0.7907,0.7431,17,4,5,22
+arm4_federated_aug,bank_b,0.7143,0.8824,0.7895,0.6302,15,6,2,17
+arm4_federated_aug,bank_c,0.8571,1.0,0.9231,1.0,6,1,0,6
+arm4_federated_aug,bank_d,0.6,0.75,0.6667,0.6042,3,2,1,4

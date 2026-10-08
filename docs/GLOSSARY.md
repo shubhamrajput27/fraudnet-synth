@@ -92,3 +92,13 @@ Terms are added as each step introduces them. The step number is in brackets.
 | **Upper / lower bound** [7] | Best and worst reference results that federated learning is compared against. |
 | **Global vs local test** [7] | The shared test set every arm is graded on vs one bank's own held-out customers. |
 | **Saturation (float32)** [7] | Very confident sigmoid outputs rounding to exactly 1.0, creating ties. Fixed by ranking on logits. |
+| **Flower (flwr) Message API** [8] | Flower 1.39's way of writing FL apps: a `ServerApp` and a `ClientApp` exchanging `Message`s that carry `ArrayRecord` (weights), `MetricRecord` (scalars) and `ConfigRecord` (settings). |
+| **ServerApp / ClientApp** [8] | The coordinator program / the program each bank runs. |
+| **Round / local epoch** [8] | One send-train-return-average cycle / one pass over a bank's own data within a round. |
+| **Weighted averaging (FedAvg)** [8] | New global weights = average of the bank weights, each weighted by its number of training rows. |
+| **Client drift** [8] | Bank models diverging towards their own data during local training, which makes averaging less effective. |
+| **Convergence** [8] | The point where more rounds stop improving the model. |
+| **Simulation (Ray backend)** [8] | Running all banks as separate virtual clients on one machine. |
+| **Query message** [8] | A custom server→client request after training (here: threshold counts and local-test metrics). |
+| **Privacy-invariant test** [8] | An automated test that inspects everything a client sends and fails if anything other than weights, scalars or counts appears. |
+| **Floating-point non-associativity** [8] | (a + b) + c can differ slightly from a + (b + c) in computer arithmetic. This is why a fixed aggregation order was needed for reproducibility. |

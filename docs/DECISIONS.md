@@ -185,3 +185,26 @@ Each entry records the decision, the alternatives considered, the reason and the
 - **Date:** 2026-10-08 (Step 7). Bug fix.
 - **Decision:** `predict_scores()` returns float64 logits, used for ranking, thresholds, PR-AUC and ROC-AUC. `predict_proba()` (sigmoid) is for display only. The default cut-off "probability 0.5" is logit 0.
 - **Reason:** with pos_weight ≈ 600, confident logits reach 17–46, and float32 sigmoid rounds them to exactly 1.0. In one model, 49 test rows (41 frauds) tied, losing ranking information. The sigmoid preserves order, so logits give the same ranking without ties. Effect: P/R/F1 unchanged, PR-AUC was under-reported (Step 3 sanity: 0.6978 → 0.7272). Step 3 results were re-run and its doc corrected.
+
+## D-029: 30 FL rounds
+- **Date:** 2026-10-08 (Step 8). **Chosen by:** Shubham (option B).
+- **Decision:** 30 FedAvg rounds, all four banks every round.
+- **Alternatives:** 15 rounds (matches the 15 epochs of the non-federated arms exactly, but risks stopping before convergence); 50 rounds (more time, multiplied by seeds in Step 9).
+- **Reason:** room for FedAvg to converge under non-IID data. Observed: global PR-AUC plateaued around rounds 13–15. Training effort (30 passes) is 2× the non-federated arms, which is disclosed.
+
+## D-030: 1 local epoch per round
+- **Date:** 2026-10-08 (Step 8). **Chosen by:** Shubham (option A).
+- **Decision:** each bank trains 1 epoch per round (same Adam settings as D-012; a fresh optimiser each round, so clients keep no state).
+- **Alternatives:** 2 epochs; 5 epochs (faster per round, more client drift).
+- **Reason:** the least client drift for very unequal banks (105 vs 18 training frauds).
+
+## D-031: Federated threshold from summed per-bank counts on a fixed grid
+- **Date:** 2026-10-08 (Step 8). **Chosen by:** Shubham (option A).
+- **Decision:** a fixed grid of 241 logit cut-offs (−10 to 50, step 0.25) set before training. Each bank returns integer TP/FP counts on its own local val set at each cut-off; the server sums them and takes the max-F1 cut-off.
+- **Alternatives:** each bank sends its own best threshold, averaged (sends a score value; Bank D's comes from 4 frauds); a fixed cut-off of logit 0 (precision ≈ 0.10).
+- **Reason:** counts only, never scores or rows. Mathematically equal to pooled-validation tuning on the grid (tested), so comparable with the centralized arms (D-026).
+
+## D-032: Fixed aggregation order (reproducibility fix)
+- **Date:** 2026-10-08 (Step 8).
+- **Decision:** `OrderedFedAvg` sorts client replies by bank before calling FedAvg's own aggregation.
+- **Reason:** parallel clients reply in varying order. Floating-point sums in a different order differ by ~1e-8, which training amplified: two same-seed runs drifted apart from the first round where the order changed (max per-round PR-AUC difference 8.7e-5). After the fix, two full runs were bit-identical. The FedAvg maths is unchanged.
