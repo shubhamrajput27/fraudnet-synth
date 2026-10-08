@@ -51,7 +51,7 @@ If you believe a different tool is better, **stop and ask me**, explaining the t
 
 1. **CPU-only.** No GPU, no CUDA-only packages.
 2. **Zero cost.** No paid APIs, no cloud deployment. Groq free tier only.
-3. **Single machine.** All four banks are simulated on one laptop.
+3. **Single machine for experiments.** All six-arm experiments (Steps 7–9, 13) simulate the four banks on one laptop, for speed and reproducibility. **Exception, live demo only (Step 8B):** the federated demo may run across several team laptops on a local Wi-Fi network or phone hotspot. This is still zero cost (no cloud, no paid services). Reported results always come from the single-machine runs.
 4. **Privacy invariant:** no raw or synthetic data row ever crosses a client boundary. Only serialized model weight updates (and aggregate metrics) leave a client. Enforce this in code structure: each client loads only its own shard path. Add a test that checks what clients send to the server.
 5. **Known privacy tension — decide with me before Step 5:** Schema Mode sends prompts to Groq, which is an external service. If those prompts contain a bank's real fraud rows as few-shot examples, real rows leave the client boundary. Present these options and wait for my decision (I will confirm it with my guide):
    - (a) Use the bank's own rows as few-shot examples. This is acceptable only because ULB is public and anonymized; disclose it in the report as a simulation-only limitation that a real deployment would solve with a locally hosted LLM.
@@ -222,6 +222,20 @@ Steps map onto the eight phases in our project report. Do them in order.
 - Build the Flower client (loads only its own shard) and server (FedAvg strategy), and run a single-machine simulation for arm 3 (real only) and arm 4 (real + validated synthetic).
 - Log metrics every round, globally and per bank. Plot convergence curves.
 - Add `tests/test_privacy_invariant.py`, proving that clients return only parameters and scalar metrics.
+
+### STEP 8B — Multi-device federated demo (Phase 4 → live demo)
+Goal (from our guide): show the model visibly moving between separate banks/machines while each bank's data stays put. See `docs/DECISIONS.md` D-020 for why this replaces the four-GitHub-repos proposal.
+- **Topology:** Shubham's laptop runs the Flower server (FedAvg) and the dashboard. Each teammate's laptop runs exactly one bank client (A, B, C or D). All laptops join the same Wi-Fi or phone hotspot.
+- **Data stays local:** each laptop stores ONLY its own bank's shard. Shards are never committed to Git and never sent over the network. Only model weights and scalar metrics travel.
+- **Visible logs:** each client prints a per-round line, for example `Round 3: received global model -> trained locally on N rows (F fraud) -> sent weights back (X KB)`. The server logs which bank's update arrived in each round.
+- **Proof of privacy:** log the size and content type of every message, to show that only weight arrays travel and no data rows.
+- **API:** check the installed Flower version (`pip show flwr`) and use its matching **deployment** API (not the simulation API) for separate-machine clients. Server address and port are configurable via `.env` / `configs/`.
+- **Same code path for the fallback:** if college Wi-Fi blocks connections, run the server and the four bank clients as five separate terminal processes on one laptop.
+- **Testing order:** test the one-laptop fallback first, then the multi-laptop version.
+- **Code sharing:** ONE private GitHub repo for code, shared by all four team members. No per-bank repos, no public data.
+- **Docs:** `docs/MULTI_DEVICE_SETUP.md` for teammates (Windows setup, finding the server laptop's IP, copying only their own shard, Windows Firewall rule for the port, starting the client, troubleshooting), plus the usual `docs/steps/STEP_08B_<name>.md` with an "Explain it to the guide" section on how the model moves between machines while the data stays put.
+- **Scope:** demo only. The six-arm experiments stay in single-machine simulation.
+- **Reminder:** the project report and synopsis must be updated to describe this demo setup.
 
 ### STEP 9 — Six-arm experiment runner and results (Phase 4 → Phase 7 prep)
 - `ml/experiments/run_all_arms.py` runs all six arms from one command with one config.
