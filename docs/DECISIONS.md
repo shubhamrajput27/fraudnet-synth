@@ -163,3 +163,25 @@ Each entry records the decision, the alternatives considered, the reason and the
 - **Decision:** DCR threshold = 5th percentile of real-to-real nearest-neighbour distances in the bank (standardised with the bank's real fraud mean/std). Rows below it are rejected as too close to real; rows within it of an already-kept synthetic row are dropped as near-duplicates (greedy, in file order). SDMetrics overall quality of the admitted set must be ≥ 0.70, otherwise the whole batch is refused.
 - **Alternatives:** privacy only, without the diversity filter; stricter 25th percentile.
 - **Reason:** thresholds adapt to each bank's own data rather than being invented constants. Result: thresholds 0.495 / 1.582 / 1.067 / 0.922; 0 rows too close to real; 37 / 9 LLM near-duplicates removed; all banks ≥ 0.746 fidelity.
+
+## D-025: Augmentation ratio 1:1 with real training fraud
+- **Date:** 2026-10-08 (Step 7). **Approved by:** Shubham.
+- **Decision:** each bank adds validated synthetic fraud rows equal in number to its real training fraud rows (A 105, B 82, C 28, D 18), sampled from `synthetic_validated.csv` with the run seed.
+- **Alternatives:** all validated rows (synthetic would outnumber real 8–15×); top up to a fixed fraud count (mixes ratio and mode effects).
+- **Reason:** the same rule for every bank (fair across modes); real fraud keeps half of the fraud weight. Other ratios can be a Step 9 sensitivity check.
+
+## D-026: Thresholds tuned on the model owner's own validation data
+- **Date:** 2026-10-08 (Step 7). **Approved by:** Shubham.
+- **Decision:** isolated bank → its own local val; centralized → union of the banks' local vals (49 fraud); federated (Step 8) → the same data, combined only through aggregated counts.
+- **Alternatives:** the global val set for every arm (identical protocol, but unrealistic for isolated banks).
+- **Reason:** realistic, and it exposes the true cost of isolation for small banks. PR-AUC (threshold-free) is reported for all arms.
+
+## D-027: Centralized arms pool the banks' local train parts
+- **Date:** 2026-10-08 (Step 7).
+- **Decision:** Arms 5/6 train on the union of `bank_x/train.csv` (139,022 rows), not on `global_train.csv`.
+- **Reason:** `global_train.csv` also contains every bank's local val/test rows; training on it would leak local test rows into training.
+
+## D-028: Scores are raw logits (float64), not float32 probabilities
+- **Date:** 2026-10-08 (Step 7). Bug fix.
+- **Decision:** `predict_scores()` returns float64 logits, used for ranking, thresholds, PR-AUC and ROC-AUC. `predict_proba()` (sigmoid) is for display only. The default cut-off "probability 0.5" is logit 0.
+- **Reason:** with pos_weight ≈ 600, confident logits reach 17–46, and float32 sigmoid rounds them to exactly 1.0. In one model, 49 test rows (41 frauds) tied, losing ranking information. The sigmoid preserves order, so logits give the same ranking without ties. Effect: P/R/F1 unchanged, PR-AUC was under-reported (Step 3 sanity: 0.6978 → 0.7272). Step 3 results were re-run and its doc corrected.

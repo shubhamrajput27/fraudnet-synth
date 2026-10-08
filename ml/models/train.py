@@ -63,8 +63,19 @@ def train_model(model: nn.Module, x: np.ndarray, y: np.ndarray, train_cfg: dict,
 
 @torch.no_grad()
 def predict_scores(model: nn.Module, x: np.ndarray, batch_size: int = 8192) -> np.ndarray:
-    """Fraud probabilities in [0, 1] (sigmoid of the logits). Dropout is off in eval mode."""
+    """Fraud SCORES = raw logits (float64), used for ranking, thresholds and PR/ROC-AUC.
+
+    Decision D-028: with the large fraud weight, confident predictions have logits of 17-46.
+    sigmoid() of those rounds to exactly 1.0 in float32, so many transactions tied at the top
+    score and their ranking was lost (49 tied test rows, 41 of them fraud, in one Step 7 model).
+    The sigmoid preserves order, so ranking by logit gives the same ordering, with no ties.
+    Dropout is off in eval mode.
+    """
     model.eval()
-    out = [torch.sigmoid(model(torch.from_numpy(x[i:i + batch_size])))
-           for i in range(0, len(x), batch_size)]
-    return torch.cat(out).numpy()
+    out = [model(torch.from_numpy(x[i:i + batch_size])) for i in range(0, len(x), batch_size)]
+    return torch.cat(out).double().numpy()
+
+
+def predict_proba(model: nn.Module, x: np.ndarray) -> np.ndarray:
+    """Fraud probability in [0, 1] for display only (e.g. the demo). Not used for metrics."""
+    return 1.0 / (1.0 + np.exp(-predict_scores(model, x)))

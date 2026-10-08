@@ -12,7 +12,8 @@ class FraudMLP(nn.Module):
     """Small multi-layer perceptron: 31 inputs -> 64 -> 32 -> 1 fraud logit.
 
     It outputs a raw score (logit), not a probability: the loss function applies the
-    sigmoid internally, which is numerically more stable. Use predict_scores() for probabilities.
+    sigmoid internally, which is numerically more stable. predict_scores() returns logits for
+    ranking and thresholds; predict_proba() gives probabilities for display.
     """
 
     def __init__(self, hidden_sizes=(64, 32), dropout=0.1, n_features=N_FEATURES):

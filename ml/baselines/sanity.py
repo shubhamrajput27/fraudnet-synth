@@ -83,7 +83,8 @@ def main():
         "history": log["history"],
         "tuned_threshold_from_val": tuned,
         "val_at_tuned": compute_metrics(y_va, val_scores, tuned),
-        "test_at_0.5": compute_metrics(y_te, test_scores, 0.5),
+        # Scores are logits (D-028): logit 0 is the usual "probability 0.5" default cut-off.
+        "test_at_prob_0.5": compute_metrics(y_te, test_scores, 0.0),
         "test_at_tuned": compute_metrics(y_te, test_scores, tuned),
         "test_always_genuine": compute_metrics(y_te, np.zeros_like(y_te), 0.5),
     }
@@ -96,10 +97,10 @@ def main():
           f"pos_weight = {results['pos_weight']} | {cfg['training']['epochs']} epochs in {results['train_seconds']}s")
     for h in log["history"]:
         print(f"  epoch {h['epoch']:2d}  loss {h['train_loss']:.4f}  val PR-AUC {h['val_pr_auc']:.4f}")
-    print(f"Threshold tuned on global VAL (max F1): {tuned:.4f}")
+    print(f"Threshold tuned on global VAL (max F1): logit {tuned:.4f} (probability {1 / (1 + np.exp(-tuned)):.6f})")
     cols = ["precision", "recall", "f1", "pr_auc", "roc_auc", "accuracy", "tp", "fp", "fn", "tn"]
     table = pd.DataFrame({k: {c: results[k][c] for c in cols}
-                          for k in ("test_always_genuine", "test_at_0.5", "test_at_tuned")}).T
+                          for k in ("test_always_genuine", "test_at_prob_0.5", "test_at_tuned")}).T
     print("\nGLOBAL TEST set (95 fraud / 56,746 rows):")
     print(table.to_string(float_format=lambda v: f"{v:.4f}"))
 

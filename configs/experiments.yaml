@@ -1,0 +1,18 @@
+# Step 7+: experiment settings shared by all arms (decisions D-025 to D-027).
+# The classifier and its training settings come from configs/model.yaml (D-009 to D-012).
+
+augmentation:                       # D-025
+  ratio_to_real_fraud: 1.0          # add this many validated synthetic rows per real TRAINING fraud row
+  source_file: synthetic_validated.csv
+  # rows are sampled from the bank's validated pool with the run seed (all of them if the pool is smaller)
+
+threshold:                          # D-026: tuned on the model owner's own validation data
+  isolated: local_val               # a bank tunes on its own local val set
+  centralized: pooled_local_val     # union of the banks' local val sets
+  # federated (Step 8): same data as centralized, combined via aggregated counts only
+
+centralized:                        # D-027: pool the banks' LOCAL TRAIN parts (never the global train file,
+  pool: local_train                 # which also contains the banks' local val/test rows -> leakage)
+
+seeds: [42]                         # Step 7 single seed; multi-seed repeats are decided in Step 9
+results_dir: results/arms_isolated_centralized

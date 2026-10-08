@@ -52,41 +52,43 @@ pytest tests/ -q                     # 16 tests (8 from Step 2 + 8 new)
 python -m ml.baselines.sanity
 ```
 
-## 5. Evidence (real output, 2026-10-05)
+## 5. Evidence (real output; re-run 2026-10-08 after correction D-028)
+
+> **Correction (found in Step 7, decision D-028):** scores were originally float32 probabilities. Very confident predictions rounded to exactly 1.0, so many transactions tied at the top score and part of the ranking was lost. Scores are now raw logits, which preserve the same order without ties. Precision, recall, F1, ROC-AUC and accuracy at the tuned threshold are **unchanged**. **PR-AUC rose from 0.6978 to 0.7272**, and the per-epoch validation PR-AUC values changed. The pre-correction output is kept in `results/sanity_baseline/console_output_before_D028.txt`. Training time differs between runs (26.1 s vs 51.0 s) because of laptop load.
 
 **Tests:** `16 passed`.
 
 **Sanity run** (`results/sanity_baseline/console_output.txt`, full numbers in `sanity_results.json`):
 ```
 Model: FraudMLP, 4,161 parameters, 31 input features
-Train: 198,607 rows, 331 fraud | pos_weight = 599.02 | 15 epochs in 26.1s
-  epoch  1  loss 0.5216  val PR-AUC 0.7574
-  epoch  5  loss 0.2092  val PR-AUC 0.8621
-  epoch 10  loss 0.1249  val PR-AUC 0.7800
-  epoch 15  loss 0.0692  val PR-AUC 0.8804
-Threshold tuned on global VAL (max F1): 0.9997
+Train: 198,607 rows, 331 fraud | pos_weight = 599.02 | 15 epochs in 51.0s
+  epoch  1  loss 0.5216  val PR-AUC 0.7884
+  epoch  5  loss 0.2092  val PR-AUC 0.8620
+  epoch 10  loss 0.1249  val PR-AUC 0.8234
+  epoch 15  loss 0.0692  val PR-AUC 0.8821
+Threshold tuned on global VAL (max F1): logit 8.0852 (probability 0.999692)
 ```
 
 **Global test set** (95 fraud / 56,746 rows):
 | Model / threshold | Precision | Recall | F1 | PR-AUC | ROC-AUC* | Accuracy* | TP | FP | FN |
 |---|---|---|---|---|---|---|---|---|---|
 | "Always genuine" | 0.0000 | 0.0000 | 0.0000 | 0.0017 | 0.5000 | 0.9983 | 0 | 0 | 95 |
-| MLP @ 0.5 | 0.0994 | 0.8737 | 0.1785 | 0.6978 | 0.9622 | 0.9865 | 83 | 752 | 12 |
-| **MLP @ tuned 0.9997** | **0.8875** | **0.7474** | **0.8114** | **0.6978** | 0.9622 | 0.9994 | 71 | 9 | 24 |
+| MLP @ probability 0.5 | 0.0994 | 0.8737 | 0.1785 | 0.7272 | 0.9622 | 0.9865 | 83 | 752 | 12 |
+| **MLP @ tuned (prob. 0.9997)** | **0.8875** | **0.7474** | **0.8114** | **0.7272** | 0.9622 | 0.9994 | 71 | 9 | 24 |
 
 \*secondary metrics.
 
 **Reproducibility:** a second run produced an identical `sanity_results.json`, ignoring wall-clock time.
 
-**Chart:** `results/sanity_baseline/training_curve.png`. The left panel shows training loss falling steadily from 0.52 to 0.07. The right panel shows validation PR-AUC moving between 0.76 and 0.88 across epochs.
+**Chart:** `results/sanity_baseline/training_curve.png`. The left panel shows training loss falling steadily from 0.52 to 0.07. The right panel shows validation PR-AUC moving between 0.79 and 0.88 across epochs.
 
 **What the table teaches:**
 - At the default 0.5 threshold, the model catches 83 of 95 frauds but raises 752 false alarms. Its *accuracy* (98.65%) is **lower** than "always genuine" (99.83%), even though it is far more useful. This is the accuracy paradox again.
 - Tuning the threshold on validation data trades a little recall for much better precision: F1 rises from 0.18 to 0.81.
-- ROC-AUC (0.96) looks much rosier than PR-AUC (0.70) on the same scores. This is why PR-AUC is our headline.
+- ROC-AUC (0.96) looks much rosier than PR-AUC (0.73) on the same scores. This is why PR-AUC is our headline.
 
 ## 6. Explain it to the guide (script)
-"Sir, in Step 3 I built the single classifier that all six arms will share, so that any difference between arms comes from federation or synthetic data, not from the model. It is a small PyTorch neural network with 4,161 weights, which suits federated averaging because the weights can simply be averaged. Fraud is only 331 of about 198,000 training rows, so I used a weighted loss that makes each missed fraud cost 599 times more, which balances the two classes. The inputs use fixed transforms only: log of the amount and hour-of-day as a circle. Nothing is fitted on data, so there is no leakage and every bank prepares data identically. I also wrote the metric code and the get-weights and set-weights functions that Flower will need. As a sanity check, I trained on the global training data, chose the threshold on validation data, and tested once on the test set: precision 0.89, recall 0.75, F1 0.81 and PR-AUC 0.70. This only proves the pipeline works; it is not one of the six arms."
+"Sir, in Step 3 I built the single classifier that all six arms will share, so that any difference between arms comes from federation or synthetic data, not from the model. It is a small PyTorch neural network with 4,161 weights, which suits federated averaging because the weights can simply be averaged. Fraud is only 331 of about 198,000 training rows, so I used a weighted loss that makes each missed fraud cost 599 times more, which balances the two classes. The inputs use fixed transforms only: log of the amount and hour-of-day as a circle. Nothing is fitted on data, so there is no leakage and every bank prepares data identically. I also wrote the metric code and the get-weights and set-weights functions that Flower will need. As a sanity check, I trained on the global training data, chose the threshold on validation data, and tested once on the test set: precision 0.89, recall 0.75, F1 0.81 and PR-AUC 0.73. This only proves the pipeline works; it is not one of the six arms."
 
 ## 7. Likely viva questions
 1. **Why an MLP and not logistic regression?** It can learn non-linear patterns, it is still tiny (4,161 weights), its weights average naturally under FedAvg, and Flower's standard examples use PyTorch.
@@ -96,8 +98,8 @@ Threshold tuned on global VAL (max F1): 0.9997
 5. **Why are ROC-AUC and PR-AUC so different?** ROC-AUC counts false positives relative to 56,651 genuine rows, so 752 false alarms look tiny. PR-AUC counts them relative to the fraud alarms raised, so they matter a lot.
 
 ## 8. Limitations and honest notes
-- **Validation PR-AUC jumps between epochs (0.76 to 0.88).** The global val set has only 47 frauds, so a couple of frauds changing rank moves PR-AUC noticeably. The very large fraud weight (599) also makes training updates noisy. Multi-seed repeats in Step 9 will show the true spread.
-- **Val PR-AUC (0.88) is higher than test PR-AUC (0.70).** With 47 and 95 frauds respectively, both estimates are noisy. We do **not** pick epochs or settings by looking at test results; doing so would be leakage.
+- **Validation PR-AUC jumps between epochs (0.79 to 0.88).** The global val set has only 47 frauds, so a couple of frauds changing rank moves PR-AUC noticeably. The very large fraud weight (599) also makes training updates noisy. Multi-seed repeats in Step 9 will show the true spread.
+- **Val PR-AUC (0.88) is higher than test PR-AUC (0.73).** With 47 and 95 frauds respectively, both estimates are noisy. We do **not** pick epochs or settings by looking at test results; doing so would be leakage.
 - **The tuned threshold is 0.9997, very close to 1.** The large fraud weight pushes all scores upward, so the model's scores are good for *ranking* but are not true probabilities. A threshold this close to 1 is sensitive. If it causes trouble in federated or per-bank settings, a softer weight (for example √599) is an option to discuss. It won't be changed without asking you.
 - **Fixed 15 epochs, no early stopping.** This is simple and reproducible. Federated local epochs are decided separately in Step 8.
 - The training settings (64/32 hidden units, dropout 0.1, learning rate 0.001, batch 512, 15 epochs) are **our proposed values**, recorded as decision D-012, not project specifications.

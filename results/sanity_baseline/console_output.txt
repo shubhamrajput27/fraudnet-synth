@@ -1,24 +1,24 @@
 Model: FraudMLP, 4,161 parameters, 31 input features
-Train: 198,607 rows, 331 fraud | pos_weight = 599.02 | 15 epochs in 25.5s
-  epoch  1  loss 0.5216  val PR-AUC 0.7574
+Train: 198,607 rows, 331 fraud | pos_weight = 599.02 | 15 epochs in 51.0s
+  epoch  1  loss 0.5216  val PR-AUC 0.7884
   epoch  2  loss 0.3127  val PR-AUC 0.8069
   epoch  3  loss 0.2643  val PR-AUC 0.8483
   epoch  4  loss 0.2334  val PR-AUC 0.8288
-  epoch  5  loss 0.2092  val PR-AUC 0.8621
-  epoch  6  loss 0.1861  val PR-AUC 0.7825
-  epoch  7  loss 0.1593  val PR-AUC 0.7738
-  epoch  8  loss 0.1518  val PR-AUC 0.7830
-  epoch  9  loss 0.1268  val PR-AUC 0.7920
-  epoch 10  loss 0.1249  val PR-AUC 0.7800
-  epoch 11  loss 0.1095  val PR-AUC 0.7779
-  epoch 12  loss 0.0986  val PR-AUC 0.8175
-  epoch 13  loss 0.1096  val PR-AUC 0.8454
-  epoch 14  loss 0.0794  val PR-AUC 0.8796
-  epoch 15  loss 0.0692  val PR-AUC 0.8804
-Threshold tuned on global VAL (max F1): 0.9997
+  epoch  5  loss 0.2092  val PR-AUC 0.8620
+  epoch  6  loss 0.1861  val PR-AUC 0.8095
+  epoch  7  loss 0.1593  val PR-AUC 0.8047
+  epoch  8  loss 0.1518  val PR-AUC 0.8155
+  epoch  9  loss 0.1268  val PR-AUC 0.8168
+  epoch 10  loss 0.1249  val PR-AUC 0.8234
+  epoch 11  loss 0.1095  val PR-AUC 0.8253
+  epoch 12  loss 0.0986  val PR-AUC 0.8407
+  epoch 13  loss 0.1096  val PR-AUC 0.8451
+  epoch 14  loss 0.0794  val PR-AUC 0.8830
+  epoch 15  loss 0.0692  val PR-AUC 0.8821
+Threshold tuned on global VAL (max F1): logit 8.0852 (probability 0.999692)
 
 GLOBAL TEST set (95 fraud / 56,746 rows):
                      precision  recall     f1  pr_auc  roc_auc  accuracy      tp       fp      fn         tn
 test_always_genuine     0.0000  0.0000 0.0000  0.0017   0.5000    0.9983  0.0000   0.0000 95.0000 56651.0000
-test_at_0.5             0.0994  0.8737 0.1785  0.6978   0.9622    0.9865 83.0000 752.0000 12.0000 55899.0000
-test_at_tuned           0.8875  0.7474 0.8114  0.6978   0.9622    0.9994 71.0000   9.0000 24.0000 56642.0000
+test_at_prob_0.5        0.0994  0.8737 0.1785  0.7272   0.9622    0.9865 83.0000 752.0000 12.0000 55899.0000
+test_at_tuned           0.8875  0.7474 0.8114  0.7272   0.9622    0.9994 71.0000   9.0000 24.0000 56642.0000

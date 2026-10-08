@@ -223,19 +223,68 @@ Steps map onto the eight phases in our project report. Do them in order.
 - Log metrics every round, globally and per bank. Plot convergence curves.
 - Add `tests/test_privacy_invariant.py`, proving that clients return only parameters and scalar metrics.
 
-### STEP 8B — Multi-device federated demo (Phase 4 → live demo)
-Goal (from our guide): show the model visibly moving between separate banks/machines while each bank's data stays put. See `docs/DECISIONS.md` D-020 for why this replaces the four-GitHub-repos proposal.
-- **Topology:** Shubham's laptop runs the Flower server (FedAvg) and the dashboard. Each teammate's laptop runs exactly one bank client (A, B, C or D). All laptops join the same Wi-Fi or phone hotspot.
-- **Data stays local:** each laptop stores ONLY its own bank's shard. Shards are never committed to Git and never sent over the network. Only model weights and scalar metrics travel.
-- **Visible logs:** each client prints a per-round line, for example `Round 3: received global model -> trained locally on N rows (F fraud) -> sent weights back (X KB)`. The server logs which bank's update arrived in each round.
-- **Proof of privacy:** log the size and content type of every message, to show that only weight arrays travel and no data rows.
-- **API:** check the installed Flower version (`pip show flwr`) and use its matching **deployment** API (not the simulation API) for separate-machine clients. Server address and port are configurable via `.env` / `configs/`.
-- **Same code path for the fallback:** if college Wi-Fi blocks connections, run the server and the four bank clients as five separate terminal processes on one laptop.
-- **Testing order:** test the one-laptop fallback first, then the multi-laptop version.
-- **Code sharing:** ONE private GitHub repo for code, shared by all four team members. No per-bank repos, no public data.
-- **Docs:** `docs/MULTI_DEVICE_SETUP.md` for teammates (Windows setup, finding the server laptop's IP, copying only their own shard, Windows Firewall rule for the port, starting the client, troubleshooting), plus the usual `docs/steps/STEP_08B_<name>.md` with an "Explain it to the guide" section on how the model moves between machines while the data stays put.
-- **Scope:** demo only. The six-arm experiments stay in single-machine simulation.
-- **Reminder:** the project report and synopsis must be updated to describe this demo setup.
+### STEP 8B — Multi-device federated demo (four laptops, live demo only)
+
+**Goal (from our guide):** show that the model really travels between separate machines over a network, while each bank's data never leaves its own laptop. See `docs/DECISIONS.md` D-020 for why this replaces the four-GitHub-repos proposal. Demo only: the six-arm results still come from single-machine runs.
+
+**When:** only after Step 6 (validated synthetic files are final), Step 7 (the augmentation ratio is settled, so the files will not change), and Step 8 (federated training works in simulation).
+
+**Roles**
+| Laptop | Runs | Bank type | Generation mode | Explains in viva |
+|---|---|---|---|---|
+| Shubham | Server + Bank A (+ dashboard, once Step 12 exists) | Data-rich | Augment Mode (CTGAN) | FedAvg and the server: averaging and sending back |
+| Prachi | Bank B | Data-rich | Augment Mode (CTGAN) | How CTGAN learns from Bank B's fraud rows |
+| Pradeepa | Bank C | Data-poor | Schema Mode (LLM) | How the LLM generates rows from statistics only |
+| Sathvik | Bank D | Data-poor | Schema Mode (LLM) | Validation layer; why few fraud rows give noisy results |
+
+Bank A and the server run as two separate processes on Shubham's laptop. The server process never opens Bank A's files.
+
+**Decisions to ask Shubham at the start of 8B (do not decide alone):**
+- Should Prachi re-run CTGAN live on her laptop (~1.5–2 min on CPU per Step 4), or should every bank receive pre-generated files? Schema Mode (C, D) always ships pre-generated, cached files, because the Groq daily quota makes a live re-run unreliable.
+- Add a separate password to each zip (needs one small extra package, e.g. `py7zr`)?
+
+#### 8B.1 Prepare the code
+- Check the installed Flower version (`pip show flwr`) and use its **deployment** API (not the simulation API) for separate-machine clients.
+- Server address and port are configurable via `.env` / `configs/`. Each client is started with its bank ID (e.g. `--bank bank_b`).
+- The client loads only `data/clients/<its bank>/`.
+- **Client start-up check:** before connecting, the client refuses to start (with a clear message) unless:
+  1. `manifest.json` names the same bank as `--bank`;
+  2. all SHA-256 checksums in the manifest match;
+  3. no other bank's **data files** exist on the laptop. The folders `bank_a`–`bank_d` always exist because Git tracks their `.gitkeep`, so check for files, not folders. Also check that `data/raw/creditcard.csv` and the global train/val split are absent. Exception: in the server's clean demo folder, `data/processed/test.csv` (the global test set) is allowed.
+- **Client log per round:** `Round N: received global model -> trained on R rows (F fraud) -> sent weights back (X KB)`.
+- **Server log per round:** which banks' updates arrived, their size, and the aggregated result. Log the type of every message, to prove that only weight arrays and scalar metrics travel.
+- A `check_my_data` command prints the visible evidence for the review, e.g. `bank_b: 4 files, R rows (F fraud), checksums OK | bank_a, bank_c, bank_d: empty | raw Kaggle file: absent | global split: absent`.
+- The dashboard does not exist yet at 8B (it comes in Step 12), so terminal logs are the evidence. Stream per-bank arrivals to the dashboard later, in Step 12/13.
+
+#### 8B.2 Prepare the data handover
+- **Export script:** packs one bank into `exports/bank_x.zip`, with `bank_x/` as the zip's root folder (so `Expand-Archive bank_x.zip -DestinationPath data\clients\` puts the files in the right place).
+  - Contents: only `train.csv`, `val.csv`, `test.csv`, `synthetic_validated.csv`, plus `manifest.json` (bank ID, per-file rows, fraud count, SHA-256 checksum, creation date). Never `synthetic_candidates.csv`, `llm_cache/`, models, other banks, `data/raw/`, or `data/processed/`.
+  - **Export-time check:** the CSVs have no row-ID column, so match rows by a fingerprint (hash of all column values; rows are unique after D-005). Every real row must belong to that bank's shard, and none may match another bank's shard or the global val/test sets. If any check fails, stop with an error and create no zip.
+- Add `exports/` and `*.zip` to `.gitignore`.
+- **Handover:** in person, by pen drive, one person at a time at their own laptop. Never via GitHub. They copy only their own zip, unzip it, run `check_my_data`, then delete the zip. Wipe the pen drive afterwards. If the data changes later, repeat the handover with versioned names (`bank_b_v2.zip`).
+- **Shubham's clean demo folder:** Shubham's working folder holds all four banks (it made the split). For the demo, create a second clone (e.g. `C:\Projects\fraudnet-demo`) containing only `bank_a` and `data/processed/test.csv`. Run the server and Bank A from there, with the main working folder closed. The client check must pass inside it.
+- The global test set stays only on the server laptop.
+
+#### 8B.3 Test in order (record each result in the step doc)
+1. One-laptop fallback: server + four clients as five terminal processes on Shubham's laptop, started by a single command.
+2. Two laptops (Shubham + Prachi) on a phone hotspot.
+3. All four laptops on the same phone hotspot (not college Wi-Fi, which often blocks laptop-to-laptop traffic).
+
+#### 8B.4 Documentation
+- `docs/MULTI_DEVICE_SETUP.md` for teammates (Windows, beginner level): install; receive, unzip and check their bank file; find the server laptop's IP (`ipconfig`); allow the port in Windows Firewall **including the Public profile** (Windows marks a new hotspot as Public), or switch the network to Private; start their client; troubleshooting (including phone hotspots that block device-to-device traffic).
+- `docs/DEMO_SCRIPT_8B.md`: a 5-minute script with who says what, in the role order above, including running `check_my_data` on a teammate's laptop to show it holds only their bank.
+- `docs/steps/STEP_08B_multi_device_demo.md` in the usual format, with an "Explain it to the guide" section.
+- **Honest notes** to include in the step doc and the report's limitations:
+  - The handover is simulation setup. In real life each bank already owns its data. Each teammate receives only their own bank's slice, and the privacy claim covers training, during which no data row leaves any laptop.
+  - Synthetic data was generated on Shubham's laptop (unless the live CTGAN option is chosen). Teammates must not claim it was generated on their machine.
+  - The server holds the global test set for evaluation, a disclosed design choice.
+  - Code can check a laptop's contents but cannot stop a person deliberately copying files, which is why the handover is in person and the zips are deleted.
+
+#### 8B.5 Done when
+- A full federated run completes across four laptops, with logs saved under `results/`.
+- The one-laptop fallback works with a single command.
+- Two full rehearsals are done before the review.
+- The summary reminds Shubham to update the project report and synopsis to describe this demo setup.
 
 ### STEP 9 — Six-arm experiment runner and results (Phase 4 → Phase 7 prep)
 - `ml/experiments/run_all_arms.py` runs all six arms from one command with one config.

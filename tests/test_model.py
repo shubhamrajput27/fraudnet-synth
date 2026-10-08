@@ -79,3 +79,17 @@ def test_training_is_deterministic():
         weights.append(get_weights(m))
     for a, b in zip(*weights):
         assert np.array_equal(a, b)
+
+
+def test_scores_are_untied_logits():
+    """D-028: very confident predictions must keep distinct scores (no float32 saturation at 1.0)."""
+    from ml.models.train import predict_proba, predict_scores
+    x, y = to_xy(_toy_df())
+    set_seed(1)
+    m = build_model(CFG)
+    with __import__("torch").no_grad():
+        m.net[-1].bias.fill_(30.0)  # push every logit far into sigmoid saturation
+    s = predict_scores(m, x)
+    assert s.dtype == np.float64 and len(np.unique(s)) == len(s)
+    p = predict_proba(m, x)
+    assert ((p >= 0) & (p <= 1)).all()

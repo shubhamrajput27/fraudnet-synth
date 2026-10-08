@@ -85,3 +85,10 @@ Terms are added as each step introduces them. The step number is in brackets.
 | **SDMetrics QualityReport** [6] | Set-level fidelity score (0–1): Column Shapes (per-column distributions) and Column Pair Trends (relationships between columns). |
 | **Sentence embedding / cosine similarity** [6] | A vector representing text meaning / a 0–1 measure of how similar two such vectors are. |
 | **Pass rate** [6] | Share of candidate rows admitted by the gate. |
+| **Isolated arm** [7] | Each bank trains alone on its own data (Arms 1, 2). The lower bound. |
+| **Centralized arm** [7] | One model on all banks' pooled data (Arms 5, 6). The upper bound, illegal in practice. |
+| **Augmentation ratio** [7] | Synthetic rows added per real fraud row. Ours is 1:1. |
+| **Paired comparison** [7] | Two models identical except for one factor (here the training data), so differences can be attributed to that factor. |
+| **Upper / lower bound** [7] | Best and worst reference results that federated learning is compared against. |
+| **Global vs local test** [7] | The shared test set every arm is graded on vs one bank's own held-out customers. |
+| **Saturation (float32)** [7] | Very confident sigmoid outputs rounding to exactly 1.0, creating ties. Fixed by ranking on logits. |

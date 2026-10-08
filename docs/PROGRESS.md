@@ -9,7 +9,7 @@
 | 4 | Augment Mode: CTGAN (Banks A, B) | 2 | ✅ Done (2026-10-05) | [STEP_04](steps/STEP_04_ctgan_augment_mode.md) |
 | 5 | Schema Mode: LLM (Banks C, D) | 2 | ✅ Done (2026-10-08). Privacy option (b): aggregate stats only | [STEP_05](steps/STEP_05_llm_schema_mode.md) |
 | 6 | Shared validation layer | 3 | ✅ Done (2026-10-08) | [STEP_06](steps/STEP_06_validation_gate.md) |
-| 7 | Isolated & centralized arms | 4 | Not started | |
+| 7 | Isolated & centralized arms | 4 | ✅ Done (2026-10-08). Single seed; multi-seed in Step 9 | [STEP_07](steps/STEP_07_isolated_centralized_arms.md) |
 | 8 | Federated arms (Flower) | 4 | Not started | |
 | 8B | Multi-device federated demo (live demo only, D-020) | 4 → demo | Not started. Planned 2026-10-07 at guide's request | |
 | 9 | Six-arm runner & results | 4→7 | Not started | |
