@@ -1,0 +1,26 @@
+# Flower App definition, used by the Step 8B multi-device demo (`flwr run`).
+# The single-machine experiments (python -m ml.federated.run) do not need this file.
+
+[project]
+name = "fraudnet-synth"
+version = "0.8.0"
+description = "FraudNet-Synth: federated fraud detection with dual-mode synthetic augmentation"
+license = "MIT"
+
+[tool.flwr.app]
+publisher = "fraudnet-team"
+# The app bundle (FAB) that Flower ships to every bank is CODE + CONFIGS ONLY.
+# Flower's default patterns would also pick up *.json files (results, bank manifests),
+# so we list exactly what may be included. CSV data is never part of the bundle.
+fab-include = ["ml/**/*.py", "configs/*.yaml"]
+
+[tool.flwr.app.components]
+serverapp = "ml.federated.server_app:app"
+clientapp = "ml.federated.client_app:app"
+
+[tool.flwr.app.config]
+arm = "arm4_federated_aug"   # or "arm3_federated_real"
+num-rounds = 10              # demo default (the simulation uses 30, D-029)
+expected-banks = 4           # set to 2 for the two-laptop test
+seed = 42
+demo-log = true              # per-round arrival/size/type logging for the live demo

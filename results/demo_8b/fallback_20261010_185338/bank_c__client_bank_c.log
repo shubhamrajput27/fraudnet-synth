@@ -1,0 +1,3 @@
+2026-10-10T18:54:30  Round 1: received global model (17.1 KB) -> trained on 27,813 rows (56 fraud) -> sent weights back (17.1 KB) | local loss 0.9180
+2026-10-10T18:54:55  Round 2: received global model (17.1 KB) -> trained on 27,813 rows (56 fraud) -> sent weights back (17.1 KB) | local loss 0.3682
+2026-10-10T18:55:21  Round 3: received global model (17.1 KB) -> trained on 27,813 rows (56 fraud) -> sent weights back (17.1 KB) | local loss 0.3768

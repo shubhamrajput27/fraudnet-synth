@@ -1,0 +1,10 @@
+2026-10-10T18:59:17  Round 1: received global model (17.1 KB) -> trained on 48,787 rows (210 fraud) -> sent weights back (17.1 KB) | local loss 0.7276
+2026-10-10T18:59:43  Round 2: received global model (17.1 KB) -> trained on 48,787 rows (210 fraud) -> sent weights back (17.1 KB) | local loss 0.2903
+2026-10-10T19:00:12  Round 3: received global model (17.1 KB) -> trained on 48,787 rows (210 fraud) -> sent weights back (17.1 KB) | local loss 0.2238
+2026-10-10T19:00:41  Round 4: received global model (17.1 KB) -> trained on 48,787 rows (210 fraud) -> sent weights back (17.1 KB) | local loss 0.2005
+2026-10-10T19:01:08  Round 5: received global model (17.1 KB) -> trained on 48,787 rows (210 fraud) -> sent weights back (17.1 KB) | local loss 0.1934
+2026-10-10T19:01:36  Round 6: received global model (17.1 KB) -> trained on 48,787 rows (210 fraud) -> sent weights back (17.1 KB) | local loss 0.2068
+2026-10-10T19:02:01  Round 7: received global model (17.1 KB) -> trained on 48,787 rows (210 fraud) -> sent weights back (17.1 KB) | local loss 0.2246
+2026-10-10T19:02:29  Round 8: received global model (17.1 KB) -> trained on 48,787 rows (210 fraud) -> sent weights back (17.1 KB) | local loss 0.1824
+2026-10-10T19:02:58  Round 9: received global model (17.1 KB) -> trained on 48,787 rows (210 fraud) -> sent weights back (17.1 KB) | local loss 0.1822
+2026-10-10T19:03:25  Round 10: received global model (17.1 KB) -> trained on 48,787 rows (210 fraud) -> sent weights back (17.1 KB) | local loss 0.1722

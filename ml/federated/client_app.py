@@ -7,13 +7,15 @@ partition-id) and replies ONLY with
   * query:    integer counts / scalar metrics
 Never a data row, never per-transaction scores. tests/test_privacy_invariant.py checks this.
 """
+from datetime import datetime
+
 import numpy as np
 import torch
 from flwr.app import ArrayRecord, Context, Message, MetricRecord, RecordDict
 from flwr.clientapp import ClientApp
 from sklearn.metrics import average_precision_score
 
-from ml.data.load import load_config
+from ml.data.load import DATA_ROOT, load_config
 from ml.evaluation.metrics import compute_metrics
 from ml.federated.common import BANKS, bank_data, counts_at_thresholds
 from ml.models.classifier import build_model
@@ -21,12 +23,43 @@ from ml.models.train import balanced_pos_weight, predict_scores, set_seed, train
 
 MODEL_CFG = load_config("model")
 FL_CFG = load_config("fl")
+_CHECKED: set[str] = set()
+
+
+def _which_bank(context: Context) -> tuple[int, str, bool]:
+    """Simulation: Flower gives a partition-id. Deployment (Step 8B): the SuperNode is started with
+    --node-config "bank='bank_b'". Returns (index, bank, is_deployment)."""
+    if "bank" in context.node_config:
+        bank = str(context.node_config["bank"])
+        return BANKS.index(bank), bank, True
+    idx = int(context.node_config["partition-id"])
+    return idx, BANKS[idx], False
+
+
+def _startup_check(bank: str, context: Context) -> None:
+    """Deployment only: refuse to work unless this laptop holds only its own bank's data (8B.1)."""
+    if bank in _CHECKED:
+        return
+    from ml.federated.demo.check_my_data import check
+    ok, lines = check(bank, server_laptop=bool(context.node_config.get("server-laptop", False)))
+    if not ok:
+        raise RuntimeError(f"{bank} refused to start: " + " ; ".join(l for l in lines if l.startswith("PROBLEM")))
+    _CHECKED.add(bank)
+
+
+def _demo_log(bank: str, line: str) -> None:
+    print(line, flush=True)
+    log_dir = DATA_ROOT / "results" / "demo_8b"
+    log_dir.mkdir(parents=True, exist_ok=True)
+    with open(log_dir / f"client_{bank}.log", "a", encoding="utf-8") as f:
+        f.write(f"{datetime.now().isoformat(timespec='seconds')}  {line}\n")
 
 
 def _setup(msg: Message, context: Context):
     """Which bank am I, which arm is this, and the current global model."""
-    idx = int(context.node_config["partition-id"])
-    bank = BANKS[idx]
+    idx, bank, deployed = _which_bank(context)
+    if deployed:
+        _startup_check(bank, context)
     cfg = msg.content["config"]
     augmented, seed = bool(cfg["augmented"]), int(cfg["seed"])
     model = build_model(MODEL_CFG)
@@ -36,6 +69,7 @@ def _setup(msg: Message, context: Context):
 
 def train_fn(msg: Message, context: Context) -> Message:
     idx, bank, augmented, seed, model, cfg = _setup(msg, context)
+    received_kb = msg.content["arrays"].count_bytes() / 1024
     x, y = bank_data(bank, augmented, seed)["train"]
     rnd = int(cfg["server-round"])
     local_seed = seed + 1000 * rnd + idx           # different per round and bank, but reproducible
@@ -49,6 +83,10 @@ def train_fn(msg: Message, context: Context) -> Message:
         "train-fraud": int(y.sum()),
         "upload-bytes": int(arrays.count_bytes()),
     })
+    if _which_bank(context)[2]:
+        _demo_log(bank, f"Round {rnd}: received global model ({received_kb:.1f} KB) -> trained on "
+                        f"{len(y):,} rows ({int(y.sum())} fraud) -> sent weights back "
+                        f"({arrays.count_bytes() / 1024:.1f} KB) | local loss {metrics['train-loss']:.4f}")
     return Message(content=RecordDict({"arrays": arrays, "metrics": metrics}), reply_to=msg)
 
 

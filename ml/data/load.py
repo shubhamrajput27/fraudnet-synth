@@ -3,12 +3,16 @@
 Every later step reads the raw file through `load_raw`, so the schema check here
 catches a wrong or corrupted file once, early, instead of failing mysteriously later.
 """
+import os
 from pathlib import Path
 
 import pandas as pd
 import yaml
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
+# Where DATA lives. Normally the project folder; the Step 8B demo points each process at its
+# own isolated folder (one bank's files, or the server's global test set) via this variable.
+DATA_ROOT = Path(os.environ.get("FRAUDNET_DATA_ROOT", PROJECT_ROOT)).resolve()
 
 # The ULB dataset's fixed schema: Time, 28 PCA components, Amount, and the label.
 V_COLUMNS = [f"V{i}" for i in range(1, 29)]

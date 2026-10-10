@@ -208,3 +208,25 @@ Each entry records the decision, the alternatives considered, the reason and the
 - **Date:** 2026-10-08 (Step 8).
 - **Decision:** `OrderedFedAvg` sorts client replies by bank before calling FedAvg's own aggregation.
 - **Reason:** parallel clients reply in varying order. Floating-point sums in a different order differ by ~1e-8, which training amplified: two same-seed runs drifted apart from the first round where the order changed (max per-round PR-AUC difference 8.7e-5). After the fix, two full runs were bit-identical. The FedAvg maths is unchanged.
+
+## D-033: Ready-made files for every bank; no zip passwords
+- **Date:** 2026-10-10 (Step 8B). **Chosen by:** Shubham.
+- **Decision:** every bank, including Bank B (CTGAN), receives pre-generated, gate-validated files from Steps 4–6. Zips carry no password.
+- **Alternatives:** Prachi re-runs CTGAN live (~1.5–2 min); a password per zip (extra package such as `py7zr`).
+- **Reason:** the same files as the experiments, no Groq/CTGAN dependency on demo day, and in-person handover with deletion. Disclosed: synthetic data was generated on Shubham's laptop.
+
+## D-034: Deployment set-up for the demo (flwr 1.39)
+- **Date:** 2026-10-10 (Step 8B).
+- **Decision:** SuperLink on the server laptop (Fleet API 0.0.0.0:9092 for banks; HTTP Control API bound to 127.0.0.1:9093); one SuperNode per bank started with `--node-config "bank='bank_x'"`; runs started with `flwr run`; insecure mode (no TLS) on a private phone hotspot. The app bundle is restricted by `fab-include` to `ml/**/*.py` and `configs/*.yaml` (built size 154 KB, no CSV or JSON).
+- **Alternatives:** TLS certificates and SuperNode authentication (more set-up, out of demo scope); Flower's default bundle patterns (would include every `*.json`).
+- **Reason:** the matching deployment API for the installed version (not the simulation API), the minimum ports, and a bundle that provably carries no data.
+
+## D-035: Data isolation for the demo
+- **Date:** 2026-10-10 (Step 8B).
+- **Decision:** `FRAUDNET_DATA_ROOT` separates the data folder from the code. The client runs `check_my_data` before its first round and refuses on failure. The export refuses to build a zip unless the Step 2 checksums match, every real row comes from global train, no row is shared with another bank or global val/test, and no synthetic row equals a real row (fingerprints). The one-laptop fallback gives every process its own sandbox folder.
+- **Reason:** turns "each laptop holds only its own bank" from a promise into a check, which is visible evidence for the review.
+
+## D-036: Demo run defaults
+- **Date:** 2026-10-10 (Step 8B).
+- **Decision:** Arm 4 (headline), 10 rounds, `expected-banks` configurable (2 for the two-laptop test), per-message logging on; demo outputs written to `results/demo_8b/` and never over experiment results.
+- **Reason:** 10 rounds ≈ 5–6 minutes in deployment (≈ 25–30 s per round), which fits the 5-minute demo. Demo numbers are never reported as results.

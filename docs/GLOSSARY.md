@@ -102,3 +102,14 @@ Terms are added as each step introduces them. The step number is in brackets.
 | **Query message** [8] | A custom server→client request after training (here: threshold counts and local-test metrics). |
 | **Privacy-invariant test** [8] | An automated test that inspects everything a client sends and fails if anything other than weights, scalars or counts appears. |
 | **Floating-point non-associativity** [8] | (a + b) + c can differ slightly from a + (b + c) in computer arithmetic. This is why a fixed aggregation order was needed for reproducibility. |
+| **Simulation vs deployment** [8B] | All banks inside one program / each bank a separate program, possibly on separate laptops, talking over a network. |
+| **SuperLink** [8B] | Flower's server-side hub. Banks connect on the Fleet API (port 9092); `flwr run` connects on the Control API (port 9093). |
+| **SuperNode** [8B] | The Flower program each bank runs. It connects to the SuperLink and runs the ClientApp on its own data. |
+| **Node config** [8B] | Start-up settings for a SuperNode, e.g. `bank='bank_b'`, telling it which bank it is. |
+| **FAB (Flower App Bundle)** [8B] | The package of our code that `flwr run` ships to every SuperNode. Restricted to code and configs. |
+| **Row fingerprint** [8B] | A hash of all values in a row, used to check which rows are where when there is no ID column. |
+| **Export manifest** [8B] | The file listing a bank zip's files, row and fraud counts, and SHA-256 checksums. |
+| **check_my_data** [8B] | Our command that proves (and enforces) that a laptop holds only its own bank's data. |
+| **TLS / insecure mode** [8B] | Encrypted connections / Flower without encryption, used only on our private demo hotspot. |
+| **Firewall inbound rule** [8B] | Permission for other devices to connect to a port on this laptop. Needed only on the server (port 9092). |
+| **AP / client isolation** [8B] | A hotspot setting that blocks devices from talking to each other. If on, the demo can't connect. |

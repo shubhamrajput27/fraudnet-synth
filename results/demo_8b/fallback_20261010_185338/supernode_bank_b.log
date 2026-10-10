@@ -1,0 +1,94 @@
+[92mINFO [0m:      Starting Flower SuperNode
+[93mWARNING [0m:   Option `--insecure` was set. Starting insecure channel to 127.0.0.1:9092.
+INFO:     Started server process [27204]
+INFO:     Waiting for application startup.
+[92mINFO [0m:      FastAPI lifespan: startup
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:9095 (Press CTRL+C to quit)
+[92mINFO [0m:      SuperNode ID: 1451647094227770791
+[92mINFO [0m:      Starting Flower SuperExec
+[92mINFO [0m:      
+[92mINFO [0m:      [RUN 10462166090279263177]
+[92mINFO [0m:      Receiving: train message (ID: ad809c09eb20d47838648f4830a82c5fcda96a598ffa0ed603ea462487ad6274)
+[92mINFO [0m:      Received successfully
+[92mINFO [0m:      Start `flwr-clientapp` process
+Successfully installed fraudnet-synth to C:\Users\shubh\Desktop\Shubham Major Project\fraudnet-synth\demo_sandbox\bank_b\.flwr_bank_b\apps\fraudnet-team.fraudnet-synth.0.8.0.fdbc6544.
+Round 1: received global model (17.1 KB) -> trained on 41,801 rows (164 fraud) -> sent weights back (17.1 KB) | local loss 0.7418
+[92mINFO [0m:      
+[92mINFO [0m:      
+[92mINFO [0m:      [RUN 10462166090279263177]
+[92mINFO [0m:      Sending: train message (ID: 4e827b489255344fb7a850c2ff18a55630f4bc4ee3ae4d48838e3cee080effc8)
+[92mINFO [0m:      Sent successfully
+[92mINFO [0m:      
+[92mINFO [0m:      [RUN 10462166090279263177]
+[92mINFO [0m:      Receiving: evaluate message (ID: 01dc47fcc87bb8ab2d8dc45c294dae272f38a39f3f1f2530e7c87a262d81347e)
+[92mINFO [0m:      Received successfully
+[92mINFO [0m:      Start `flwr-clientapp` process
+[92mINFO [0m:      
+[92mINFO [0m:      
+[92mINFO [0m:      [RUN 10462166090279263177]
+[92mINFO [0m:      Sending: evaluate message (ID: 2145ac9a2befbea5bc4c272b493ef5e576434ca850fe3444521fd71ead95aa89)
+[92mINFO [0m:      Sent successfully
+[92mINFO [0m:      
+[92mINFO [0m:      [RUN 10462166090279263177]
+[92mINFO [0m:      Receiving: train message (ID: 3cf6b8dd30643aed19c4608b3ccdd93aea0f3ac61c0670f1458232140eb783cc)
+[92mINFO [0m:      Received successfully
+[92mINFO [0m:      Start `flwr-clientapp` process
+Round 2: received global model (17.1 KB) -> trained on 41,801 rows (164 fraud) -> sent weights back (17.1 KB) | local loss 0.2957
+[92mINFO [0m:      
+[92mINFO [0m:      
+[92mINFO [0m:      [RUN 10462166090279263177]
+[92mINFO [0m:      Sending: train message (ID: 0171a5c8958d6b64f7a38da5b3c03acb40feaf831f9ae2e58082672df2f75ac0)
+[92mINFO [0m:      Sent successfully
+[92mINFO [0m:      
+[92mINFO [0m:      [RUN 10462166090279263177]
+[92mINFO [0m:      Receiving: evaluate message (ID: 8d11427d09f784d9cfcb82fdce1df1dfa0a1fbed0a7ffe92bf683ea44ca1aa96)
+[92mINFO [0m:      Received successfully
+[92mINFO [0m:      Start `flwr-clientapp` process
+[92mINFO [0m:      
+[92mINFO [0m:      
+[92mINFO [0m:      [RUN 10462166090279263177]
+[92mINFO [0m:      Sending: evaluate message (ID: 0d4aca57b7ea02a0e2a2ea8f87ee63ff953fb5f5c12b6a123b56d06d6ed7241c)
+[92mINFO [0m:      Sent successfully
+[92mINFO [0m:      
+[92mINFO [0m:      [RUN 10462166090279263177]
+[92mINFO [0m:      Receiving: train message (ID: 36d4f214ba18b509b8f5ff61817f5b2e2a33c5171b2d30bf3329fcb48141a4a7)
+[92mINFO [0m:      Received successfully
+[92mINFO [0m:      Start `flwr-clientapp` process
+Round 3: received global model (17.1 KB) -> trained on 41,801 rows (164 fraud) -> sent weights back (17.1 KB) | local loss 0.2447
+[92mINFO [0m:      
+[92mINFO [0m:      
+[92mINFO [0m:      [RUN 10462166090279263177]
+[92mINFO [0m:      Sending: train message (ID: b91264c988cc32e0050641fbf016ab2b890eb69d7ae681d277bf17116614716d)
+[92mINFO [0m:      Sent successfully
+[92mINFO [0m:      
+[92mINFO [0m:      [RUN 10462166090279263177]
+[92mINFO [0m:      Receiving: evaluate message (ID: 815802e9274cca4dfb837543caf74d99f2c9f37131a83c515678009601d1b28e)
+[92mINFO [0m:      Received successfully
+[92mINFO [0m:      Start `flwr-clientapp` process
+[92mINFO [0m:      
+[92mINFO [0m:      
+[92mINFO [0m:      [RUN 10462166090279263177]
+[92mINFO [0m:      Sending: evaluate message (ID: f19a8ec3e3295580065403ecfa2ec2bf07997c8f5e8e66df0761d71ad15853da)
+[92mINFO [0m:      Sent successfully
+[92mINFO [0m:      
+[92mINFO [0m:      [RUN 10462166090279263177]
+[92mINFO [0m:      Receiving: query message (ID: 5c8d7fb7729f8f21b025dc901a7ca572af977b97d3183761a3446576e7d3b696)
+[92mINFO [0m:      Received successfully
+[92mINFO [0m:      Start `flwr-clientapp` process
+[92mINFO [0m:      
+[92mINFO [0m:      
+[92mINFO [0m:      [RUN 10462166090279263177]
+[92mINFO [0m:      Sending: query message (ID: 91bd12a54bd754d717739c7d42476be313b0e9473845055b7abf5ccee3d9b164)
+[92mINFO [0m:      Sent successfully
+[92mINFO [0m:      
+[92mINFO [0m:      [RUN 10462166090279263177]
+[92mINFO [0m:      Receiving: query message (ID: dbe4a09118dcd7b3dd6c7e1f848bebec2810bb7c93c6ac2c60932d361f3ae33d)
+[92mINFO [0m:      Received successfully
+[92mINFO [0m:      Start `flwr-clientapp` process
+[92mINFO [0m:      
+[92mINFO [0m:      
+[92mINFO [0m:      [RUN 10462166090279263177]
+[92mINFO [0m:      Sending: query message (ID: 82d45b5dfa38a0558bd7ef2db16cbe43b6b73c81616bca5f19aee9e42264c9b5)
+[92mINFO [0m:      Sent successfully
+[92mINFO [0m:      SuperExec terminated gracefully.

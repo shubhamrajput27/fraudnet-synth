@@ -23,7 +23,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
-from ml.data.load import FEATURE_COLUMNS, LABEL_COLUMN, PROJECT_ROOT, load_config
+from ml.data.load import DATA_ROOT, FEATURE_COLUMNS, LABEL_COLUMN, PROJECT_ROOT, load_config
 from ml.evaluation.metrics import best_f1_threshold, compute_metrics
 from ml.models.classifier import build_model
 from ml.models.features import to_xy
@@ -38,7 +38,7 @@ SECONDARY = ["roc_auc", "accuracy"]
 # ------------------------------------------------------------ data ---
 
 def bank_dir(bank: str):
-    return PROJECT_ROOT / load_config("partition")["clients_dir"] / bank
+    return DATA_ROOT / load_config("partition")["clients_dir"] / bank
 
 
 def load_local(bank: str) -> dict[str, pd.DataFrame]:
@@ -82,7 +82,7 @@ def run(seed: int) -> dict:
     model_cfg = load_config("model")
     exp_cfg = load_config("experiments")
     banks = list(load_config("partition")["banks"])
-    processed = PROJECT_ROOT / load_config("partition")["processed_dir"]
+    processed = DATA_ROOT / load_config("partition")["processed_dir"]
     global_test = pd.read_csv(processed / "global_test.csv")
 
     local = {b: load_local(b) for b in banks}

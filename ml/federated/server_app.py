@@ -10,6 +10,7 @@ PR-AUC is logged for the convergence plot only; the final model is always the la
 import json
 import os
 import time
+from datetime import datetime
 
 import numpy as np
 import pandas as pd
@@ -18,7 +19,7 @@ from flwr.serverapp import Grid, ServerApp
 from flwr.serverapp.strategy import FedAvg
 from sklearn.metrics import average_precision_score, roc_auc_score
 
-from ml.data.load import PROJECT_ROOT, load_config
+from ml.data.load import DATA_ROOT, PROJECT_ROOT, load_config
 from ml.evaluation.metrics import compute_metrics
 from ml.federated.common import BANKS, best_threshold_from_counts, threshold_grid
 from ml.models.classifier import build_model
@@ -28,6 +29,28 @@ from ml.models.train import predict_scores, set_seed
 MODEL_CFG = load_config("model")
 FL_CFG = load_config("fl")
 ROUND_LOG: dict = {"train": [], "evaluate": []}   # per-bank metrics captured every round
+DEMO = {"on": False}                              # Step 8B: per-message logging for the live demo
+
+
+def demo_log(line: str) -> None:
+    """Print and append to results/demo_8b/server.log (in the server's own data folder)."""
+    if not DEMO["on"]:
+        return
+    print(line, flush=True)
+    log_dir = DATA_ROOT / "results" / "demo_8b"
+    log_dir.mkdir(parents=True, exist_ok=True)
+    with open(log_dir / "server.log", "a", encoding="utf-8") as f:
+        f.write(f"{datetime.now().isoformat(timespec='seconds')}  {line}\n")
+
+
+def describe_message(msg: Message) -> str:
+    """What a reply physically contains: record types, names and sizes (proof that no rows travel)."""
+    c = msg.content
+    parts = [f"ArrayRecord '{k}' ({len(list(v.keys()))} weight tensors, {v.count_bytes():,} B)"
+             for k, v in c.array_records.items()]
+    parts += [f"MetricRecord '{k}' ({len(list(v.keys()))} scalars)" for k, v in c.metric_records.items()]
+    parts += [f"ConfigRecord '{k}' (UNEXPECTED)" for k in c.config_records.keys()]
+    return ", ".join(parts) or "empty"
 
 
 def _bank_idx(msg: Message) -> int:
@@ -44,7 +67,14 @@ class OrderedFedAvg(FedAvg):
     """
 
     def aggregate_train(self, server_round, replies):
-        return super().aggregate_train(server_round, sorted(replies, key=_bank_idx))
+        replies = sorted(replies, key=_bank_idx)
+        for r in replies:
+            demo_log(f"Round {server_round}: update from {BANKS[_bank_idx(r)]} <- {describe_message(r)}")
+        arrays, metrics = super().aggregate_train(server_round, replies)
+        if arrays is not None:
+            demo_log(f"Round {server_round}: FedAvg of {len(replies)} bank updates (weighted by rows) -> "
+                     f"new global model ({arrays.count_bytes():,} B) sent to every bank")
+        return arrays, metrics
 
     def aggregate_evaluate(self, server_round, replies):
         return super().aggregate_evaluate(server_round, sorted(replies, key=_bank_idx))
@@ -91,23 +121,22 @@ def _query_all(grid: Grid, arrays: ArrayRecord, config: dict) -> list[MetricReco
     return [next(iter(r.content.metric_records.values())) for r in replies]
 
 
-def run_arm(grid: Grid, arm: str, augmented: bool, seed: int) -> dict:
+def run_arm(grid: Grid, arm: str, augmented: bool, seed: int, num_rounds: int, expected_banks: int = 4) -> dict:
     ROUND_LOG["train"].clear()
     ROUND_LOG["evaluate"].clear()
-    processed = PROJECT_ROOT / load_config("partition")["processed_dir"]
+    processed = DATA_ROOT / load_config("partition")["processed_dir"]
     global_test = pd.read_csv(processed / "global_test.csv")
 
     set_seed(seed)  # same initial weights as every Step 7 model (paired comparison)
     initial = ArrayRecord(build_model(MODEL_CFG).state_dict())
     strategy = OrderedFedAvg(fraction_train=FL_CFG["fraction_train"], fraction_evaluate=FL_CFG["fraction_evaluate"],
-                      min_train_nodes=4, min_evaluate_nodes=4, min_available_nodes=4,
+                      min_train_nodes=expected_banks, min_evaluate_nodes=expected_banks,
+                      min_available_nodes=expected_banks,
                       train_metrics_aggr_fn=_per_bank("train"), evaluate_metrics_aggr_fn=_per_bank("evaluate"))
     eval_fn, global_history = _global_eval_fn(global_test)
     base_cfg = {"augmented": augmented, "seed": seed}
 
     t0 = time.perf_counter()
-    # FRAUDNET_FL_ROUNDS exists only for quick smoke tests; reported runs use configs/fl.yaml.
-    num_rounds = int(os.environ.get("FRAUDNET_FL_ROUNDS", FL_CFG["num_rounds"]))
     result = strategy.start(grid=grid, initial_arrays=initial, num_rounds=num_rounds,
                             train_config=ConfigRecord(base_cfg), evaluate_config=ConfigRecord(base_cfg),
                             evaluate_fn=eval_fn)
@@ -121,6 +150,10 @@ def run_arm(grid: Grid, arm: str, augmented: bool, seed: int) -> dict:
     fp = np.sum([np.asarray(r["fp"]) for r in count_replies], axis=0)
     n_fraud = int(sum(r["n-fraud"] for r in count_replies))
     threshold, val_stats = best_threshold_from_counts(grid_vals, tp, fp, n_fraud)
+    for r in count_replies:
+        demo_log(f"Threshold step: {BANKS[int(r['bank-idx'])]} sent {len(r['tp'])} TP + {len(r['fp'])} FP "
+                 f"integer counts (no scores, no rows)")
+    demo_log(f"Threshold step: summed counts -> cut-off logit {threshold} (pooled val F1 {val_stats['val_f1']:.4f})")
 
     # Local test: each bank scores the final model on its OWN local test and returns scalars.
     local_replies = _query_all(grid, final, {**base_cfg, "task": "local-test", "threshold": threshold})
@@ -153,11 +186,27 @@ app = ServerApp()
 
 @app.main()
 def main(grid: Grid, context: Context) -> None:
-    arm = os.environ["FRAUDNET_FL_ARM"]            # set by ml/federated/run.py
+    rc = context.run_config  # deployment (`flwr run`, Step 8B): values from pyproject.toml / --run-config
+    # Simulation (ml/federated/run.py) passes the arm via environment variables instead.
+    arm = str(rc.get("arm", os.environ.get("FRAUDNET_FL_ARM", "")))
     augmented = arm == "arm4_federated_aug"
-    seed = int(os.environ.get("FRAUDNET_SEED", load_config("data")["seed"]))
-    res = run_arm(grid, arm, augmented, seed)
-    out_dir = PROJECT_ROOT / FL_CFG["results_dir"]
+    seed = int(rc.get("seed", os.environ.get("FRAUDNET_SEED", load_config("data")["seed"])))
+    # FRAUDNET_FL_ROUNDS is only for quick smoke tests; reported runs use configs/fl.yaml (30).
+    num_rounds = int(rc.get("num-rounds", os.environ.get("FRAUDNET_FL_ROUNDS", FL_CFG["num_rounds"])))
+    expected = int(rc.get("expected-banks", 4))
+    DEMO["on"] = bool(rc.get("demo-log", False))
+    demo_log(f"=== FraudNet-Synth demo run: {arm}, {num_rounds} rounds, waiting for {expected} banks; "
+             f"server data folder holds only the global test set ===")
+    t0 = time.perf_counter()
+    res = run_arm(grid, arm, augmented, seed, num_rounds, expected)
+    if DEMO["on"]:
+        g = res["global_test"]
+        demo_log(f"=== Done in {time.perf_counter() - t0:.0f}s. Global test (95 fraud): precision {g['precision']:.4f} "
+                 f"recall {g['recall']:.4f} F1 {g['f1']:.4f} PR-AUC {g['pr_auc']:.4f}. DEMO ONLY: reported results "
+                 f"come from the single-machine runs. ===")
+        out_dir = DATA_ROOT / "results" / "demo_8b"      # the demo never overwrites experiment results
+    else:
+        out_dir = PROJECT_ROOT / FL_CFG["results_dir"]
     out_dir.mkdir(parents=True, exist_ok=True)
     with open(out_dir / f"{arm}_seed{seed}.json", "w", encoding="utf-8") as f:
         json.dump(res, f, indent=2)

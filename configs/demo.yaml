@@ -1,0 +1,24 @@
+# Step 8B: multi-device federated DEMO (decisions D-033 to D-036). Demo only: reported
+# results always come from the single-machine simulation (Steps 7-9).
+
+server:
+  # The server laptop's IP on the hotspot. Override per session in .env (FRAUDNET_SERVER_IP)
+  # or with --server on the command line; find it with `ipconfig` on the server laptop.
+  default_ip: 127.0.0.1
+  fleet_port: 9092            # SuperNodes (banks) connect here: the ONLY port to open in Windows Firewall
+  control_port: 9093          # HTTP Control API for `flwr run` (bound to localhost: server laptop only)
+
+client:
+  first_runtime_port: 9094    # each SuperNode's local runtime API; on the SAME laptop each needs its own (9094, 9095, ...)
+
+run:
+  arm: arm4_federated_aug     # the headline configuration (real + validated synthetic)
+  num_rounds: 10              # short enough to watch live; the simulation uses 30 (D-029)
+
+export:
+  out_dir: exports            # git-ignored
+  files: [train.csv, val.csv, test.csv, synthetic_validated.csv]   # ready-made files for every bank (D-033)
+
+fallback:
+  sandbox_dir: demo_sandbox   # git-ignored; five isolated folders that stand in for five laptops
+  results_dir: results/demo_8b

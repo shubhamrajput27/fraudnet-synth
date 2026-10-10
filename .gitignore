@@ -29,3 +29,8 @@ Thumbs.db
 
 # Step 5: LLM response cache (synthetic rows stay inside the bank)
 data/clients/**/llm_cache/
+
+# Step 8B demo: bank handover zips and the one-laptop sandbox (never committed)
+exports/
+*.zip
+demo_sandbox/
