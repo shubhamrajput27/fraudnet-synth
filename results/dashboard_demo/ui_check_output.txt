@@ -1,0 +1,22 @@
+[  1s] browser: Edg/155.0.4283.45
+[  1s] logged in as guide; tabs: Overview | Six-arm results | Runs (live) | Test a transaction
+[  3s] screenshot 01_overview_guide.png
+[  4s] screenshot 02_six_arm_results.png
+[  5s] screenshot 02b_six_arm_results_light.png
+[  7s] guide sees "Start a run"? false
+[  7s] logged in as admin; tabs: Overview | Six-arm results | Runs (live) | Test a transaction | Audit log
+[  8s] run started from the UI: 20261011-191512-run-eef150
+[ 39s] screenshot 03_live_run_in_progress.png
+[ 39s] mid-run rounds visible: 9
+[ 60s] history row of this run: 10/11/2026, 7:15:12 PM	run	3 · 44	admin	
+✓
+Succeeded	30
+[ 60s] screenshot 04_live_run_finished.png
+[ 60s] finished run shows: Latest: round 30 of Arm 3 · federated, real, seed 44 → global PR-AUC 0.7116
+[ 62s] prediction: ⚠Flagged as fraud
+[ 62s] screenshot 05_predict_fraud_example.png
+[ 63s] screenshot 06_audit_log_admin.png
+[ 64s] logged in as bank_b; tabs: Overview | Six-arm results | Runs (live) | Test a transaction | Export
+[ 65s] screenshot 07_export_bank_b.png
+[ 65s] bank_b export page: You are the operator of Bank B. Its validated synthetic pool has 814 fraud rows.
+[ 65s] browser console: no errors or exceptions

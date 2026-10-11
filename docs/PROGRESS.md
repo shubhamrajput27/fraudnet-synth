@@ -15,7 +15,7 @@
 | 9 | Six-arm runner & results | 4→7 | ✅ Done (2026-10-11). 5 seeds; Phase 4 exit criterion met | [STEP_09](steps/STEP_09_six_arm_results.md) |
 | 10 | FastAPI orchestrator | 5 | ✅ Done (2026-10-11) | [STEP_10](steps/STEP_10_fastapi_orchestrator.md) |
 | 11 | Express gateway + MongoDB | 5 | ✅ Done (2026-10-11). Milestone: full run triggered + persisted via API | [STEP_11](steps/STEP_11_gateway_mongodb.md) |
-| 12 | React dashboard | 6 | Not started | |
+| 12 | React dashboard | 6 | ✅ Done (2026-10-11) | [STEP_12](steps/STEP_12_react_dashboard.md) |
 | 13 | Integration & full evaluation | 7 | Not started | |
 | 14 | Testing, docs, demo hardening | 8 | Not started | |
 | E1 | q-FedAvg (optional extension) | — | Only after Step 14, if confirmed | |

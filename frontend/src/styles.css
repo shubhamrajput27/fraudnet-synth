@@ -1,0 +1,160 @@
+/* Design tokens: light by default, dark when the OS asks for it. Chart colours live in theme.js. */
+:root {
+  color-scheme: light;
+  --page: #f9f9f7;
+  --surface: #fcfcfb;
+  --raised: #ffffff;
+  --ink: #0b0b0b;
+  --ink-2: #52514e;
+  --muted: #898781;
+  --line: rgba(11, 11, 11, 0.10);
+  --grid: #e1e0d9;
+  --accent: #2a78d6;
+  --accent-ink: #ffffff;
+  --good: #0ca30c;
+  --good-text: #006300;
+  --warning: #fab219;
+  --serious: #ec835a;
+  --critical: #d03b3b;
+  --augment: #2a78d6;
+  --schema: #1baf7a;
+  --radius: 10px;
+  --gap: 16px;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 14px;
+  line-height: 1.45;
+  color: var(--ink);
+  background: var(--page);
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --page: #0d0d0d;
+    --surface: #1a1a19;
+    --raised: #222220;
+    --ink: #ffffff;
+    --ink-2: #c3c2b7;
+    --line: rgba(255, 255, 255, 0.10);
+    --grid: #2c2c2a;
+    --accent: #3987e5;
+    --good-text: #0ca30c;
+    --augment: #3987e5;
+    --schema: #199e70;
+  }
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--page); }
+h1, h2, h3 { margin: 0; font-weight: 600; }
+h1 { font-size: 18px; }
+h2 { font-size: 16px; }
+h3 { font-size: 14px; }
+p { margin: 0; }
+.muted { color: var(--muted); }
+.ink2 { color: var(--ink-2); }
+.num { font-variant-numeric: tabular-nums; }
+
+/* ---- layout ---- */
+.topbar {
+  position: sticky; top: 0; z-index: 10;
+  display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px;
+  padding: 12px 20px; background: var(--surface); border-bottom: 1px solid var(--line);
+}
+.brand { display: flex; flex-direction: column; }
+.brand small { color: var(--muted); font-size: 12px; }
+.tabs { display: flex; flex-wrap: wrap; gap: 4px; flex: 1; }
+.tab {
+  border: 0; background: transparent; color: var(--ink-2); padding: 7px 12px; border-radius: 8px;
+  font: inherit; cursor: pointer;
+}
+.tab:hover { background: var(--line); }
+.tab[aria-current="page"] { background: var(--accent); color: var(--accent-ink); }
+.who { display: flex; align-items: center; gap: 10px; color: var(--ink-2); font-size: 13px; }
+main { padding: 20px; max-width: 1280px; margin: 0 auto; display: grid; gap: var(--gap); }
+
+.grid { display: grid; gap: var(--gap); }
+.grid.cols-4 { grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
+.grid.cols-2 { grid-template-columns: repeat(auto-fit, minmax(420px, 1fr)); }
+.card {
+  background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+  padding: 16px; display: grid; gap: 10px; min-width: 0; align-content: start;   /* don't spread content in tall cards */
+}
+.card header { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; flex-wrap: wrap; }
+.row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+
+/* ---- stat tiles ---- */
+.stats { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px 16px; }
+.stat .v { font-size: 20px; font-weight: 600; }
+.stat .k { color: var(--muted); font-size: 12px; }
+
+/* ---- badges ---- */
+.badge {
+  display: inline-flex; align-items: center; gap: 5px; padding: 2px 8px; border-radius: 999px;
+  font-size: 12px; font-weight: 600; border: 1px solid var(--line); color: var(--ink-2); white-space: nowrap;
+}
+.badge .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+.badge.augment .dot { background: var(--augment); }
+.badge.schema .dot { background: var(--schema); }
+
+/* ---- tables ---- */
+.table-wrap { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; font-size: 13px; }
+th, td { text-align: left; padding: 7px 10px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+td.wrap, th.wrap { white-space: normal; min-width: 140px; }
+table.compact th, table.compact td { padding: 6px 7px; }
+th { color: var(--muted); font-weight: 600; font-size: 12px; }
+td.num, th.num { text-align: right; }
+th.headline { color: var(--ink); }
+td.headline { font-weight: 600; }
+td.secondary, th.secondary { color: var(--muted); }
+tr.clickable { cursor: pointer; }
+tr.clickable:hover td { background: var(--line); }
+tr.selected td { background: color-mix(in srgb, var(--accent) 14%, transparent); }
+
+/* ---- forms ---- */
+input, select, button { font: inherit; }
+input[type="text"], input[type="password"], input[type="number"] {
+  padding: 7px 9px; border: 1px solid var(--line); border-radius: 8px; background: var(--raised); color: var(--ink);
+  min-width: 0;
+}
+.btn {
+  padding: 7px 14px; border-radius: 8px; border: 1px solid var(--line); background: var(--raised);
+  color: var(--ink); cursor: pointer; font-weight: 600;
+}
+.btn.primary { background: var(--accent); color: var(--accent-ink); border-color: transparent; }
+.btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.check { display: inline-flex; gap: 6px; align-items: center; color: var(--ink-2); }
+.field { display: grid; gap: 4px; }
+.field label { font-size: 12px; color: var(--muted); }
+.vgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 8px; }
+.vgrid input { width: 100%; }
+
+/* ---- messages ---- */
+.error { color: var(--critical); }
+.note { color: var(--ink-2); font-size: 13px; }
+.callout {
+  border-left: 3px solid var(--accent); padding: 8px 12px; background: var(--raised); border-radius: 0 8px 8px 0;
+  color: var(--ink-2); font-size: 13px;
+}
+.log { font-family: ui-monospace, Consolas, monospace; font-size: 12px; max-height: 180px; overflow: auto;
+       background: var(--raised); border: 1px solid var(--line); border-radius: 8px; padding: 8px; }
+
+/* ---- verdict / prediction ---- */
+.verdict { font-size: 22px; font-weight: 700; display: flex; align-items: center; gap: 8px; }
+.verdict.fraud { color: var(--critical); }
+.verdict.genuine { color: var(--good-text); }
+
+/* ---- login ---- */
+.login { min-height: 100vh; display: grid; place-items: center; padding: 16px; }
+.login form { width: min(380px, 100%); }
+
+/* ---- chart legend (HTML, so it's readable and accessible) ---- */
+.legend { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 12px; color: var(--ink-2); }
+.legend span { display: inline-flex; align-items: center; gap: 6px; }
+.legend i { width: 14px; height: 3px; border-radius: 2px; display: inline-block; }
+.legend i.box { height: 10px; width: 10px; border-radius: 3px; }
+
+@media (max-width: 640px) {
+  main { padding: 12px; }
+  .grid.cols-2 { grid-template-columns: 1fr; }
+}

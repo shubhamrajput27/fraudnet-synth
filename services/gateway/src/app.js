@@ -11,7 +11,9 @@ import rateLimit from "express-rate-limit";
 import mongoose from "mongoose";
 import { Readable } from "node:stream";
 import { WebSocketServer } from "ws";
-import { config } from "./config.js";
+import fs from "node:fs";
+import path from "node:path";
+import { PROJECT_ROOT, config } from "./config.js";
 import { login, requireAuth, requireRole, verifyToken } from "./auth.js";
 import { OrchestratorError, orch } from "./orchestrator.js";
 import { AuditEvent, Bank, ModelResult, Round, Run, ValidationReport, audit } from "./models.js";
@@ -120,6 +122,14 @@ export function createApp() {
   });
 
   app.use("/api", api);
+  app.use("/api", (req, res) => res.status(404).json({ error: "unknown API route" }));
+
+  // Tier 1: the built React dashboard (frontend/dist), served from the same address (D-052).
+  const dist = path.join(PROJECT_ROOT, "frontend", "dist");
+  if (fs.existsSync(dist)) {
+    app.use(express.static(dist, { index: "index.html", maxAge: "1h" }));
+    app.get(/^(?!\/api\/|\/ws\/).*/, (req, res) => res.sendFile(path.join(dist, "index.html")));
+  }
 
   // Errors: orchestrator errors keep their status; Mongoose validation -> 400; anything else -> 500.
   // eslint-disable-next-line no-unused-vars

@@ -313,3 +313,27 @@ Each entry records the decision, the alternatives considered, the reason and the
 - **Context:** database `fraudnet_synth` already held an earlier prototype's data (7 `runs` from 2026-08-03 with different fields; collections `round_metrics`, `client_metrics`, `validation_reports`).
 - **Decision:** `GATEWAY_MONGO_URI` (default `mongodb://localhost:27017/fraudnet_gateway`); the old database is left untouched. Tests use `fraudnet_gateway_test`.
 - **Alternatives:** share `fraudnet_synth` and filter (mixes two systems); delete the old data (not ours to delete).
+
+## D-051: Recharts for dashboard charts
+- **Date:** 2026-10-11 (Step 12). **Chosen by:** Shubham.
+- **Decision:** Recharts 3.10.1 (charts as React components; live data updates state).
+- **Alternatives:** Chart.js via react-chartjs-2 (canvas, configured with option objects).
+- **Reason:** simplest to read and explain; both are named in the architecture.
+
+## D-052: Vite + React, built and served by the gateway
+- **Date:** 2026-10-11 (Step 12). **Chosen by:** Shubham.
+- **Decision:** Vite 8 dev server (proxying `/api` and `/ws`) for development; `npm run build` → `frontend/dist`, served by the gateway at http://127.0.0.1:8200 with a fallback to the app for page routes.
+- **Alternatives:** Vite dev server during demos; Create React App (deprecated).
+- **Reason:** one address, no CORS, works offline, fewer moving parts in the viva.
+
+## D-053: JavaScript + plain CSS with design tokens
+- **Date:** 2026-10-11 (Step 12). **Chosen by:** Shubham.
+- **Decision:** JavaScript (JSX) and one CSS file with light/dark tokens; chart colours from the validated dataviz palette in `theme.js`, with fixed roles (real = blue, augmented = aqua, banks A–D = slots 1–4); status = icon + label.
+- **Alternatives:** TypeScript; Tailwind CSS.
+- **Reason:** same language as the gateway; nothing extra to learn or explain.
+
+## D-054: Login token in memory + sessionStorage
+- **Date:** 2026-10-11 (Step 12). **Chosen by:** Shubham.
+- **Decision:** survives a refresh in the same tab, cleared when the tab closes; automatic logout on any 401.
+- **Alternatives:** memory only (a refresh logs you out); localStorage (persists across browser restarts).
+- **Reason:** demo-friendly without long-lived tokens on a shared laptop.

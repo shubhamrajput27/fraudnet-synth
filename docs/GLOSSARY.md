@@ -140,3 +140,11 @@ Terms are added as each step introduces them. The step number is in brackets.
 | **Unique index / idempotent write** [11] | A database rule that forbids duplicates / a write that has the same effect if repeated (e.g. on reconnect). |
 | **Rate limiting** [11] | Capping attempts (e.g. logins per IP) to slow down password guessing. |
 | **Job watcher / relay** [11] | The gateway's own listener on a running job, which stores events and forwards them to browsers. |
+| **React component** [12] | A reusable piece of the screen (e.g. a bank card) written once and used many times. |
+| **State** [12] | Data a component remembers; when it changes, React redraws only what changed. |
+| **Single-page app (SPA)** [12] | A web app that loads once and swaps views without reloading the page. |
+| **Vite / build** [12] | The tool that turns source files into optimised browser files (`npm run build` → `dist/`). |
+| **Recharts** [12] | A React charting library; charts are components fed with data. |
+| **Design tokens** [12] | Named colours and sizes (e.g. `--surface`) defined once, with light and dark versions. |
+| **sessionStorage** [12] | Browser storage that lasts until the tab closes; holds our login token. |
+| **Headless browser / DevTools protocol** [12] | A browser without a window, controlled by a script; used to test the dashboard and take screenshots. |
