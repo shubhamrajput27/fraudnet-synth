@@ -14,5 +14,12 @@ threshold:                          # D-026: tuned on the model owner's own vali
 centralized:                        # D-027: pool the banks' LOCAL TRAIN parts (never the global train file,
   pool: local_train                 # which also contains the banks' local val/test rows -> leakage)
 
-seeds: [42]                         # Step 7 single seed; multi-seed repeats are decided in Step 9
+seeds: [42]                         # Step 7 single seed (Steps 7-8 scripts use the first entry)
+
+six_arms:                           # Step 9 (decisions D-037 to D-039)
+  seeds: [42, 43, 44, 45, 46]       # D-037: 5 seeds
+  # D-038: a seed changes ONLY training randomness: initial weights, batch order, FL client seeds and
+  # which validated synthetic rows are sampled. The split, the CTGAN/LLM pools and the gate stay fixed.
+  confidence: 0.95                  # D-039: paired differences with a t-based 95% CI
+  results_dir: results/six_arms
 results_dir: results/arms_isolated_centralized

@@ -230,3 +230,21 @@ Each entry records the decision, the alternatives considered, the reason and the
 - **Date:** 2026-10-10 (Step 8B).
 - **Decision:** Arm 4 (headline), 10 rounds, `expected-banks` configurable (2 for the two-laptop test), per-message logging on; demo outputs written to `results/demo_8b/` and never over experiment results.
 - **Reason:** 10 rounds ≈ 5–6 minutes in deployment (≈ 25–30 s per round), which fits the 5-minute demo. Demo numbers are never reported as results.
+
+## D-037: 5 seeds for the six-arm results
+- **Date:** 2026-10-11 (Step 9). **Approved by:** Shubham.
+- **Decision:** seeds 42–46 for every arm.
+- **Alternatives:** 10 seeds (tighter CIs, ~2× time); 3 seeds (std from 3 points is unreliable).
+- **Reason:** mean ± std and paired CIs at ~22 min of CPU. Seed 42 reproduces Steps 7–8 exactly.
+
+## D-038: Seeds vary training randomness only
+- **Date:** 2026-10-11 (Step 9). **Approved by:** Shubham.
+- **Decision:** a seed changes initial weights, batch order, FL client seeds and the 1:1 synthetic sample. The data split, bank shards, CTGAN/LLM pools and validation gate stay fixed.
+- **Alternatives:** re-running CTGAN per seed (LLM banks couldn't follow, which would be unequal); re-partitioning per seed (would require Steps 2–6 per seed).
+- **Reason:** isolates training noise and is feasible on the free tier. Disclosed as a limitation.
+
+## D-039: Paired differences with t-based 95% confidence intervals
+- **Date:** 2026-10-11 (Step 9). **Approved by:** Shubham.
+- **Decision:** for each comparison, per-seed paired differences: mean, std, CI = mean ± t(0.975, n−1)·std/√n, and "improved in k of N seeds". A difference is "clear" only if the CI excludes 0. The number of comparisons (56) and the expected chance hits (~3) are reported.
+- **Alternatives:** mean ± std only (easy to over-read); Wilcoxon signed-rank (with n = 5 the smallest two-sided p is 0.0625, so it can never reach p < 0.05).
+- **Reason:** simple, honest and explainable in a viva.

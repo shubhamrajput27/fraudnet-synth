@@ -11,6 +11,7 @@ import json
 import os
 import time
 from datetime import datetime
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
@@ -206,7 +207,8 @@ def main(grid: Grid, context: Context) -> None:
                  f"come from the single-machine runs. ===")
         out_dir = DATA_ROOT / "results" / "demo_8b"      # the demo never overwrites experiment results
     else:
-        out_dir = PROJECT_ROOT / FL_CFG["results_dir"]
+        # The Step 9 runner redirects simulation output into its own per-seed folder.
+        out_dir = Path(os.environ.get("FRAUDNET_FL_OUT_DIR", PROJECT_ROOT / FL_CFG["results_dir"]))
     out_dir.mkdir(parents=True, exist_ok=True)
     with open(out_dir / f"{arm}_seed{seed}.json", "w", encoding="utf-8") as f:
         json.dump(res, f, indent=2)

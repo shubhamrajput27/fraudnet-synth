@@ -113,3 +113,10 @@ Terms are added as each step introduces them. The step number is in brackets.
 | **TLS / insecure mode** [8B] | Encrypted connections / Flower without encryption, used only on our private demo hotspot. |
 | **Firewall inbound rule** [8B] | Permission for other devices to connect to a port on this laptop. Needed only on the server (port 9092). |
 | **AP / client isolation** [8B] | A hotspot setting that blocks devices from talking to each other. If on, the demo can't connect. |
+| **Seed (multi-seed run)** [9] | The starting number for randomness. Repeating with several seeds measures how much results depend on luck. |
+| **Mean ± standard deviation** [9] | The average over seeds and the typical spread around it. |
+| **Paired difference** [9] | Comparing two arms seed by seed (same seed), so shared luck cancels. |
+| **95% confidence interval (t-based)** [9] | A range likely to contain the true average difference. If it includes 0, no effect can be claimed. |
+| **Multiple comparisons** [9] | Making many comparisons produces some "significant-looking" results by chance (~5% at 95% confidence). |
+| **Phase 4 exit criterion** [9] | All six arms runnable end-to-end from one command; met in Step 9. |
+| **Price of privacy** [9] | The performance gap between federated (no data shared) and centralized (data pooled) training. |
