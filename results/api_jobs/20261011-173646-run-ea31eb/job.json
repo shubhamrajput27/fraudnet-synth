@@ -1,0 +1,102 @@
+{
+  "id": "20261011-173646-run-ea31eb",
+  "type": "run",
+  "params": {
+    "arms": "all",
+    "seeds": [
+      42
+    ]
+  },
+  "status": "succeeded",
+  "created": "2026-10-11T12:06:46+00:00",
+  "started": "2026-10-11T12:06:46+00:00",
+  "finished": "2026-10-11T12:12:45+00:00",
+  "return_code": 0,
+  "result": {
+    "arms": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ],
+    "seeds": [
+      42
+    ],
+    "global_test": {
+      "seed42/arm1_isolated_real/bank_a": {
+        "precision": 0.8333333333333334,
+        "recall": 0.7894736842105263,
+        "f1": 0.8108108108108109,
+        "pr_auc": 0.712039604995057
+      },
+      "seed42/arm1_isolated_real/bank_b": {
+        "precision": 0.8947368421052632,
+        "recall": 0.7157894736842105,
+        "f1": 0.7953216374269005,
+        "pr_auc": 0.7145234236129122
+      },
+      "seed42/arm1_isolated_real/bank_c": {
+        "precision": 0.8688524590163934,
+        "recall": 0.5578947368421052,
+        "f1": 0.6794871794871795,
+        "pr_auc": 0.7123719169326665
+      },
+      "seed42/arm1_isolated_real/bank_d": {
+        "precision": 0.7878787878787878,
+        "recall": 0.2736842105263158,
+        "f1": 0.40625,
+        "pr_auc": 0.6861408210893263
+      },
+      "seed42/arm2_isolated_aug/bank_a": {
+        "precision": 0.7653061224489796,
+        "recall": 0.7894736842105263,
+        "f1": 0.7772020725388601,
+        "pr_auc": 0.7039423969220859
+      },
+      "seed42/arm2_isolated_aug/bank_b": {
+        "precision": 0.8933333333333333,
+        "recall": 0.7052631578947368,
+        "f1": 0.788235294117647,
+        "pr_auc": 0.7274953968351878
+      },
+      "seed42/arm2_isolated_aug/bank_c": {
+        "precision": 0.8688524590163934,
+        "recall": 0.5578947368421052,
+        "f1": 0.6794871794871795,
+        "pr_auc": 0.7095019857900119
+      },
+      "seed42/arm2_isolated_aug/bank_d": {
+        "precision": 0.8095238095238095,
+        "recall": 0.35789473684210527,
+        "f1": 0.49635036496350365,
+        "pr_auc": 0.6717700622947376
+      },
+      "seed42/arm5_central_real/pooled": {
+        "precision": 0.8918918918918919,
+        "recall": 0.6947368421052632,
+        "f1": 0.7810650887573964,
+        "pr_auc": 0.7230776520953404
+      },
+      "seed42/arm6_central_aug/pooled": {
+        "precision": 0.8787878787878788,
+        "recall": 0.6105263157894737,
+        "f1": 0.7204968944099379,
+        "pr_auc": 0.7247881288961825
+      },
+      "seed42/arm3_federated_real/federated": {
+        "precision": 0.8641975308641975,
+        "recall": 0.7368421052631579,
+        "f1": 0.7954545454545454,
+        "pr_auc": 0.7261349578423669
+      },
+      "seed42/arm4_federated_aug/federated": {
+        "precision": 0.8,
+        "recall": 0.7578947368421053,
+        "f1": 0.7783783783783784,
+        "pr_auc": 0.7230669078114659
+      }
+    }
+  }
+}

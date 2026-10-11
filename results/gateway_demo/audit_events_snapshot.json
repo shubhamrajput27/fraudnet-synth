@@ -1,0 +1,74 @@
+[
+ {
+  "user": "admin",
+  "role": "admin",
+  "action": "login",
+  "target": "",
+  "allowed": true,
+  "detail": "",
+  "time": "2026-10-11T12:06:45.386Z"
+ },
+ {
+  "user": "guide",
+  "role": "viewer",
+  "action": "login",
+  "target": "",
+  "allowed": true,
+  "detail": "",
+  "time": "2026-10-11T12:06:46.056Z"
+ },
+ {
+  "user": "bank_b",
+  "role": "bank_operator",
+  "action": "login",
+  "target": "",
+  "allowed": true,
+  "detail": "",
+  "time": "2026-10-11T12:06:46.572Z"
+ },
+ {
+  "user": "guide",
+  "role": "viewer",
+  "action": "forbidden:POST /api/runs",
+  "target": "",
+  "allowed": false,
+  "detail": "",
+  "time": "2026-10-11T12:06:46.586Z"
+ },
+ {
+  "user": "admin",
+  "role": "admin",
+  "action": "start:run",
+  "target": "20261011-173646-run-ea31eb",
+  "allowed": true,
+  "detail": "{\"arms\":\"all\",\"seeds\":[42]}",
+  "time": "2026-10-11T12:06:46.626Z"
+ },
+ {
+  "user": "bank_b",
+  "role": "bank_operator",
+  "action": "export",
+  "target": "bank_b",
+  "allowed": true,
+  "detail": "",
+  "time": "2026-10-11T12:12:46.024Z"
+ },
+ {
+  "user": "bank_b",
+  "role": "bank_operator",
+  "action": "export",
+  "target": "bank_c",
+  "allowed": false,
+  "detail": "not this bank's operator",
+  "time": "2026-10-11T12:12:46.040Z"
+ },
+ {
+  "user": "guide",
+  "role": "viewer",
+  "action": "forbidden:GET /api/audit",
+  "target": "",
+  "allowed": false,
+  "detail": "",
+  "time": "2026-10-11T12:12:46.049Z"
+ }
+]

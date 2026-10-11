@@ -283,3 +283,33 @@ Each entry records the decision, the alternatives considered, the reason and the
 - **Decision:** export returns only that bank's `synthetic_validated.csv` (never real rows), only when `X-Bank-Scope` (set by the gateway from the user's role) equals the bank; every attempt is logged in `results/api_audit/exports.log`.
 - **Alternatives:** aggregates-only export; any logged-in user (contradicts the invariant).
 - **Reason:** data goes only to its owner. Disclosed in the report.
+
+## D-046: JWT bearer tokens with bcrypt-hashed passwords
+- **Date:** 2026-10-11 (Step 11).
+- **Decision:** login checks the bcrypt hash (cost 12) and issues an HS256 JWT {username, role, bank}, valid 8 h, sent as `Authorization: Bearer`. Login is rate-limited (20 / 15 min) and audited; errors don't reveal whether a username exists. The secret and demo passwords live in `.env`.
+- **Alternatives:** session cookies (needs session storage and CSRF handling); httpOnly-cookie JWT (better against XSS, but more set-up for the WebSocket).
+- **Reason:** simple, stateless and easy to explain. Local deployment.
+
+## D-047: Roles: admin, four bank operators, viewer
+- **Date:** 2026-10-11 (Step 11). **Chosen by:** Shubham.
+- **Decision:** `admin` (start runs, generation, model preparation; cancel; audit log); `bank_operator` for bank_a–bank_d (read, plus export of their own bank's synthetic data, with scope taken from the token); `viewer` (guide, read-only).
+- **Alternatives:** admin + viewer only; a single demo user.
+- **Reason:** demonstrates role-based access and enforces D-045 end to end.
+
+## D-048: Mongoose schemas, rounds in their own collection
+- **Date:** 2026-10-11 (Step 11). **Chosen by:** Shubham (Mongoose).
+- **Decision:** collections users, runs, rounds, modelresults, banks, validationreports, auditevents; unique (jobId, arm, seed, round) for rounds; only metrics and metadata stored, never transaction rows.
+- **Alternatives:** the official driver without schemas; rounds embedded in run documents (would grow to hundreds per run).
+- **Reason:** explainable schema, data integrity, idempotent writes.
+
+## D-049: Server-side job watcher + plain WebSocket relay
+- **Date:** 2026-10-11 (Step 11). **Chosen by:** Shubham (plain WebSocket).
+- **Decision:** the gateway watches each job's FastAPI WebSocket itself, persists events in order, reconnects and resumes after restarts, and relays events to browsers at `/ws/runs/:jobId?token=…` with catch-up from MongoDB.
+- **Alternatives:** Socket.IO; Server-Sent Events; browsers connecting to FastAPI directly (would expose Tier 3 and the key).
+- **Reason:** complete history without an open browser; the same protocol end to end.
+
+## D-050: Gateway uses its own MongoDB database `fraudnet_gateway`
+- **Date:** 2026-10-11 (Step 11). **Chosen by:** Shubham.
+- **Context:** database `fraudnet_synth` already held an earlier prototype's data (7 `runs` from 2026-08-03 with different fields; collections `round_metrics`, `client_metrics`, `validation_reports`).
+- **Decision:** `GATEWAY_MONGO_URI` (default `mongodb://localhost:27017/fraudnet_gateway`); the old database is left untouched. Tests use `fraudnet_gateway_test`.
+- **Alternatives:** share `fraudnet_synth` and filter (mixes two systems); delete the old data (not ours to delete).

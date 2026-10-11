@@ -1,2 +1,4 @@
 {"time": "2026-10-11T11:05:06+00:00", "user": "pradeepa", "scope": "bank_c", "bank": "bank_b", "allowed": false}
 {"time": "2026-10-11T11:05:06+00:00", "user": "prachi", "scope": "bank_b", "bank": "bank_b", "allowed": true}
+{"time": "2026-10-11T11:54:29+00:00", "user": "bank_b", "scope": "bank_b", "bank": "bank_b", "allowed": true}
+{"time": "2026-10-11T12:12:46+00:00", "user": "bank_b", "scope": "bank_b", "bank": "bank_b", "allowed": true}

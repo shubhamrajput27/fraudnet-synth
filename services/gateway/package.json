@@ -1,0 +1,30 @@
+{
+  "name": "fraudnet-gateway",
+  "version": "1.0.0",
+  "description": "FraudNet-Synth Tier 2 gateway: auth (JWT + roles), run management, MongoDB persistence, proxy to the FastAPI orchestrator",
+  "type": "module",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "seed": "node src/seed.js",
+    "test": "node --test --test-concurrency=1 test/*.test.js"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "bcryptjs": "3.0.3",
+    "dotenv": "18.0.7",
+    "express": "5.3.0",
+    "express-rate-limit": "8.7.1",
+    "helmet": "8.3.0",
+    "jsonwebtoken": "9.0.3",
+    "mongoose": "9.11.1",
+    "ws": "8.22.0"
+  },
+  "devDependencies": {
+    "supertest": "7.3.1"
+  }
+}

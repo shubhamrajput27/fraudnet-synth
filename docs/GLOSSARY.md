@@ -130,3 +130,13 @@ Terms are added as each step introduces them. The step number is in brackets.
 | **Internal key** [10] | A shared secret between the gateway and FastAPI; never shown to users. |
 | **Replay vs regenerate** [10] | Deterministically rebuild and compare with the experiment files / create genuinely new versioned data. |
 | **Audit log** [10] | A record of who tried to export what, and whether it was allowed. |
+| **Gateway (Tier 2)** [11] | The front door: login, roles, history and auditing; forwards allowed requests to FastAPI. |
+| **Node.js / Express** [11] | JavaScript on the server / a small framework for web routes. |
+| **JWT (JSON Web Token)** [11] | A signed, expiring "badge" (username, role, bank) sent with each request; tampering breaks the signature. |
+| **bcrypt** [11] | A slow one-way password hash; only hashes are stored. |
+| **RBAC (role-based access control)** [11] | Permissions attached to roles (admin, bank operator, viewer) rather than to individual people. |
+| **MongoDB / collection / document** [11] | A JSON document database / a group of documents / one record. |
+| **Mongoose schema** [11] | Field types, required fields, allowed values and indexes for MongoDB documents. |
+| **Unique index / idempotent write** [11] | A database rule that forbids duplicates / a write that has the same effect if repeated (e.g. on reconnect). |
+| **Rate limiting** [11] | Capping attempts (e.g. logins per IP) to slow down password guessing. |
+| **Job watcher / relay** [11] | The gateway's own listener on a running job, which stores events and forwards them to browsers. |

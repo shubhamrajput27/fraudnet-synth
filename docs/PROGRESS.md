@@ -14,7 +14,7 @@
 | 8B | Multi-device federated demo (live demo only, D-020) | 4 → demo | 🔄 Built 2026-10-10. One-laptop fallback ✅; 2-laptop test (Prachi) ✅ 2026-10-11; 4-laptop test pending (Monday) | [STEP_08B](steps/STEP_08B_multi_device_demo.md) |
 | 9 | Six-arm runner & results | 4→7 | ✅ Done (2026-10-11). 5 seeds; Phase 4 exit criterion met | [STEP_09](steps/STEP_09_six_arm_results.md) |
 | 10 | FastAPI orchestrator | 5 | ✅ Done (2026-10-11) | [STEP_10](steps/STEP_10_fastapi_orchestrator.md) |
-| 11 | Express gateway + MongoDB | 5 | Not started | |
+| 11 | Express gateway + MongoDB | 5 | ✅ Done (2026-10-11). Milestone: full run triggered + persisted via API | [STEP_11](steps/STEP_11_gateway_mongodb.md) |
 | 12 | React dashboard | 6 | Not started | |
 | 13 | Integration & full evaluation | 7 | Not started | |
 | 14 | Testing, docs, demo hardening | 8 | Not started | |

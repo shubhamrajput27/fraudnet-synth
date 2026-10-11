@@ -1,0 +1,50 @@
+[   2s] logged in as admin, guide (viewer), bank_b (operator)
+[   2s] viewer tries to start a run -> 403
+[   2s] admin starts ALL SIX arms, seed 42 -> 202, job 20261011-173646-run-ea31eb, requestedBy admin
+[   2s] status: queued
+[   2s] status: running
+[   8s] message: seed 42: training arm1_isolated_real, arm2_isolated_aug, arm5_central_real, arm6_central_aug
+[ 200s] model done: arm1_isolated_real   bank_a      F1 0.8108  PR-AUC 0.7120
+[ 200s] model done: arm1_isolated_real   bank_b      F1 0.7953  PR-AUC 0.7145
+[ 200s] model done: arm1_isolated_real   bank_c      F1 0.6795  PR-AUC 0.7124
+[ 200s] model done: arm1_isolated_real   bank_d      F1 0.4063  PR-AUC 0.6861
+[ 200s] model done: arm2_isolated_aug    bank_a      F1 0.7772  PR-AUC 0.7039
+[ 200s] model done: arm2_isolated_aug    bank_b      F1 0.7882  PR-AUC 0.7275
+[ 200s] model done: arm2_isolated_aug    bank_c      F1 0.6795  PR-AUC 0.7095
+[ 200s] model done: arm2_isolated_aug    bank_d      F1 0.4964  PR-AUC 0.6718
+[ 200s] model done: arm5_central_real    pooled      F1 0.7811  PR-AUC 0.7231
+[ 200s] model done: arm6_central_aug     pooled      F1 0.7205  PR-AUC 0.7248
+[ 200s] message: seed 42: federated simulation arm3_federated_real
+[ 231s] live round  1 arm3_federated_real: global PR-AUC 0.7060 (banks ABCD)
+[ 246s] live round 10 arm3_federated_real: global PR-AUC 0.7205 (banks ABCD)
+[ 262s] live round 20 arm3_federated_real: global PR-AUC 0.7254 (banks ABCD)
+[ 279s] live round 30 arm3_federated_real: global PR-AUC 0.7261 (banks ABCD)
+[ 282s] model done: arm3_federated_real  federated   F1 0.7955  PR-AUC 0.7261
+[ 282s] message: seed 42: federated simulation arm4_federated_aug
+[ 308s] live round  1 arm4_federated_aug: global PR-AUC 0.7089 (banks ABCD)
+[ 323s] live round 10 arm4_federated_aug: global PR-AUC 0.7274 (banks ABCD)
+[ 341s] live round 20 arm4_federated_aug: global PR-AUC 0.7266 (banks ABCD)
+[ 357s] live round 30 arm4_federated_aug: global PR-AUC 0.7231 (banks ABCD)
+[ 360s] model done: arm4_federated_aug   federated   F1 0.7784  PR-AUC 0.7231
+[ 361s] status: succeeded
+[ 361s] end: succeeded
+[ 361s] MongoDB runs: status succeeded, requestedBy admin, roundsReceived 60, started 2026-10-11T12:06:46.686Z, finished 2026-10-11T12:12:45.879Z
+[ 361s] MongoDB rounds: 60 documents (arm3_federated_real: 30, arm4_federated_aug: 30); live stream delivered 60
+[ 361s] MongoDB modelresults: 12 models; live stream delivered 12
+        arm1_isolated_real   bank_a      P 0.8333 R 0.7895 F1 0.8108 PR-AUC 0.7120
+        arm1_isolated_real   bank_b      P 0.8947 R 0.7158 F1 0.7953 PR-AUC 0.7145
+        arm1_isolated_real   bank_c      P 0.8689 R 0.5579 F1 0.6795 PR-AUC 0.7124
+        arm1_isolated_real   bank_d      P 0.7879 R 0.2737 F1 0.4063 PR-AUC 0.6861
+        arm2_isolated_aug    bank_a      P 0.7653 R 0.7895 F1 0.7772 PR-AUC 0.7039
+        arm2_isolated_aug    bank_b      P 0.8933 R 0.7053 F1 0.7882 PR-AUC 0.7275
+        arm2_isolated_aug    bank_c      P 0.8689 R 0.5579 F1 0.6795 PR-AUC 0.7095
+        arm2_isolated_aug    bank_d      P 0.8095 R 0.3579 F1 0.4964 PR-AUC 0.6718
+        arm3_federated_real  federated   P 0.8642 R 0.7368 F1 0.7955 PR-AUC 0.7261
+        arm4_federated_aug   federated   P 0.8000 R 0.7579 F1 0.7784 PR-AUC 0.7231
+        arm5_central_real    pooled      P 0.8919 R 0.6947 F1 0.7811 PR-AUC 0.7231
+        arm6_central_aug     pooled      P 0.8788 R 0.6105 F1 0.7205 PR-AUC 0.7248
+[ 361s] collection sizes: {"users":6,"runs":1,"rounds":60,"modelresults":12,"banks":4,"validationreports":4,"auditevents":5}
+[ 361s] bank_b exports bank_b -> 200
+[ 361s] bank_b exports bank_c -> 403
+[ 361s] guide reads audit log -> 403
+[ 362s] guide predicts the fraud example -> is_fraud true, logit 8.5424 (threshold 3.75)
