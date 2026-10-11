@@ -1,0 +1,9 @@
+# Step 10: FastAPI orchestration service (Tier 3). Decisions D-040 to D-045.
+host: 127.0.0.1                 # D-044: localhost only; reached by the Node gateway (Step 11), never directly
+port: 8100
+jobs_dir: results/api_jobs      # one folder per job: params, log, events, result (aggregates only)
+audit_dir: results/api_audit    # export audit log
+max_running_jobs: 1             # heavy CPU work: one job at a time, the rest queue
+predict_model: models/predict_arm3_seed42.pt   # D-040: federated Arm 3 (seed 42) final model
+generations_subdir: generations # D-041: replay/regenerate output INSIDE each bank folder
+ws_poll_seconds: 0.5

@@ -1,0 +1,57 @@
+SYSTEM:
+You generate synthetic tabular data for academic fraud-detection research. You always answer with a single JSON object and nothing else.
+
+USER:
+Generate 15 NEW synthetic credit-card FRAUD transactions (batch 1).
+
+DATASET SCHEMA (30 numeric columns, in this exact order):
+Time, V1, V2, V3, V4, V5, V6, V7, V8, V9, V10, V11, V12, V13, V14, V15, V16, V17, V18, V19, V20, V21, V22, V23, V24, V25, V26, V27, V28, Amount
+- Time: seconds elapsed since the start of a 48-hour window, a whole number from 0 to 172792.
+- V1..V28: anonymised PCA components (unitless real numbers, no human meaning).
+- Amount: transaction amount, >= 0, two decimals.
+Every row you generate is a fraud case.
+
+STATISTICS of the bank's real fraud transactions (n = 28).
+p10/p50/p90 are the 10th, 50th (median) and 90th percentiles:
+column | mean | std | p10 | p50 | p90
+Time | 67549.43 | 48829.48 | 17231.7 | 46126.5 | 150365.4
+V1 | -5.81 | 8.28 | -18.54 | -3.08 | 0.46
+V2 | 4.16 | 4.47 | -0.03 | 2.61 | 10.66
+V3 | -7.38 | 8.42 | -19.31 | -4.82 | -0.67
+V4 | 4.73 | 3.2 | 1.12 | 3.83 | 8.33
+V5 | -3.89 | 6.58 | -14.03 | -1.07 | 0.96
+V6 | -1.35 | 1.84 | -3.65 | -1.35 | 0.83
+V7 | -5.78 | 7.52 | -19.3 | -2.94 | 0.31
+V8 | 1.46 | 5.35 | -2.33 | 0.57 | 5.33
+V9 | -2.75 | 2.91 | -7.06 | -2.38 | 0.43
+V10 | -5.61 | 5.19 | -12.69 | -4.51 | 0.4
+V11 | 3.98 | 2.63 | 0.89 | 3.68 | 7.38
+V12 | -6.75 | 4.72 | -14.01 | -6.06 | -0.45
+V13 | -0.1 | 1.05 | -1.3 | -0.15 | 1.16
+V14 | -6.84 | 4.5 | -13.71 | -5.46 | -1.89
+V15 | -0.05 | 0.95 | -1.3 | 0.08 | 1.14
+V16 | -4.51 | 4.02 | -9.76 | -4.21 | 0.95
+V17 | -7.69 | 7.23 | -18.42 | -6.05 | 0.59
+V18 | -2.69 | 3.16 | -7.28 | -2.34 | 1.04
+V19 | 0.7 | 1.5 | -1.12 | 0.64 | 2.63
+V20 | 0.39 | 0.96 | -0.54 | 0.28 | 1.7
+V21 | 0.41 | 1.65 | -1.98 | 0.62 | 2.07
+V22 | 0.13 | 0.83 | -0.6 | 0.21 | 0.94
+V23 | -0.15 | 0.96 | -0.9 | -0.12 | 0.62
+V24 | -0.06 | 0.44 | -0.68 | -0.05 | 0.51
+V25 | 0.16 | 0.78 | -0.64 | 0.15 | 0.93
+V26 | 0.05 | 0.47 | -0.51 | 0.14 | 0.62
+V27 | -0.12 | 1.6 | -2.76 | 0.18 | 1.31
+V28 | 0.0 | 0.62 | -1.0 | 0.16 | 0.65
+Amount | 124.79 | 240.7 | 1.0 | 18.96 | 457.34
+
+INSTRUCTIONS
+1. Each row must follow these statistics as a distribution: about 10% of values below p10,
+   about 10% above p90, centred near p50, with the given spread (std). Do not make every row average.
+   Values outside the p10-p90 range are expected in the tails.
+2. Make rows varied: no two rows may be identical or near-identical, and do not reuse a value
+   pattern from one row in another.
+3. Use 3 decimals for V1..V28, 2 decimals for Amount, whole numbers for Time.
+   Use irregular digits, like real measurements; avoid patterned sequences such as 1.234, 5.432, 9.876, 3.210.
+4. Output ONLY this JSON shape, with 15 rows and all 30 named fields in every row:
+   {"rows": [{"Time": ..., "V1": ..., ..., "V28": ..., "Amount": ...}, ...]}. No comments.

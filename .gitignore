@@ -34,3 +34,7 @@ data/clients/**/llm_cache/
 exports/
 *.zip
 demo_sandbox/
+
+# Step 10: saved predict model weights and per-bank generation outputs
+models/*.pt
+data/clients/**/generations/

@@ -133,9 +133,13 @@ def plot_distributions(real: pd.DataFrame, synth: pd.DataFrame, cols, bank: str,
     plt.close(fig)
 
 
-def run_bank(bank: str, cfg: dict, seed: int) -> dict:
+def run_bank(bank: str, cfg: dict, seed: int, art_dir: Path | None = None, report_dir: Path | None = None) -> dict:
+    """art_dir: where the synthesizer + candidates go (default: the bank folder; the API's replay /
+    versioned regeneration passes a sub-folder INSIDE the bank folder). report_dir: aggregate reports."""
     bank_dir = PROJECT_ROOT / load_config("partition")["clients_dir"] / bank
-    results_dir = PROJECT_ROOT / cfg["results_dir"]
+    art_dir = Path(art_dir) if art_dir else bank_dir
+    art_dir.mkdir(parents=True, exist_ok=True)
+    results_dir = Path(report_dir) if report_dir else PROJECT_ROOT / cfg["results_dir"]
     results_dir.mkdir(parents=True, exist_ok=True)
 
     real = load_bank_fraud(bank_dir)
@@ -148,10 +152,10 @@ def run_bank(bank: str, cfg: dict, seed: int) -> dict:
     sample_s = time.perf_counter() - t0
 
     # Everything derived from real rows stays INSIDE the bank folder.
-    synth_model.save(bank_dir / "ctgan_synthesizer.pkl")
+    synth_model.save(art_dir / "ctgan_synthesizer.pkl")
     out = candidates[FEATURE_COLUMNS].copy()
     out[LABEL_COLUMN] = 1
-    out.to_csv(bank_dir / "synthetic_candidates.csv", index=False)
+    out.to_csv(art_dir / "synthetic_candidates.csv", index=False)
 
     losses = synth_model.get_loss_values()
     plot_losses(losses, bank, results_dir / f"{bank}_losses.png")

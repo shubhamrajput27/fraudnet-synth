@@ -10,6 +10,7 @@ Outputs in results/six_arms/:
     six_arm_f1_prauc.png, paired_deltas.png, convergence_seeds.png, summary.json
 """
 import json
+from pathlib import Path
 
 import matplotlib
 
@@ -37,8 +38,8 @@ def _row(seed, arm, model, eval_set, m):
             **{k: int(m[k]) for k in ("tp", "fp", "fn")}}
 
 
-def load_long(root) -> tuple[pd.DataFrame, dict]:
-    seeds = load_config("experiments")["six_arms"]["seeds"]
+def load_long(root, seeds=None) -> tuple[pd.DataFrame, dict]:
+    seeds = seeds or load_config("experiments")["six_arms"]["seeds"]
     rows, curves = [], {"arm3": [], "arm4": []}
     for s in seeds:
         d = root / f"seed{s}"
@@ -228,10 +229,13 @@ def plot_convergence(curves: dict, central_mean: float, out):
 
 # ------------------------------------------------------------------ main ---
 
-def build_report():
-    cfg = load_config("experiments")["six_arms"]
-    root = PROJECT_ROOT / cfg["results_dir"]
-    long, curves = load_long(root)
+def build_report(root=None, seeds=None):
+    """Default: the Step 9 results. The API passes its own job folder and seeds."""
+    cfg = dict(load_config("experiments")["six_arms"])
+    if seeds:
+        cfg["seeds"] = list(seeds)
+    root = Path(root) if root else PROJECT_ROOT / cfg["results_dir"]
+    long, curves = load_long(root, cfg["seeds"])
     long.to_csv(root / "long_results.csv", index=False)
     gt, lt = global_table(long), local_table(long)
     comp = comparisons(long, cfg["confidence"])

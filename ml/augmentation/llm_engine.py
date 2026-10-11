@@ -170,11 +170,16 @@ def call_with_backoff(client, request: dict, rl: dict) -> tuple[object, int]:
             time.sleep(wait)
 
 
-def generate_for_bank(bank: str, cfg: dict, seed: int, client=None) -> dict:
+def generate_for_bank(bank: str, cfg: dict, seed: int, client=None, art_dir: Path | None = None,
+                      cache_dir: Path | None = None, report_dir: Path | None = None) -> dict:
+    """art_dir: where candidates go (default: the bank folder). cache_dir: which response cache to
+    replay from / fill (default: the bank's llm_cache). report_dir: aggregate reports."""
     bank_dir = PROJECT_ROOT / load_config("partition")["clients_dir"] / bank
-    cache_dir = bank_dir / "llm_cache"
-    cache_dir.mkdir(exist_ok=True)
-    results_dir = PROJECT_ROOT / cfg["results_dir"]
+    art_dir = Path(art_dir) if art_dir else bank_dir
+    art_dir.mkdir(parents=True, exist_ok=True)
+    cache_dir = Path(cache_dir) if cache_dir else bank_dir / "llm_cache"
+    cache_dir.mkdir(parents=True, exist_ok=True)
+    results_dir = Path(report_dir) if report_dir else PROJECT_ROOT / cfg["results_dir"]
     results_dir.mkdir(parents=True, exist_ok=True)
     gen, rl, schema = cfg["generation"], cfg["rate_limit"], cfg["schema"]
     model = os.environ["GROQ_MODEL"]
@@ -262,7 +267,7 @@ def generate_for_bank(bank: str, cfg: dict, seed: int, client=None) -> dict:
     cand = pd.DataFrame(rows[: gen["n_candidates"]], columns=FEATURE_COLUMNS)
     out = cand.copy()
     out[LABEL_COLUMN] = 1
-    out.to_csv(bank_dir / "synthetic_candidates.csv", index=False)
+    out.to_csv(art_dir / "synthetic_candidates.csv", index=False)
 
     lo = np.array([bounds[c][0] for c in FEATURE_COLUMNS])
     hi = np.array([bounds[c][1] for c in FEATURE_COLUMNS])

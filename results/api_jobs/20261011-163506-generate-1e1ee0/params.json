@@ -1,0 +1,9 @@
+{
+  "banks": [
+    "bank_a",
+    "bank_b",
+    "bank_c",
+    "bank_d"
+  ],
+  "mode": "replay"
+}

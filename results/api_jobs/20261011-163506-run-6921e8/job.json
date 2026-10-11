@@ -1,0 +1,33 @@
+{
+  "id": "20261011-163506-run-6921e8",
+  "type": "run",
+  "params": {
+    "arms": [
+      3
+    ],
+    "seeds": [
+      43
+    ]
+  },
+  "status": "succeeded",
+  "created": "2026-10-11T11:05:06+00:00",
+  "started": "2026-10-11T11:09:30+00:00",
+  "finished": "2026-10-11T11:10:19+00:00",
+  "return_code": 0,
+  "result": {
+    "arms": [
+      3
+    ],
+    "seeds": [
+      43
+    ],
+    "global_test": {
+      "seed43/arm3_federated_real/federated": {
+        "precision": 0.8222222222222222,
+        "recall": 0.7789473684210526,
+        "f1": 0.8,
+        "pr_auc": 0.7118057169390345
+      }
+    }
+  }
+}

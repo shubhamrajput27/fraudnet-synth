@@ -14,6 +14,7 @@ Run from the project root:
 """
 import json
 import warnings
+from pathlib import Path
 
 import matplotlib
 
@@ -45,10 +46,13 @@ def _bucket(reason: str) -> str:
     return "edge_clamped" if reason == "edge_clamped" else "schema_or_range"
 
 
-def validate_bank(bank: str, mode: str, cfg: dict, st_model) -> dict:
+def validate_bank(bank: str, mode: str, cfg: dict, st_model, work_dir=None) -> dict:
+    """work_dir: folder holding synthetic_candidates.csv and receiving synthetic_validated.csv
+    (default: the bank folder; the API's replay/regeneration uses a sub-folder inside it)."""
     bank_dir = PROJECT_ROOT / load_config("partition")["clients_dir"] / bank
+    work_dir = Path(work_dir) if work_dir else bank_dir
     real = load_bank_fraud(bank_dir)  # the bank's own training fraud rows only
-    cand = pd.read_csv(bank_dir / "synthetic_candidates.csv").reset_index(drop=True)
+    cand = pd.read_csv(work_dir / "synthetic_candidates.csv").reset_index(drop=True)
     n = len(cand)
     reasons: dict[int, list[str]] = {i: [] for i in range(n)}
 
@@ -95,7 +99,7 @@ def validate_bank(bank: str, mode: str, cfg: dict, st_model) -> dict:
 
     out = admitted[FEATURE_COLUMNS].copy()
     out[LABEL_COLUMN] = 1
-    out.to_csv(bank_dir / "synthetic_validated.csv", index=False)  # stays inside the bank
+    out.to_csv(work_dir / "synthetic_validated.csv", index=False)  # stays inside the bank
 
     primary = {k: 0 for k in OUTCOMES}
     all_reasons: dict[str, int] = {}

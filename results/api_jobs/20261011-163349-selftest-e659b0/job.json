@@ -1,0 +1,13 @@
+{
+  "id": "20261011-163349-selftest-e659b0",
+  "type": "selftest",
+  "params": {},
+  "status": "succeeded",
+  "created": "2026-10-11T11:03:49+00:00",
+  "started": "2026-10-11T11:03:49+00:00",
+  "finished": "2026-10-11T11:03:51+00:00",
+  "return_code": 0,
+  "result": {
+    "ok": true
+  }
+}

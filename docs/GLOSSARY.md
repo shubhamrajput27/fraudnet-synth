@@ -120,3 +120,13 @@ Terms are added as each step introduces them. The step number is in brackets.
 | **Multiple comparisons** [9] | Making many comparisons produces some "significant-looking" results by chance (~5% at 95% confidence). |
 | **Phase 4 exit criterion** [9] | All six arms runnable end-to-end from one command; met in Step 9. |
 | **Price of privacy** [9] | The performance gap between federated (no data shared) and centralized (data pooled) training. |
+| **API / REST endpoint** [10] | A fixed "menu" of web addresses (GET to read, POST to start something) exchanging JSON. |
+| **FastAPI** [10] | The Python web framework of Tier 3. It validates requests automatically and generates docs at /docs. |
+| **async** [10] | Serving other requests while waiting on slow work, instead of freezing. |
+| **Background job / job ID** [10] | Long work started on request; the caller gets a ticket (ID) at once and checks status later. |
+| **WebSocket** [10] | An open two-way connection so the server can push live updates (e.g. each FL round). |
+| **Pydantic schema / HTTP 422** [10] | A declared shape for request data / the error returned when a request doesn't fit it. |
+| **HTTP 401 / 403** [10] | Not authenticated (missing or wrong key) / authenticated but not allowed (e.g. another bank's export). |
+| **Internal key** [10] | A shared secret between the gateway and FastAPI; never shown to users. |
+| **Replay vs regenerate** [10] | Deterministically rebuild and compare with the experiment files / create genuinely new versioned data. |
+| **Audit log** [10] | A record of who tried to export what, and whether it was allowed. |

@@ -1,0 +1,24 @@
+{
+  "arm": "arm3_federated_real",
+  "seed": 42,
+  "num_rounds": 30,
+  "threshold_logit": 3.75,
+  "global_test": {
+    "precision": 0.8641975308641975,
+    "recall": 0.7368421052631579,
+    "f1": 0.7954545454545454,
+    "pr_auc": 0.7261349578423669,
+    "roc_auc": 0.9584347003676248,
+    "accuracy": 0.999365594050682,
+    "threshold": 3.75,
+    "tp": 70,
+    "fp": 11,
+    "fn": 25,
+    "tn": 56640,
+    "n": 56746,
+    "n_fraud": 95
+  },
+  "matches_step9_seed42": true,
+  "model_file": "models/predict_arm3_seed42.pt",
+  "model_sha256": "fdf84ce848e88a60ae8150c276c8a308f142c474371600c4636957144ace91dc"
+}

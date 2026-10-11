@@ -1,0 +1,71 @@
+{
+  "id": "20261011-163506-generate-1e1ee0",
+  "type": "generate",
+  "params": {
+    "banks": [
+      "bank_a",
+      "bank_b",
+      "bank_c",
+      "bank_d"
+    ],
+    "mode": "replay"
+  },
+  "status": "succeeded",
+  "created": "2026-10-11T11:05:06+00:00",
+  "started": "2026-10-11T11:05:06+00:00",
+  "finished": "2026-10-11T11:09:30+00:00",
+  "return_code": 0,
+  "result": {
+    "mode": "replay",
+    "banks": {
+      "bank_a": {
+        "mode": "augment",
+        "folder": "data/clients/bank_a/generations/replay_20261011-163506-generate-1e1ee0",
+        "seconds": 110.9,
+        "candidates": 1000,
+        "validated": 868,
+        "pass_rate_pct": 86.8,
+        "identical_to_experiment_files": {
+          "synthetic_candidates.csv": true,
+          "synthetic_validated.csv": true
+        }
+      },
+      "bank_b": {
+        "mode": "augment",
+        "folder": "data/clients/bank_b/generations/replay_20261011-163506-generate-1e1ee0",
+        "seconds": 99.2,
+        "candidates": 1000,
+        "validated": 814,
+        "pass_rate_pct": 81.4,
+        "identical_to_experiment_files": {
+          "synthetic_candidates.csv": true,
+          "synthetic_validated.csv": true
+        }
+      },
+      "bank_c": {
+        "mode": "schema",
+        "folder": "data/clients/bank_c/generations/replay_20261011-163506-generate-1e1ee0",
+        "seconds": 10.3,
+        "candidates": 300,
+        "validated": 234,
+        "pass_rate_pct": 78.0,
+        "identical_to_experiment_files": {
+          "synthetic_candidates.csv": true,
+          "synthetic_validated.csv": true
+        }
+      },
+      "bank_d": {
+        "mode": "schema",
+        "folder": "data/clients/bank_d/generations/replay_20261011-163506-generate-1e1ee0",
+        "seconds": 10.2,
+        "candidates": 300,
+        "validated": 264,
+        "pass_rate_pct": 88.0,
+        "identical_to_experiment_files": {
+          "synthetic_candidates.csv": true,
+          "synthetic_validated.csv": true
+        }
+      }
+    }
+  }
+}

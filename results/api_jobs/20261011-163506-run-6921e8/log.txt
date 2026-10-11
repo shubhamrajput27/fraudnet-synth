@@ -1,0 +1,559 @@
+[93mWARNING [0m:   DEPRECATED FEATURE: The `run_simulation` function is deprecated and will be removed in a future version of Flower. Please use `flwr run` in the CLI instead to run your simulation. Refer to the Flower Tutorials for more details: https://flower.ai/docs/framework/tutorial-quickstart-pytorch.html
+
+            This is a deprecated feature. It will be removed
+            entirely in future versions of Flower.
+        
+[93mWARNING [0m:   Ray support on Windows is experimental and may not work as expected. On Windows, Flower Simulations run best in WSL2: https://learn.microsoft.com/en-us/windows/wsl/about
+[92mINFO [0m:      Starting OrderedFedAvg strategy:
+[92mINFO [0m:      	├── Number of rounds: 30
+[92mINFO [0m:      	├── ArrayRecord (0.02 MB)
+[92mINFO [0m:      	├── ConfigRecord (train): {'augmented': False, 'seed': 43}
+[92mINFO [0m:      	├── ConfigRecord (evaluate): {'augmented': False, 'seed': 43}
+[92mINFO [0m:      	├──> Sampling:
+[92mINFO [0m:      	│	├──Fraction: train (1.00) | evaluate ( 1.00)
+[92mINFO [0m:      	│	├──Minimum nodes: train (4) | evaluate (4)
+[92mINFO [0m:      	│	└──Minimum available nodes: 4
+[92mINFO [0m:      	└──> Keys in records:
+[92mINFO [0m:      		├── Weighted by: 'num-examples'
+[92mINFO [0m:      		├── ArrayRecord key: 'arrays'
+[92mINFO [0m:      		└── ConfigRecord key: 'config'
+[92mINFO [0m:      
+[92mINFO [0m:      Initial global evaluation results: {'global_test_pr_auc': 0.0016736589829576653, 'global_test_roc_auc': 0.4135636570729926}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 1/30]
+[92mINFO [0m:      configure_train: Sampled 4 nodes (out of 4)
+[33m(raylet)[0m Stack (most recent call first):
+[33m(raylet)[0m   File "C:\Users\shubh\Desktop\Shubham Major Project\fraudnet-synth\.venv\Lib\site-packages\ray\_private\worker.py", line 628 in job_logging_config
+[33m(raylet)[0m   File "C:\Users\shubh\Desktop\Shubham Major Project\fraudnet-synth\.venv\Lib\site-packages\ray\_private\worker.py", line 2801 in disconnect
+[33m(raylet)[0m   File "C:\Users\shubh\Desktop\Shubham Major Project\fraudnet-synth\.venv\Lib\site-packages\ray\_private\worker.py", line 2132 in shutdown
+[33m(raylet)[0m   File "C:\Users\shubh\Desktop\Shubham Major Project\fraudnet-synth\.venv\Lib\site-packages\ray\_private\worker.py", line 1143 in wrapper
+[33m(raylet)[0m   File "C:\Users\shubh\Desktop\Shubham Major Project\fraudnet-synth\.venv\Lib\site-packages\ray\_private\client_mode_hook.py", line 107 in wrapper
+[92mINFO [0m:      aggregate_train: Received 4 results and 0 failures
+[92mINFO [0m:      	└──> Aggregated MetricRecord: {'train-loss': 0.9887095141169617, 'train-fraud': 69.66951993209707, 'upload-bytes': 17478.0}
+[92mINFO [0m:      configure_evaluate: Sampled 4 nodes (out of 4)
+[92mINFO [0m:      aggregate_evaluate: Received 4 results and 0 failures
+[92mINFO [0m:      	└──> Aggregated MetricRecord: {'val-loss': 0.7594938908805221, 'val-pr-auc': 0.6073826525463937, 'val-fraud': 14.603719119226637}
+[92mINFO [0m:      Global evaluation
+[92mINFO [0m:      	└──> MetricRecord: {'global_test_pr_auc': 0.6857993472473887, 'global_test_roc_auc': 0.9451007972173111}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 2/30]
+[92mINFO [0m:      configure_train: Sampled 4 nodes (out of 4)
+[92mINFO [0m:      aggregate_train: Received 4 results and 0 failures
+[92mINFO [0m:      	└──> Aggregated MetricRecord: {'train-loss': 0.5025785775081759, 'train-fraud': 69.66951993209707, 'upload-bytes': 17478.0}
+[92mINFO [0m:      configure_evaluate: Sampled 4 nodes (out of 4)
+[92mINFO [0m:      aggregate_evaluate: Received 4 results and 0 failures
+[92mINFO [0m:      	└──> Aggregated MetricRecord: {'val-loss': 0.5746047829584603, 'val-pr-auc': 0.6367366310240712, 'val-fraud': 14.603719119226637}
+[92mINFO [0m:      Global evaluation
+[92mINFO [0m:      	└──> MetricRecord: {'global_test_pr_auc': 0.6950692333358771, 'global_test_roc_auc': 0.9490416390661567}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 3/30]
+[92mINFO [0m:      configure_train: Sampled 4 nodes (out of 4)
+[92mINFO [0m:      aggregate_train: Received 4 results and 0 failures
+[92mINFO [0m:      	└──> Aggregated MetricRecord: {'train-loss': 0.41529956473172197, 'train-fraud': 69.66951993209707, 'upload-bytes': 17478.0}
+[92mINFO [0m:      configure_evaluate: Sampled 4 nodes (out of 4)
+[92mINFO [0m:      aggregate_evaluate: Received 4 results and 0 failures
+[92mINFO [0m:      	└──> Aggregated MetricRecord: {'val-loss': 0.5822765160180516, 'val-pr-auc': 0.6556102698940756, 'val-fraud': 14.603719119226637}
+[92mINFO [0m:      Global evaluation
+[92mINFO [0m:      	└──> MetricRecord: {'global_test_pr_auc': 0.7011186936568453, 'global_test_roc_auc': 0.9535447416267098}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 4/30]
+[92mINFO [0m:      configure_train: Sampled 4 nodes (out of 4)
+[92mINFO [0m:      aggregate_train: Received 4 results and 0 failures
+[92mINFO [0m:      	└──> Aggregated MetricRecord: {'train-loss': 0.3441598093222974, 'train-fraud': 69.66951993209707, 'upload-bytes': 17478.0}
+[92mINFO [0m:      configure_evaluate: Sampled 4 nodes (out of 4)
+[92mINFO [0m:      aggregate_evaluate: Received 4 results and 0 failures
+[92mINFO [0m:      	└──> Aggregated MetricRecord: {'val-loss': 0.5714184042309615, 'val-pr-auc': 0.671915693782343, 'val-fraud': 14.603719119226637}
+[92mINFO [0m:      Global evaluation
+[92mINFO [0m:      	└──> MetricRecord: {'global_test_pr_auc': 0.7072351536229264, 'global_test_roc_auc': 0.9602669716426243}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 5/30]
+[92mINFO [0m:      configure_train: Sampled 4 nodes (out of 4)
+[92mINFO [0m:      aggregate_train: Received 4 results and 0 failures
+[92mINFO [0m:      	└──> Aggregated MetricRecord: {'train-loss': 0.404531649451614, 'train-fraud': 69.66951993209707, 'upload-bytes': 17478.0}
+[92mINFO [0m:      configure_evaluate: Sampled 4 nodes (out of 4)
+[92mINFO [0m:      aggregate_evaluate: Received 4 results and 0 failures
+[92mINFO [0m:      	└──> Aggregated MetricRecord: {'val-loss': 0.6007005759507231, 'val-pr-auc': 0.6737051120538596, 'val-fraud': 14.603719119226637}
+[92mINFO [0m:      Global evaluation
+[92mINFO [0m:      	└──> MetricRecord: {'global_test_pr_auc': 0.7134646924532932, 'global_test_roc_auc': 0.9608043338297554}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 6/30]
+[92mINFO [0m:      configure_train: Sampled 4 nodes (out of 4)
+[92mINFO [0m:      aggregate_train: Received 4 results and 0 failures
+[92mINFO [0m:      	└──> Aggregated MetricRecord: {'train-loss': 0.404697505921421, 'train-fraud': 69.66951993209707, 'upload-bytes': 17478.0}
+[92mINFO [0m:      configure_evaluate: Sampled 4 nodes (out of 4)
+[92mINFO [0m:      aggregate_evaluate: Received 4 results and 0 failures
+[92mINFO [0m:      	└──> Aggregated MetricRecord: {'val-loss': 0.6137870058378428, 'val-pr-auc': 0.6766545908476214, 'val-fraud': 14.603719119226637}
+[92mINFO [0m:      Global evaluation
+[92mINFO [0m:      	└──> MetricRecord: {'global_test_pr_auc': 0.7142019663256456, 'global_test_roc_auc': 0.9619243958159329}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 7/30]
+[92mINFO [0m:      configure_train: Sampled 4 nodes (out of 4)
+[92mINFO [0m:      aggregate_train: Received 4 results and 0 failures
+[92mINFO [0m:      	└──> Aggregated MetricRecord: {'train-loss': 0.3882042151341058, 'train-fraud': 69.66951993209707, 'upload-bytes': 17478.0}
+[92mINFO [0m:      configure_evaluate: Sampled 4 nodes (out of 4)
+[92mINFO [0m:      aggregate_evaluate: Received 4 results and 0 failures
+[92mINFO [0m:      	└──> Aggregated MetricRecord: {'val-loss': 0.5976282702765973, 'val-pr-auc': 0.6733097095712488, 'val-fraud': 14.603719119226637}
+[92mINFO [0m:      Global evaluation
+[92mINFO [0m:      	└──> MetricRecord: {'global_test_pr_auc': 0.7154999696167221, 'global_test_roc_auc': 0.9636041171754297}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 8/30]
+[92mINFO [0m:      configure_train: Sampled 4 nodes (out of 4)
+[92mINFO [0m:      aggregate_train: Received 4 results and 0 failures
+[92mINFO [0m:      	└──> Aggregated MetricRecord: {'train-loss': 0.38367162622906154, 'train-fraud': 69.66951993209707, 'upload-bytes': 17478.0}
+[92mINFO [0m:      configure_evaluate: Sampled 4 nodes (out of 4)
+[92mINFO [0m:      aggregate_evaluate: Received 4 results and 0 failures
+[92mINFO [0m:      	└──> Aggregated MetricRecord: {'val-loss': 0.5750140628817547, 'val-pr-auc': 0.677964477881612, 'val-fraud': 14.603719119226637}
+[92mINFO [0m:      Global evaluation
+[92mINFO [0m:      	└──> MetricRecord: {'global_test_pr_auc': 0.7142658864573211, 'global_test_roc_auc': 0.9634246248266163}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 9/30]
+[92mINFO [0m:      configure_train: Sampled 4 nodes (out of 4)
+[92mINFO [0m:      aggregate_train: Received 4 results and 0 failures
+[92mINFO [0m:      	└──> Aggregated MetricRecord: {'train-loss': 0.3244074731659503, 'train-fraud': 69.66951993209707, 'upload-bytes': 17478.0}
+[92mINFO [0m:      configure_evaluate: Sampled 4 nodes (out of 4)
+[92mINFO [0m:      aggregate_evaluate: Received 4 results and 0 failures
+[92mINFO [0m:      	└──> Aggregated MetricRecord: {'val-loss': 0.5587534395691205, 'val-pr-auc': 0.6775236836900547, 'val-fraud': 14.603719119226637}
+[92mINFO [0m:      Global evaluation
+[92mINFO [0m:      	└──> MetricRecord: {'global_test_pr_auc': 0.7150249941419249, 'global_test_roc_auc': 0.9648830466131968}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 10/30]
+[92mINFO [0m:      configure_train: Sampled 4 nodes (out of 4)
+[92mINFO [0m:      aggregate_train: Received 4 results and 0 failures
+[92mINFO [0m:      	└──> Aggregated MetricRecord: {'train-loss': 0.31758728031559363, 'train-fraud': 69.66951993209707, 'upload-bytes': 17478.0}
+[92mINFO [0m:      configure_evaluate: Sampled 4 nodes (out of 4)
+[92mINFO [0m:      aggregate_evaluate: Received 4 results and 0 failures
+[92mINFO [0m:      	└──> Aggregated MetricRecord: {'val-loss': 0.6017510550094501, 'val-pr-auc': 0.6761524878746366, 'val-fraud': 14.603719119226637}
+[92mINFO [0m:      Global evaluation
+[92mINFO [0m:      	└──> MetricRecord: {'global_test_pr_auc': 0.7158995627119921, 'global_test_roc_auc': 0.9636446237303378}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 11/30]
+[92mINFO [0m:      configure_train: Sampled 4 nodes (out of 4)
+[92mINFO [0m:      aggregate_train: Received 4 results and 0 failures
+[92mINFO [0m:      	└──> Aggregated MetricRecord: {'train-loss': 0.29743585726306665, 'train-fraud': 69.66951993209707, 'upload-bytes': 17478.0}
+[92mINFO [0m:      configure_evaluate: Sampled 4 nodes (out of 4)
+[92mINFO [0m:      aggregate_evaluate: Received 4 results and 0 failures
+[92mINFO [0m:      	└──> Aggregated MetricRecord: {'val-loss': 0.6273346020142487, 'val-pr-auc': 0.6764986637376061, 'val-fraud': 14.603719119226637}
+[92mINFO [0m:      Global evaluation
+[92mINFO [0m:      	└──> MetricRecord: {'global_test_pr_auc': 0.7175188289671361, 'global_test_roc_auc': 0.9621852728943326}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 12/30]
+[92mINFO [0m:      configure_train: Sampled 4 nodes (out of 4)
+[92mINFO [0m:      aggregate_train: Received 4 results and 0 failures
+[92mINFO [0m:      	└──> Aggregated MetricRecord: {'train-loss': 0.3565550559376787, 'train-fraud': 69.66951993209707, 'upload-bytes': 17478.0}
+[92mINFO [0m:      configure_evaluate: Sampled 4 nodes (out of 4)
+[92mINFO [0m:      aggregate_evaluate: Received 4 results and 0 failures
+[92mINFO [0m:      	└──> Aggregated MetricRecord: {'val-loss': 0.6579960194939252, 'val-pr-auc': 0.6780066023819588, 'val-fraud': 14.603719119226637}
+[92mINFO [0m:      Global evaluation
+[92mINFO [0m:      	└──> MetricRecord: {'global_test_pr_auc': 0.715837993217185, 'global_test_roc_auc': 0.9620275203020525}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 13/30]
+[92mINFO [0m:      configure_train: Sampled 4 nodes (out of 4)
+[92mINFO [0m:      aggregate_train: Received 4 results and 0 failures
+[92mINFO [0m:      	└──> Aggregated MetricRecord: {'train-loss': 0.35103412679291407, 'train-fraud': 69.66951993209707, 'upload-bytes': 17478.0}
+[92mINFO [0m:      configure_evaluate: Sampled 4 nodes (out of 4)
+[92mINFO [0m:      aggregate_evaluate: Received 4 results and 0 failures
+[92mINFO [0m:      	└──> Aggregated MetricRecord: {'val-loss': 0.6577472831721086, 'val-pr-auc': 0.6776611028822525, 'val-fraud': 14.603719119226637}
+[92mINFO [0m:      Global evaluation
+[92mINFO [0m:      	└──> MetricRecord: {'global_test_pr_auc': 0.7156047863621326, 'global_test_roc_auc': 0.9626738599866774}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 14/30]
+[92mINFO [0m:      configure_train: Sampled 4 nodes (out of 4)
+[92mINFO [0m:      aggregate_train: Received 4 results and 0 failures
+[92mINFO [0m:      	└──> Aggregated MetricRecord: {'train-loss': 0.3431723216359835, 'train-fraud': 69.66951993209707, 'upload-bytes': 17478.0}
+[92mINFO [0m:      configure_evaluate: Sampled 4 nodes (out of 4)
+[92mINFO [0m:      aggregate_evaluate: Received 4 results and 0 failures
+[92mINFO [0m:      	└──> Aggregated MetricRecord: {'val-loss': 0.5969730865025329, 'val-pr-auc': 0.6765269491349629, 'val-fraud': 14.603719119226637}
+[92mINFO [0m:      Global evaluation
+[92mINFO [0m:      	└──> MetricRecord: {'global_test_pr_auc': 0.7144116525328978, 'global_test_roc_auc': 0.9641968507082608}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 15/30]
+[92mINFO [0m:      configure_train: Sampled 4 nodes (out of 4)
+[92mINFO [0m:      aggregate_train: Received 4 results and 0 failures
+[92mINFO [0m:      	└──> Aggregated MetricRecord: {'train-loss': 0.35828049019772995, 'train-fraud': 69.66951993209707, 'upload-bytes': 17478.0}
+[92mINFO [0m:      configure_evaluate: Sampled 4 nodes (out of 4)
+[92mINFO [0m:      aggregate_evaluate: Received 4 results and 0 failures
+[92mINFO [0m:      	└──> Aggregated MetricRecord: {'val-loss': 0.6217901038003559, 'val-pr-auc': 0.6775565491759988, 'val-fraud': 14.603719119226637}
+[92mINFO [0m:      Global evaluation
+[92mINFO [0m:      	└──> MetricRecord: {'global_test_pr_auc': 0.7138840196764656, 'global_test_roc_auc': 0.9636410933425246}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 16/30]
+[92mINFO [0m:      configure_train: Sampled 4 nodes (out of 4)
+[92mINFO [0m:      aggregate_train: Received 4 results and 0 failures
+[92mINFO [0m:      	└──> Aggregated MetricRecord: {'train-loss': 0.3092217980675205, 'train-fraud': 69.66951993209707, 'upload-bytes': 17478.0}
+[92mINFO [0m:      configure_evaluate: Sampled 4 nodes (out of 4)
+[92mINFO [0m:      aggregate_evaluate: Received 4 results and 0 failures
+[92mINFO [0m:      	└──> Aggregated MetricRecord: {'val-loss': 0.6273189588056447, 'val-pr-auc': 0.6839517471328715, 'val-fraud': 14.603719119226637}
+[92mINFO [0m:      Global evaluation
+[92mINFO [0m:      	└──> MetricRecord: {'global_test_pr_auc': 0.7114882705339202, 'global_test_roc_auc': 0.9642197053241034}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 17/30]
+[92mINFO [0m:      configure_train: Sampled 4 nodes (out of 4)
+[92mINFO [0m:      aggregate_train: Received 4 results and 0 failures
+[92mINFO [0m:      	└──> Aggregated MetricRecord: {'train-loss': 0.30827263111482517, 'train-fraud': 69.66951993209707, 'upload-bytes': 17478.0}
+[92mINFO [0m:      configure_evaluate: Sampled 4 nodes (out of 4)
+[92mINFO [0m:      aggregate_evaluate: Received 4 results and 0 failures
+[92mINFO [0m:      	└──> Aggregated MetricRecord: {'val-loss': 0.6025998717655556, 'val-pr-auc': 0.6808748422867534, 'val-fraud': 14.603719119226637}
+[92mINFO [0m:      Global evaluation
+[92mINFO [0m:      	└──> MetricRecord: {'global_test_pr_auc': 0.7140334235805083, 'global_test_roc_auc': 0.9642353133544351}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 18/30]
+[92mINFO [0m:      configure_train: Sampled 4 nodes (out of 4)
+[92mINFO [0m:      aggregate_train: Received 4 results and 0 failures
+[92mINFO [0m:      	└──> Aggregated MetricRecord: {'train-loss': 0.3236074416303485, 'train-fraud': 69.66951993209707, 'upload-bytes': 17478.0}
+[92mINFO [0m:      configure_evaluate: Sampled 4 nodes (out of 4)
+[92mINFO [0m:      aggregate_evaluate: Received 4 results and 0 failures
+[92mINFO [0m:      	└──> Aggregated MetricRecord: {'val-loss': 0.6384867040765104, 'val-pr-auc': 0.6797597169552532, 'val-fraud': 14.603719119226637}
+[92mINFO [0m:      Global evaluation
+[92mINFO [0m:      	└──> MetricRecord: {'global_test_pr_auc': 0.7154738732750047, 'global_test_roc_auc': 0.9630390693154485}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 19/30]
+[92mINFO [0m:      configure_train: Sampled 4 nodes (out of 4)
+[92mINFO [0m:      aggregate_train: Received 4 results and 0 failures
+[92mINFO [0m:      	└──> Aggregated MetricRecord: {'train-loss': 0.2949478913208064, 'train-fraud': 69.66951993209707, 'upload-bytes': 17478.0}
+[92mINFO [0m:      configure_evaluate: Sampled 4 nodes (out of 4)
+[92mINFO [0m:      aggregate_evaluate: Received 4 results and 0 failures
+[92mINFO [0m:      	└──> Aggregated MetricRecord: {'val-loss': 0.61135737290959, 'val-pr-auc': 0.679490102720392, 'val-fraud': 14.603719119226637}
+[92mINFO [0m:      Global evaluation
+[92mINFO [0m:      	└──> MetricRecord: {'global_test_pr_auc': 0.7114177440824783, 'global_test_roc_auc': 0.962866823552146}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 20/30]
+[92mINFO [0m:      configure_train: Sampled 4 nodes (out of 4)
+[92mINFO [0m:      aggregate_train: Received 4 results and 0 failures
+[92mINFO [0m:      	└──> Aggregated MetricRecord: {'train-loss': 0.3582244120304356, 'train-fraud': 69.66951993209707, 'upload-bytes': 17478.0}
+[92mINFO [0m:      configure_evaluate: Sampled 4 nodes (out of 4)
+[92mINFO [0m:      aggregate_evaluate: Received 4 results and 0 failures
+[92mINFO [0m:      	└──> Aggregated MetricRecord: {'val-loss': 0.6601642550871043, 'val-pr-auc': 0.6822228613759098, 'val-fraud': 14.603719119226637}
+[92mINFO [0m:      Global evaluation
+[92mINFO [0m:      	└──> MetricRecord: {'global_test_pr_auc': 0.7105857602822175, 'global_test_roc_auc': 0.9619957468117346}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 21/30]
+[92mINFO [0m:      configure_train: Sampled 4 nodes (out of 4)
+[92mINFO [0m:      aggregate_train: Received 4 results and 0 failures
+[92mINFO [0m:      	└──> Aggregated MetricRecord: {'train-loss': 0.36254376757415585, 'train-fraud': 69.66951993209707, 'upload-bytes': 17478.0}
+[92mINFO [0m:      configure_evaluate: Sampled 4 nodes (out of 4)
+[92mINFO [0m:      aggregate_evaluate: Received 4 results and 0 failures
+[92mINFO [0m:      	└──> Aggregated MetricRecord: {'val-loss': 0.6964738343088522, 'val-pr-auc': 0.6975107434756703, 'val-fraud': 14.603719119226637}
+[92mINFO [0m:      Global evaluation
+[92mINFO [0m:      	└──> MetricRecord: {'global_test_pr_auc': 0.7092005739418868, 'global_test_roc_auc': 0.96124210191858}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 22/30]
+[92mINFO [0m:      configure_train: Sampled 4 nodes (out of 4)
+[92mINFO [0m:      aggregate_train: Received 4 results and 0 failures
+[92mINFO [0m:      	└──> Aggregated MetricRecord: {'train-loss': 0.3815106319893052, 'train-fraud': 69.66951993209707, 'upload-bytes': 17478.0}
+[92mINFO [0m:      configure_evaluate: Sampled 4 nodes (out of 4)
+[92mINFO [0m:      aggregate_evaluate: Received 4 results and 0 failures
+[92mINFO [0m:      	└──> Aggregated MetricRecord: {'val-loss': 0.6391436584114124, 'val-pr-auc': 0.6969751529020985, 'val-fraud': 14.603719119226637}
+[92mINFO [0m:      Global evaluation
+[92mINFO [0m:      	└──> MetricRecord: {'global_test_pr_auc': 0.7090268723701603, 'global_test_roc_auc': 0.9617151738855354}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 23/30]
+[92mINFO [0m:      configure_train: Sampled 4 nodes (out of 4)
+[92mINFO [0m:      aggregate_train: Received 4 results and 0 failures
+[92mINFO [0m:      	└──> Aggregated MetricRecord: {'train-loss': 0.3441587086660362, 'train-fraud': 69.66951993209707, 'upload-bytes': 17478.0}
+[92mINFO [0m:      configure_evaluate: Sampled 4 nodes (out of 4)
+[92mINFO [0m:      aggregate_evaluate: Received 4 results and 0 failures
+[92mINFO [0m:      	└──> Aggregated MetricRecord: {'val-loss': 0.6564074503534516, 'val-pr-auc': 0.6964714889689148, 'val-fraud': 14.603719119226637}
+[92mINFO [0m:      Global evaluation
+[92mINFO [0m:      	└──> MetricRecord: {'global_test_pr_auc': 0.7108189135360528, 'global_test_roc_auc': 0.9622592252285229}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 24/30]
+[92mINFO [0m:      configure_train: Sampled 4 nodes (out of 4)
+[92mINFO [0m:      aggregate_train: Received 4 results and 0 failures
+[92mINFO [0m:      	└──> Aggregated MetricRecord: {'train-loss': 0.4307288054665143, 'train-fraud': 69.66951993209707, 'upload-bytes': 17478.0}
+[92mINFO [0m:      configure_evaluate: Sampled 4 nodes (out of 4)
+[92mINFO [0m:      aggregate_evaluate: Received 4 results and 0 failures
+[92mINFO [0m:      	└──> Aggregated MetricRecord: {'val-loss': 0.7396915135317929, 'val-pr-auc': 0.6960112480246085, 'val-fraud': 14.603719119226637}
+[92mINFO [0m:      Global evaluation
+[92mINFO [0m:      	└──> MetricRecord: {'global_test_pr_auc': 0.7134307551397319, 'global_test_roc_auc': 0.9606315306367983}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 25/30]
+[92mINFO [0m:      configure_train: Sampled 4 nodes (out of 4)
+[92mINFO [0m:      aggregate_train: Received 4 results and 0 failures
+[92mINFO [0m:      	└──> Aggregated MetricRecord: {'train-loss': 0.3233737289970985, 'train-fraud': 69.66951993209707, 'upload-bytes': 17478.0}
+[92mINFO [0m:      configure_evaluate: Sampled 4 nodes (out of 4)
+[92mINFO [0m:      aggregate_evaluate: Received 4 results and 0 failures
+[92mINFO [0m:      	└──> Aggregated MetricRecord: {'val-loss': 0.6271595527434946, 'val-pr-auc': 0.7020160660220726, 'val-fraud': 14.603719119226637}
+[92mINFO [0m:      Global evaluation
+[92mINFO [0m:      	└──> MetricRecord: {'global_test_pr_auc': 0.7118046182720196, 'global_test_roc_auc': 0.9630797616802416}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 26/30]
+[92mINFO [0m:      configure_train: Sampled 4 nodes (out of 4)
+[92mINFO [0m:      aggregate_train: Received 4 results and 0 failures
+[92mINFO [0m:      	└──> Aggregated MetricRecord: {'train-loss': 0.33190993505712585, 'train-fraud': 69.66951993209707, 'upload-bytes': 17478.0}
+[92mINFO [0m:      configure_evaluate: Sampled 4 nodes (out of 4)
+[92mINFO [0m:      aggregate_evaluate: Received 4 results and 0 failures
+[92mINFO [0m:      	└──> Aggregated MetricRecord: {'val-loss': 0.6719955167812117, 'val-pr-auc': 0.7003174621644239, 'val-fraud': 14.603719119226637}
+[92mINFO [0m:      Global evaluation
+[92mINFO [0m:      	└──> MetricRecord: {'global_test_pr_auc': 0.7122307147466362, 'global_test_roc_auc': 0.962508210474289}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 27/30]
+[92mINFO [0m:      configure_train: Sampled 4 nodes (out of 4)
+[92mINFO [0m:      aggregate_train: Received 4 results and 0 failures
+[92mINFO [0m:      	└──> Aggregated MetricRecord: {'train-loss': 0.3254305268787829, 'train-fraud': 69.66951993209707, 'upload-bytes': 17478.0}
+[92mINFO [0m:      configure_evaluate: Sampled 4 nodes (out of 4)
+[92mINFO [0m:      aggregate_evaluate: Received 4 results and 0 failures
+[92mINFO [0m:      	└──> Aggregated MetricRecord: {'val-loss': 0.6635944551978511, 'val-pr-auc': 0.706604992868821, 'val-fraud': 14.603719119226637}
+[92mINFO [0m:      Global evaluation
+[92mINFO [0m:      	└──> MetricRecord: {'global_test_pr_auc': 0.7116827082759966, 'global_test_roc_auc': 0.9623840894711757}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 28/30]
+[92mINFO [0m:      configure_train: Sampled 4 nodes (out of 4)
+[92mINFO [0m:      aggregate_train: Received 4 results and 0 failures
+[92mINFO [0m:      	└──> Aggregated MetricRecord: {'train-loss': 0.3084662880385178, 'train-fraud': 69.66951993209707, 'upload-bytes': 17478.0}
+[92mINFO [0m:      configure_evaluate: Sampled 4 nodes (out of 4)
+[92mINFO [0m:      aggregate_evaluate: Received 4 results and 0 failures
+[92mINFO [0m:      	└──> Aggregated MetricRecord: {'val-loss': 0.6545793402822959, 'val-pr-auc': 0.709216877901497, 'val-fraud': 14.603719119226637}
+[92mINFO [0m:      Global evaluation
+[92mINFO [0m:      	└──> MetricRecord: {'global_test_pr_auc': 0.7115923858927422, 'global_test_roc_auc': 0.963317040903259}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 29/30]
+[92mINFO [0m:      configure_train: Sampled 4 nodes (out of 4)
+[92mINFO [0m:      aggregate_train: Received 4 results and 0 failures
+[92mINFO [0m:      	└──> Aggregated MetricRecord: {'train-loss': 0.31588148945496014, 'train-fraud': 69.66951993209707, 'upload-bytes': 17478.0}
+[92mINFO [0m:      configure_evaluate: Sampled 4 nodes (out of 4)
+[92mINFO [0m:      aggregate_evaluate: Received 4 results and 0 failures
+[92mINFO [0m:      	└──> Aggregated MetricRecord: {'val-loss': 0.7145667729921934, 'val-pr-auc': 0.7058938431853824, 'val-fraud': 14.603719119226637}
+[92mINFO [0m:      Global evaluation
+[92mINFO [0m:      	└──> MetricRecord: {'global_test_pr_auc': 0.7108322931733126, 'global_test_roc_auc': 0.962829847385051}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 30/30]
+[92mINFO [0m:      configure_train: Sampled 4 nodes (out of 4)
+[92mINFO [0m:      aggregate_train: Received 4 results and 0 failures
+[92mINFO [0m:      	└──> Aggregated MetricRecord: {'train-loss': 0.3422266875891338, 'train-fraud': 69.66951993209707, 'upload-bytes': 17478.0}
+[92mINFO [0m:      configure_evaluate: Sampled 4 nodes (out of 4)
+[92mINFO [0m:      aggregate_evaluate: Received 4 results and 0 failures
+[92mINFO [0m:      	└──> Aggregated MetricRecord: {'val-loss': 0.6860211358177244, 'val-pr-auc': 0.7070205434447941, 'val-fraud': 14.603719119226637}
+[92mINFO [0m:      Global evaluation
+[92mINFO [0m:      	└──> MetricRecord: {'global_test_pr_auc': 0.7118057169390345, 'global_test_roc_auc': 0.9648007328341861}
+[92mINFO [0m:      
+[92mINFO [0m:      Strategy execution finished in 38.40s
+[92mINFO [0m:      
+[92mINFO [0m:      Final results:
+[92mINFO [0m:      
+[92mINFO [0m:      	Global Arrays:
+[92mINFO [0m:      		ArrayRecord (0.017 MB)
+[92mINFO [0m:      	
+[92mINFO [0m:      	Aggregated ClientApp-side Train Metrics:
+[92mINFO [0m:      	{ 1: { 'train-fraud': '6.9670e+01',
+[92mINFO [0m:      	       'train-loss': '9.8871e-01',
+[92mINFO [0m:      	       'upload-bytes': '1.7478e+04'},
+[92mINFO [0m:      	  2: { 'train-fraud': '6.9670e+01',
+[92mINFO [0m:      	       'train-loss': '5.0258e-01',
+[92mINFO [0m:      	       'upload-bytes': '1.7478e+04'},
+[92mINFO [0m:      	  3: { 'train-fraud': '6.9670e+01',
+[92mINFO [0m:      	       'train-loss': '4.1530e-01',
+[92mINFO [0m:      	       'upload-bytes': '1.7478e+04'},
+[92mINFO [0m:      	  4: { 'train-fraud': '6.9670e+01',
+[92mINFO [0m:      	       'train-loss': '3.4416e-01',
+[92mINFO [0m:      	       'upload-bytes': '1.7478e+04'},
+[92mINFO [0m:      	  5: { 'train-fraud': '6.9670e+01',
+[92mINFO [0m:      	       'train-loss': '4.0453e-01',
+[92mINFO [0m:      	       'upload-bytes': '1.7478e+04'},
+[92mINFO [0m:      	  6: { 'train-fraud': '6.9670e+01',
+[92mINFO [0m:      	       'train-loss': '4.0470e-01',
+[92mINFO [0m:      	       'upload-bytes': '1.7478e+04'},
+[92mINFO [0m:      	  7: { 'train-fraud': '6.9670e+01',
+[92mINFO [0m:      	       'train-loss': '3.8820e-01',
+[92mINFO [0m:      	       'upload-bytes': '1.7478e+04'},
+[92mINFO [0m:      	  8: { 'train-fraud': '6.9670e+01',
+[92mINFO [0m:      	       'train-loss': '3.8367e-01',
+[92mINFO [0m:      	       'upload-bytes': '1.7478e+04'},
+[92mINFO [0m:      	  9: { 'train-fraud': '6.9670e+01',
+[92mINFO [0m:      	       'train-loss': '3.2441e-01',
+[92mINFO [0m:      	       'upload-bytes': '1.7478e+04'},
+[92mINFO [0m:      	  10: { 'train-fraud': '6.9670e+01',
+[92mINFO [0m:      	        'train-loss': '3.1759e-01',
+[92mINFO [0m:      	        'upload-bytes': '1.7478e+04'},
+[92mINFO [0m:      	  11: { 'train-fraud': '6.9670e+01',
+[92mINFO [0m:      	        'train-loss': '2.9744e-01',
+[92mINFO [0m:      	        'upload-bytes': '1.7478e+04'},
+[92mINFO [0m:      	  12: { 'train-fraud': '6.9670e+01',
+[92mINFO [0m:      	        'train-loss': '3.5656e-01',
+[92mINFO [0m:      	        'upload-bytes': '1.7478e+04'},
+[92mINFO [0m:      	  13: { 'train-fraud': '6.9670e+01',
+[92mINFO [0m:      	        'train-loss': '3.5103e-01',
+[92mINFO [0m:      	        'upload-bytes': '1.7478e+04'},
+[92mINFO [0m:      	  14: { 'train-fraud': '6.9670e+01',
+[92mINFO [0m:      	        'train-loss': '3.4317e-01',
+[92mINFO [0m:      	        'upload-bytes': '1.7478e+04'},
+[92mINFO [0m:      	  15: { 'train-fraud': '6.9670e+01',
+[92mINFO [0m:      	        'train-loss': '3.5828e-01',
+[92mINFO [0m:      	        'upload-bytes': '1.7478e+04'},
+[92mINFO [0m:      	  16: { 'train-fraud': '6.9670e+01',
+[92mINFO [0m:      	        'train-loss': '3.0922e-01',
+[92mINFO [0m:      	        'upload-bytes': '1.7478e+04'},
+[92mINFO [0m:      	  17: { 'train-fraud': '6.9670e+01',
+[92mINFO [0m:      	        'train-loss': '3.0827e-01',
+[92mINFO [0m:      	        'upload-bytes': '1.7478e+04'},
+[92mINFO [0m:      	  18: { 'train-fraud': '6.9670e+01',
+[92mINFO [0m:      	        'train-loss': '3.2361e-01',
+[92mINFO [0m:      	        'upload-bytes': '1.7478e+04'},
+[92mINFO [0m:      	  19: { 'train-fraud': '6.9670e+01',
+[92mINFO [0m:      	        'train-loss': '2.9495e-01',
+[92mINFO [0m:      	        'upload-bytes': '1.7478e+04'},
+[92mINFO [0m:      	  20: { 'train-fraud': '6.9670e+01',
+[92mINFO [0m:      	        'train-loss': '3.5822e-01',
+[92mINFO [0m:      	        'upload-bytes': '1.7478e+04'},
+[92mINFO [0m:      	  21: { 'train-fraud': '6.9670e+01',
+[92mINFO [0m:      	        'train-loss': '3.6254e-01',
+[92mINFO [0m:      	        'upload-bytes': '1.7478e+04'},
+[92mINFO [0m:      	  22: { 'train-fraud': '6.9670e+01',
+[92mINFO [0m:      	        'train-loss': '3.8151e-01',
+[92mINFO [0m:      	        'upload-bytes': '1.7478e+04'},
+[92mINFO [0m:      	  23: { 'train-fraud': '6.9670e+01',
+[92mINFO [0m:      	        'train-loss': '3.4416e-01',
+[92mINFO [0m:      	        'upload-bytes': '1.7478e+04'},
+[92mINFO [0m:      	  24: { 'train-fraud': '6.9670e+01',
+[92mINFO [0m:      	        'train-loss': '4.3073e-01',
+[92mINFO [0m:      	        'upload-bytes': '1.7478e+04'},
+[92mINFO [0m:      	  25: { 'train-fraud': '6.9670e+01',
+[92mINFO [0m:      	        'train-loss': '3.2337e-01',
+[92mINFO [0m:      	        'upload-bytes': '1.7478e+04'},
+[92mINFO [0m:      	  26: { 'train-fraud': '6.9670e+01',
+[92mINFO [0m:      	        'train-loss': '3.3191e-01',
+[92mINFO [0m:      	        'upload-bytes': '1.7478e+04'},
+[92mINFO [0m:      	  27: { 'train-fraud': '6.9670e+01',
+[92mINFO [0m:      	        'train-loss': '3.2543e-01',
+[92mINFO [0m:      	        'upload-bytes': '1.7478e+04'},
+[92mINFO [0m:      	  28: { 'train-fraud': '6.9670e+01',
+[92mINFO [0m:      	        'train-loss': '3.0847e-01',
+[92mINFO [0m:      	        'upload-bytes': '1.7478e+04'},
+[92mINFO [0m:      	  29: { 'train-fraud': '6.9670e+01',
+[92mINFO [0m:      	        'train-loss': '3.1588e-01',
+[92mINFO [0m:      	        'upload-bytes': '1.7478e+04'},
+[92mINFO [0m:      	  30: { 'train-fraud': '6.9670e+01',
+[92mINFO [0m:      	        'train-loss': '3.4223e-01',
+[92mINFO [0m:      	        'upload-bytes': '1.7478e+04'}}
+[92mINFO [0m:      	
+[92mINFO [0m:      	Aggregated ClientApp-side Evaluate Metrics:
+[92mINFO [0m:      	{ 1: { 'val-fraud': '1.4604e+01',
+[92mINFO [0m:      	       'val-loss': '7.5949e-01',
+[92mINFO [0m:      	       'val-pr-auc': '6.0738e-01'},
+[92mINFO [0m:      	  2: { 'val-fraud': '1.4604e+01',
+[92mINFO [0m:      	       'val-loss': '5.7460e-01',
+[92mINFO [0m:      	       'val-pr-auc': '6.3674e-01'},
+[92mINFO [0m:      	  3: { 'val-fraud': '1.4604e+01',
+[92mINFO [0m:      	       'val-loss': '5.8228e-01',
+[92mINFO [0m:      	       'val-pr-auc': '6.5561e-01'},
+[92mINFO [0m:      	  4: { 'val-fraud': '1.4604e+01',
+[92mINFO [0m:      	       'val-loss': '5.7142e-01',
+[92mINFO [0m:      	       'val-pr-auc': '6.7192e-01'},
+[92mINFO [0m:      	  5: { 'val-fraud': '1.4604e+01',
+[92mINFO [0m:      	       'val-loss': '6.0070e-01',
+[92mINFO [0m:      	       'val-pr-auc': '6.7371e-01'},
+[92mINFO [0m:      	  6: { 'val-fraud': '1.4604e+01',
+[92mINFO [0m:      	       'val-loss': '6.1379e-01',
+[92mINFO [0m:      	       'val-pr-auc': '6.7665e-01'},
+[92mINFO [0m:      	  7: { 'val-fraud': '1.4604e+01',
+[92mINFO [0m:      	       'val-loss': '5.9763e-01',
+[92mINFO [0m:      	       'val-pr-auc': '6.7331e-01'},
+[92mINFO [0m:      	  8: { 'val-fraud': '1.4604e+01',
+[92mINFO [0m:      	       'val-loss': '5.7501e-01',
+[92mINFO [0m:      	       'val-pr-auc': '6.7796e-01'},
+[92mINFO [0m:      	  9: { 'val-fraud': '1.4604e+01',
+[92mINFO [0m:      	       'val-loss': '5.5875e-01',
+[92mINFO [0m:      	       'val-pr-auc': '6.7752e-01'},
+[92mINFO [0m:      	  10: { 'val-fraud': '1.4604e+01',
+[92mINFO [0m:      	        'val-loss': '6.0175e-01',
+[92mINFO [0m:      	        'val-pr-auc': '6.7615e-01'},
+[92mINFO [0m:      	  11: { 'val-fraud': '1.4604e+01',
+[92mINFO [0m:      	        'val-loss': '6.2733e-01',
+[92mINFO [0m:      	        'val-pr-auc': '6.7650e-01'},
+[92mINFO [0m:      	  12: { 'val-fraud': '1.4604e+01',
+[92mINFO [0m:      	        'val-loss': '6.5800e-01',
+[92mINFO [0m:      	        'val-pr-auc': '6.7801e-01'},
+[92mINFO [0m:      	  13: { 'val-fraud': '1.4604e+01',
+[92mINFO [0m:      	        'val-loss': '6.5775e-01',
+[92mINFO [0m:      	        'val-pr-auc': '6.7766e-01'},
+[92mINFO [0m:      	  14: { 'val-fraud': '1.4604e+01',
+[92mINFO [0m:      	        'val-loss': '5.9697e-01',
+[92mINFO [0m:      	        'val-pr-auc': '6.7653e-01'},
+[92mINFO [0m:      	  15: { 'val-fraud': '1.4604e+01',
+[92mINFO [0m:      	        'val-loss': '6.2179e-01',
+[92mINFO [0m:      	        'val-pr-auc': '6.7756e-01'},
+[92mINFO [0m:      	  16: { 'val-fraud': '1.4604e+01',
+[92mINFO [0m:      	        'val-loss': '6.2732e-01',
+[92mINFO [0m:      	        'val-pr-auc': '6.8395e-01'},
+[92mINFO [0m:      	  17: { 'val-fraud': '1.4604e+01',
+[92mINFO [0m:      	        'val-loss': '6.0260e-01',
+[92mINFO [0m:      	        'val-pr-auc': '6.8087e-01'},
+[92mINFO [0m:      	  18: { 'val-fraud': '1.4604e+01',
+[92mINFO [0m:      	        'val-loss': '6.3849e-01',
+[92mINFO [0m:      	        'val-pr-auc': '6.7976e-01'},
+[92mINFO [0m:      	  19: { 'val-fraud': '1.4604e+01',
+[92mINFO [0m:      	        'val-loss': '6.1136e-01',
+[92mINFO [0m:      	        'val-pr-auc': '6.7949e-01'},
+[92mINFO [0m:      	  20: { 'val-fraud': '1.4604e+01',
+[92mINFO [0m:      	        'val-loss': '6.6016e-01',
+[92mINFO [0m:      	        'val-pr-auc': '6.8222e-01'},
+[92mINFO [0m:      	  21: { 'val-fraud': '1.4604e+01',
+[92mINFO [0m:      	        'val-loss': '6.9647e-01',
+[92mINFO [0m:      	        'val-pr-auc': '6.9751e-01'},
+[92mINFO [0m:      	  22: { 'val-fraud': '1.4604e+01',
+[92mINFO [0m:      	        'val-loss': '6.3914e-01',
+[92mINFO [0m:      	        'val-pr-auc': '6.9698e-01'},
+[92mINFO [0m:      	  23: { 'val-fraud': '1.4604e+01',
+[92mINFO [0m:      	        'val-loss': '6.5641e-01',
+[92mINFO [0m:      	        'val-pr-auc': '6.9647e-01'},
+[92mINFO [0m:      	  24: { 'val-fraud': '1.4604e+01',
+[92mINFO [0m:      	        'val-loss': '7.3969e-01',
+[92mINFO [0m:      	        'val-pr-auc': '6.9601e-01'},
+[92mINFO [0m:      	  25: { 'val-fraud': '1.4604e+01',
+[92mINFO [0m:      	        'val-loss': '6.2716e-01',
+[92mINFO [0m:      	        'val-pr-auc': '7.0202e-01'},
+[92mINFO [0m:      	  26: { 'val-fraud': '1.4604e+01',
+[92mINFO [0m:      	        'val-loss': '6.7200e-01',
+[92mINFO [0m:      	        'val-pr-auc': '7.0032e-01'},
+[92mINFO [0m:      	  27: { 'val-fraud': '1.4604e+01',
+[92mINFO [0m:      	        'val-loss': '6.6359e-01',
+[92mINFO [0m:      	        'val-pr-auc': '7.0660e-01'},
+[92mINFO [0m:      	  28: { 'val-fraud': '1.4604e+01',
+[92mINFO [0m:      	        'val-loss': '6.5458e-01',
+[92mINFO [0m:      	        'val-pr-auc': '7.0922e-01'},
+[92mINFO [0m:      	  29: { 'val-fraud': '1.4604e+01',
+[92mINFO [0m:      	        'val-loss': '7.1457e-01',
+[92mINFO [0m:      	        'val-pr-auc': '7.0589e-01'},
+[92mINFO [0m:      	  30: { 'val-fraud': '1.4604e+01',
+[92mINFO [0m:      	        'val-loss': '6.8602e-01',
+[92mINFO [0m:      	        'val-pr-auc': '7.0702e-01'}}
+[92mINFO [0m:      	
+[92mINFO [0m:      	ServerApp-side Evaluate Metrics:
+[92mINFO [0m:      	{ 0: {'global_test_pr_auc': '1.6737e-03', 'global_test_roc_auc': '4.1356e-01'},
+[92mINFO [0m:      	  1: {'global_test_pr_auc': '6.8580e-01', 'global_test_roc_auc': '9.4510e-01'},
+[92mINFO [0m:      	  2: {'global_test_pr_auc': '6.9507e-01', 'global_test_roc_auc': '9.4904e-01'},
+[92mINFO [0m:      	  3: {'global_test_pr_auc': '7.0112e-01', 'global_test_roc_auc': '9.5354e-01'},
+[92mINFO [0m:      	  4: {'global_test_pr_auc': '7.0724e-01', 'global_test_roc_auc': '9.6027e-01'},
+[92mINFO [0m:      	  5: {'global_test_pr_auc': '7.1346e-01', 'global_test_roc_auc': '9.6080e-01'},
+[92mINFO [0m:      	  6: {'global_test_pr_auc': '7.1420e-01', 'global_test_roc_auc': '9.6192e-01'},
+[92mINFO [0m:      	  7: {'global_test_pr_auc': '7.1550e-01', 'global_test_roc_auc': '9.6360e-01'},
+[92mINFO [0m:      	  8: {'global_test_pr_auc': '7.1427e-01', 'global_test_roc_auc': '9.6342e-01'},
+[92mINFO [0m:      	  9: {'global_test_pr_auc': '7.1502e-01', 'global_test_roc_auc': '9.6488e-01'},
+[92mINFO [0m:      	  10: {'global_test_pr_auc': '7.1590e-01', 'global_test_roc_auc': '9.6364e-01'},
+[92mINFO [0m:      	  11: {'global_test_pr_auc': '7.1752e-01', 'global_test_roc_auc': '9.6219e-01'},
+[92mINFO [0m:      	  12: {'global_test_pr_auc': '7.1584e-01', 'global_test_roc_auc': '9.6203e-01'},
+[92mINFO [0m:      	  13: {'global_test_pr_auc': '7.1560e-01', 'global_test_roc_auc': '9.6267e-01'},
+[92mINFO [0m:      	  14: {'global_test_pr_auc': '7.1441e-01', 'global_test_roc_auc': '9.6420e-01'},
+[92mINFO [0m:      	  15: {'global_test_pr_auc': '7.1388e-01', 'global_test_roc_auc': '9.6364e-01'},
+[92mINFO [0m:      	  16: {'global_test_pr_auc': '7.1149e-01', 'global_test_roc_auc': '9.6422e-01'},
+[92mINFO [0m:      	  17: {'global_test_pr_auc': '7.1403e-01', 'global_test_roc_auc': '9.6424e-01'},
+[92mINFO [0m:      	  18: {'global_test_pr_auc': '7.1547e-01', 'global_test_roc_auc': '9.6304e-01'},
+[92mINFO [0m:      	  19: {'global_test_pr_auc': '7.1142e-01', 'global_test_roc_auc': '9.6287e-01'},
+[92mINFO [0m:      	  20: {'global_test_pr_auc': '7.1059e-01', 'global_test_roc_auc': '9.6200e-01'},
+[92mINFO [0m:      	  21: {'global_test_pr_auc': '7.0920e-01', 'global_test_roc_auc': '9.6124e-01'},
+[92mINFO [0m:      	  22: {'global_test_pr_auc': '7.0903e-01', 'global_test_roc_auc': '9.6172e-01'},
+[92mINFO [0m:      	  23: {'global_test_pr_auc': '7.1082e-01', 'global_test_roc_auc': '9.6226e-01'},
+[92mINFO [0m:      	  24: {'global_test_pr_auc': '7.1343e-01', 'global_test_roc_auc': '9.6063e-01'},
+[92mINFO [0m:      	  25: {'global_test_pr_auc': '7.1180e-01', 'global_test_roc_auc': '9.6308e-01'},
+[92mINFO [0m:      	  26: {'global_test_pr_auc': '7.1223e-01', 'global_test_roc_auc': '9.6251e-01'},
+[92mINFO [0m:      	  27: {'global_test_pr_auc': '7.1168e-01', 'global_test_roc_auc': '9.6238e-01'},
+[92mINFO [0m:      	  28: {'global_test_pr_auc': '7.1159e-01', 'global_test_roc_auc': '9.6332e-01'},
+[92mINFO [0m:      	  29: {'global_test_pr_auc': '7.1083e-01', 'global_test_roc_auc': '9.6283e-01'},
+[92mINFO [0m:      	  30: {'global_test_pr_auc': '7.1181e-01', 'global_test_roc_auc': '9.6480e-01'}}
+[92mINFO [0m:      
+[36m(ClientAppActor pid=19404)[0m [93mWARNING [0m:   Manually terminating ClientAppActor
+[33m(raylet)[0m Stack (most recent call first):[32m [repeated 11x across cluster] (Ray deduplicates logs by default. Set RAY_DEDUP_LOGS=0 to disable log deduplication, or see https://docs.ray.io/en/master/ray-observability/user-guides/configure-logging.html#log-deduplication for more options.)[0m
+[33m(raylet)[0m   File "C:\Users\shubh\Desktop\Shubham Major Project\fraudnet-synth\.venv\Lib\site-packages\ray\_private\worker.py", line 628 in job_logging_config[32m [repeated 11x across cluster][0m
+[33m(raylet)[0m   File "C:\Users\shubh\Desktop\Shubham Major Project\fraudnet-synth\.venv\Lib\site-packages\ray\_private\worker.py", line 2801 in disconnect[32m [repeated 11x across cluster][0m
+[33m(raylet)[0m   File "C:\Users\shubh\Desktop\Shubham Major Project\fraudnet-synth\.venv\Lib\site-packages\ray\_private\worker.py", line 2132 in shutdown[32m [repeated 11x across cluster][0m
+[33m(raylet)[0m   File "C:\Users\shubh\Desktop\Shubham Major Project\fraudnet-synth\.venv\Lib\site-packages\ray\_private\worker.py", line 1143 in wrapper[32m [repeated 11x across cluster][0m
+[33m(raylet)[0m   File "C:\Users\shubh\Desktop\Shubham Major Project\fraudnet-synth\.venv\Lib\site-packages\ray\_private\client_mode_hook.py", line 107 in wrapper[32m [repeated 11x across cluster][0m

@@ -78,7 +78,12 @@ def fit_and_evaluate(train_df, val_df, eval_sets: dict, model_cfg: dict, seed: i
 
 # ------------------------------------------------------------ arms ---
 
-def run(seed: int) -> dict:
+NON_FED_ARMS = ("arm1_isolated_real", "arm2_isolated_aug", "arm5_central_real", "arm6_central_aug")
+
+
+def run(seed: int, arms=NON_FED_ARMS) -> dict:
+    """Train and evaluate the requested non-federated arms (default: all four). Each model is
+    seeded independently, so running a subset gives exactly the same numbers as the full run."""
     model_cfg = load_config("model")
     exp_cfg = load_config("experiments")
     banks = list(load_config("partition")["banks"])
@@ -93,6 +98,8 @@ def run(seed: int) -> dict:
 
     # Arms 1 and 2: each bank alone. Evaluated on the global test and its OWN local test.
     for arm, augmented in (("arm1_isolated_real", False), ("arm2_isolated_aug", True)):
+        if arm not in arms:
+            continue
         results["arms"][arm] = {}
         for b in banks:
             train = pd.concat([local[b]["train"], synth[b]]) if augmented else local[b]["train"]
@@ -104,6 +111,8 @@ def run(seed: int) -> dict:
     pooled_train = pd.concat([local[b]["train"] for b in banks])
     pooled_val = pd.concat([local[b]["val"] for b in banks])
     for arm, augmented in (("arm5_central_real", False), ("arm6_central_aug", True)):
+        if arm not in arms:
+            continue
         train = pd.concat([pooled_train, *synth.values()]) if augmented else pooled_train
         print(f"  {arm}: {len(train):,} rows, {int(train[LABEL_COLUMN].sum())} fraud", flush=True)
         results["arms"][arm] = {"pooled": fit_and_evaluate(train, pooled_val, eval_sets, model_cfg, seed)}

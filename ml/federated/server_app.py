@@ -95,7 +95,16 @@ def _per_bank(kind: str):
     return aggr
 
 
-def _global_eval_fn(global_test: pd.DataFrame):
+def emit_event(event: dict) -> None:
+    """Step 10: if the API set FRAUDNET_EVENTS_FILE, append one JSON line per event so the
+    orchestrator can stream live round metrics over its WebSocket. No-op otherwise."""
+    path = os.environ.get("FRAUDNET_EVENTS_FILE")
+    if path:
+        with open(path, "a", encoding="utf-8") as f:
+            f.write(json.dumps(event) + "\n")
+
+
+def _global_eval_fn(global_test: pd.DataFrame, arm: str = "", seed: int = 0):
     x, y = to_xy(global_test)
     history = []
 
@@ -106,6 +115,11 @@ def _global_eval_fn(global_test: pd.DataFrame):
         rec = {"round": server_round, "global_test_pr_auc": float(average_precision_score(y, s)),
                "global_test_roc_auc": float(roc_auc_score(y, s))}
         history.append(rec)
+        if server_round > 0:
+            banks = [{"bank": BANKS[int(t["bank-idx"])], "train_loss": float(t["train-loss"]),
+                      "num_examples": int(t["num-examples"]), "upload_bytes": int(t["upload-bytes"])}
+                     for t in (ROUND_LOG["train"][-1] if ROUND_LOG["train"] else [])]
+            emit_event({"type": "round", "arm": arm, "seed": seed, **rec, "banks": banks})
         return MetricRecord({k: v for k, v in rec.items() if k != "round"})
     return evaluate, history
 
@@ -134,7 +148,7 @@ def run_arm(grid: Grid, arm: str, augmented: bool, seed: int, num_rounds: int, e
                       min_train_nodes=expected_banks, min_evaluate_nodes=expected_banks,
                       min_available_nodes=expected_banks,
                       train_metrics_aggr_fn=_per_bank("train"), evaluate_metrics_aggr_fn=_per_bank("evaluate"))
-    eval_fn, global_history = _global_eval_fn(global_test)
+    eval_fn, global_history = _global_eval_fn(global_test, arm, seed)
     base_cfg = {"augmented": augmented, "seed": seed}
 
     t0 = time.perf_counter()
@@ -163,6 +177,10 @@ def run_arm(grid: Grid, arm: str, augmented: bool, seed: int, num_rounds: int, e
     # Global test: held by the experimenter (not a bank), scored once with the final model.
     model = build_model(MODEL_CFG)
     model.load_state_dict(final.to_torch_state_dict())
+    if os.environ.get("FRAUDNET_SAVE_MODEL"):  # Step 10: keep the final global model for /predict
+        import torch
+        torch.save({"state_dict": model.state_dict(), "threshold_logit": threshold, "arm": arm, "seed": seed,
+                    "num_rounds": num_rounds}, os.environ["FRAUDNET_SAVE_MODEL"])
     xg, yg = to_xy(global_test)
     global_metrics = compute_metrics(yg, predict_scores(model, xg), threshold)
 

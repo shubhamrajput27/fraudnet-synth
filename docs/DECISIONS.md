@@ -248,3 +248,38 @@ Each entry records the decision, the alternatives considered, the reason and the
 - **Decision:** for each comparison, per-seed paired differences: mean, std, CI = mean ± t(0.975, n−1)·std/√n, and "improved in k of N seeds". A difference is "clear" only if the CI excludes 0. The number of comparisons (56) and the expected chance hits (~3) are reported.
 - **Alternatives:** mean ± std only (easy to over-read); Wilcoxon signed-rank (with n = 5 the smallest two-sided p is 0.0625, so it can never reach p < 0.05).
 - **Reason:** simple, honest and explainable in a viva.
+
+## D-040: /predict uses the federated Arm 3 model (seed 42)
+- **Date:** 2026-10-11 (Step 10). **Chosen by:** Shubham.
+- **Decision:** the final FedAvg global model of Arm 3, seed 42, 30 rounds, with its count-based threshold (logit 3.75), saved by the `prepare_model` job (re-run of the bit-reproducible simulation; verified identical to Step 9).
+- **Alternatives:** Arm 4 (statistically the same performance); both models side by side.
+- **Reason:** the privacy-preserving model, and Step 9 found no augmentation benefit.
+
+## D-041: Generation through the API = replay by default, versioned regenerate on request
+- **Date:** 2026-10-11 (Step 10). **Chosen by:** Shubham.
+- **Decision:** *replay* retrains CTGAN with its original seed (a reloaded model does **not** resample the same rows) and rebuilds LLM rows from the cache (0 API calls), runs the same gate into `generations/replay_<job>/` inside the bank folder, and compares SHA-256 with the experiment files. *Regenerate* writes new data to `generations/vN/`. Experiment files are never overwritten.
+- **Alternatives:** replay only; full regenerate in place (would invalidate Steps 6–9).
+- **Reason:** reproducibility proof plus safe experimentation. Replay of all four banks was byte-identical.
+
+## D-042: Background jobs as separate processes, one at a time
+- **Date:** 2026-10-11 (Step 10).
+- **Decision:** a queue and worker thread; each job is `python -m services.orchestrator.tasks …`; state persisted to `results/api_jobs/<id>/job.json`; unfinished jobs are marked "interrupted" after an API restart.
+- **Alternatives:** threads inside the API process (training would freeze the server); Celery/Redis (extra infrastructure, not justified on one laptop).
+- **Reason:** isolation, simplicity, zero cost.
+
+## D-043: Runs = any subset of arms 1–6 or all six, over chosen seeds
+- **Date:** 2026-10-11 (Step 10). **Chosen by:** Shubham.
+- **Decision:** `POST /runs {arms, seeds}`; outputs go to the job folder, never over Step 9's; a full report is built when all six arms run over ≥ 2 seeds.
+- **Reason:** quick single-arm demos and full reproductions from the dashboard (Step 13).
+
+## D-044: Orchestrator listens on localhost with an internal key
+- **Date:** 2026-10-11 (Step 10).
+- **Decision:** bind to 127.0.0.1:8100; every endpoint except `/health` requires `X-Internal-Key` (≥ 16 characters, in `.env`, compared in constant time); the WebSocket accepts it as a header or `?key=`. User authentication lives in the gateway (Step 11).
+- **Reason:** Tier 3 is never exposed directly; one clear trust boundary.
+
+## D-045: Synthetic export only to the bank's own operator, audited (requirement conflict resolved)
+- **Date:** 2026-10-11 (Step 10). **Chosen by:** Shubham.
+- **Conflict:** CLAUDE.md lists "dataset export", while the privacy invariant says no synthetic row crosses a client boundary.
+- **Decision:** export returns only that bank's `synthetic_validated.csv` (never real rows), only when `X-Bank-Scope` (set by the gateway from the user's role) equals the bank; every attempt is logged in `results/api_audit/exports.log`.
+- **Alternatives:** aggregates-only export; any logged-in user (contradicts the invariant).
+- **Reason:** data goes only to its owner. Disclosed in the report.
