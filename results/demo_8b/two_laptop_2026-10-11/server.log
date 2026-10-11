@@ -1,0 +1,35 @@
+2026-10-11T16:54:55  === FraudNet-Synth demo run: arm4_federated_aug, 10 rounds, waiting for 2 banks; server data folder holds only the global test set ===
+2026-10-11T16:55:17  Round 1: update from bank_a <- ArrayRecord 'arrays' (6 weight tensors, 17,478 B), MetricRecord 'metrics' (5 scalars)
+2026-10-11T16:55:17  Round 1: update from bank_b <- ArrayRecord 'arrays' (6 weight tensors, 17,478 B), MetricRecord 'metrics' (5 scalars)
+2026-10-11T16:55:17  Round 1: FedAvg of 2 bank updates (weighted by rows) -> new global model (17,478 B) sent to every bank
+2026-10-11T16:55:42  Round 2: update from bank_a <- ArrayRecord 'arrays' (6 weight tensors, 17,478 B), MetricRecord 'metrics' (5 scalars)
+2026-10-11T16:55:42  Round 2: update from bank_b <- ArrayRecord 'arrays' (6 weight tensors, 17,478 B), MetricRecord 'metrics' (5 scalars)
+2026-10-11T16:55:42  Round 2: FedAvg of 2 bank updates (weighted by rows) -> new global model (17,478 B) sent to every bank
+2026-10-11T16:56:06  Round 3: update from bank_a <- ArrayRecord 'arrays' (6 weight tensors, 17,478 B), MetricRecord 'metrics' (5 scalars)
+2026-10-11T16:56:06  Round 3: update from bank_b <- ArrayRecord 'arrays' (6 weight tensors, 17,478 B), MetricRecord 'metrics' (5 scalars)
+2026-10-11T16:56:06  Round 3: FedAvg of 2 bank updates (weighted by rows) -> new global model (17,478 B) sent to every bank
+2026-10-11T16:56:31  Round 4: update from bank_a <- ArrayRecord 'arrays' (6 weight tensors, 17,478 B), MetricRecord 'metrics' (5 scalars)
+2026-10-11T16:56:31  Round 4: update from bank_b <- ArrayRecord 'arrays' (6 weight tensors, 17,478 B), MetricRecord 'metrics' (5 scalars)
+2026-10-11T16:56:31  Round 4: FedAvg of 2 bank updates (weighted by rows) -> new global model (17,478 B) sent to every bank
+2026-10-11T16:56:55  Round 5: update from bank_a <- ArrayRecord 'arrays' (6 weight tensors, 17,478 B), MetricRecord 'metrics' (5 scalars)
+2026-10-11T16:56:55  Round 5: update from bank_b <- ArrayRecord 'arrays' (6 weight tensors, 17,478 B), MetricRecord 'metrics' (5 scalars)
+2026-10-11T16:56:55  Round 5: FedAvg of 2 bank updates (weighted by rows) -> new global model (17,478 B) sent to every bank
+2026-10-11T16:57:19  Round 6: update from bank_a <- ArrayRecord 'arrays' (6 weight tensors, 17,478 B), MetricRecord 'metrics' (5 scalars)
+2026-10-11T16:57:19  Round 6: update from bank_b <- ArrayRecord 'arrays' (6 weight tensors, 17,478 B), MetricRecord 'metrics' (5 scalars)
+2026-10-11T16:57:19  Round 6: FedAvg of 2 bank updates (weighted by rows) -> new global model (17,478 B) sent to every bank
+2026-10-11T16:57:42  Round 7: update from bank_a <- ArrayRecord 'arrays' (6 weight tensors, 17,478 B), MetricRecord 'metrics' (5 scalars)
+2026-10-11T16:57:42  Round 7: update from bank_b <- ArrayRecord 'arrays' (6 weight tensors, 17,478 B), MetricRecord 'metrics' (5 scalars)
+2026-10-11T16:57:42  Round 7: FedAvg of 2 bank updates (weighted by rows) -> new global model (17,478 B) sent to every bank
+2026-10-11T16:58:06  Round 8: update from bank_a <- ArrayRecord 'arrays' (6 weight tensors, 17,478 B), MetricRecord 'metrics' (5 scalars)
+2026-10-11T16:58:06  Round 8: update from bank_b <- ArrayRecord 'arrays' (6 weight tensors, 17,478 B), MetricRecord 'metrics' (5 scalars)
+2026-10-11T16:58:06  Round 8: FedAvg of 2 bank updates (weighted by rows) -> new global model (17,478 B) sent to every bank
+2026-10-11T16:58:30  Round 9: update from bank_a <- ArrayRecord 'arrays' (6 weight tensors, 17,478 B), MetricRecord 'metrics' (5 scalars)
+2026-10-11T16:58:30  Round 9: update from bank_b <- ArrayRecord 'arrays' (6 weight tensors, 17,478 B), MetricRecord 'metrics' (5 scalars)
+2026-10-11T16:58:30  Round 9: FedAvg of 2 bank updates (weighted by rows) -> new global model (17,478 B) sent to every bank
+2026-10-11T16:58:55  Round 10: update from bank_a <- ArrayRecord 'arrays' (6 weight tensors, 17,478 B), MetricRecord 'metrics' (5 scalars)
+2026-10-11T16:58:55  Round 10: update from bank_b <- ArrayRecord 'arrays' (6 weight tensors, 17,478 B), MetricRecord 'metrics' (5 scalars)
+2026-10-11T16:58:55  Round 10: FedAvg of 2 bank updates (weighted by rows) -> new global model (17,478 B) sent to every bank
+2026-10-11T16:59:16  Threshold step: bank_b sent 241 TP + 241 FP integer counts (no scores, no rows)
+2026-10-11T16:59:16  Threshold step: bank_a sent 241 TP + 241 FP integer counts (no scores, no rows)
+2026-10-11T16:59:16  Threshold step: summed counts -> cut-off logit 3.25 (pooled val F1 0.7895)
+2026-10-11T16:59:28  === Done in 274s. Global test (95 fraud): precision 0.7732 recall 0.7895 F1 0.7812 PR-AUC 0.7263. DEMO ONLY: reported results come from the single-machine runs. ===

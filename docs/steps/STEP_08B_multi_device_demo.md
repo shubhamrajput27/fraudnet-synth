@@ -7,7 +7,7 @@ Show, as our guide asked, that the fraud model **really travels between separate
 | Test (8B.3) | Status |
 |---|---|
 | 1. One-laptop fallback (5 processes, one command) | ✅ **Passed** 2026-10-10 (10 rounds, logs in `results/demo_8b/fallback_20261010_185747/`) |
-| 2. Two laptops (Shubham + Prachi) on a phone hotspot | ⏳ **Not yet run.** It needs Prachi's laptop in person; procedure in §4.3 |
+| 2. Two laptops (Shubham + Prachi) on a phone hotspot | ✅ **Passed** 2026-10-11 (10 rounds over a OnePlus phone hotspot, logs in `results/demo_8b/two_laptop_2026-10-11/`, §5.4) |
 | 3. All four laptops on one hotspot | ⏳ **Pending, planned for Monday** |
 
 ## 2. Concepts explained simply
@@ -121,7 +121,35 @@ Bank D  Round 10: received global model (17.1 KB) -> trained on 20,854 rows (36 
 - A 3-round smoke run (`fallback_20261010_185338/`) preceded it, also successful.
 
 ### 5.4 Two-laptop test (Shubham + Prachi)
-**Not yet run.** Fill in here after the session: date, hotspot used, server IP, Prachi's `Test-NetConnection` result, the round-10 lines from both client logs, the server log's arrival lines, and any problems met.
+**Passed, 2026-10-11** (`results/demo_8b/two_laptop_2026-10-11/`).
+
+- **Network:** Shubham's OnePlus 9RT phone hotspot (Windows marked it *Public*). Server laptop `10.175.106.93`, Prachi's laptop `10.175.106.212`.
+- **Set-up on the server laptop:** `make_demo_folder` built `C:\Projects\fraudnet-demo` and its check passed (`bank_a` only; global test present, allowed on the server laptop; everything else absent). The firewall rule for port 9092 was added (`-Profile Any`). The SuperLink listened on `0.0.0.0:9092`, and Bank A ran as a separate process.
+- **Prachi's laptop:** `check_my_data --bank bank_b` passed. `Test-NetConnection 10.175.106.93 -Port 9092` gave `TcpTestSucceeded : True`. Her SuperNode registered as `node_id=3133775534347504017`, and the same ID appears in the server's `Fleet.ActivateNode` log line.
+- **Server log, arrivals (first and last rounds):**
+```
+2026-10-11T16:54:55  === FraudNet-Synth demo run: arm4_federated_aug, 10 rounds, waiting for 2 banks; server data folder holds only the global test set ===
+2026-10-11T16:55:17  Round 1: update from bank_a <- ArrayRecord 'arrays' (6 weight tensors, 17,478 B), MetricRecord 'metrics' (5 scalars)
+2026-10-11T16:55:17  Round 1: update from bank_b <- ArrayRecord 'arrays' (6 weight tensors, 17,478 B), MetricRecord 'metrics' (5 scalars)
+2026-10-11T16:55:17  Round 1: FedAvg of 2 bank updates (weighted by rows) -> new global model (17,478 B) sent to every bank
+...
+2026-10-11T16:58:55  Round 10: update from bank_a <- ArrayRecord 'arrays' (6 weight tensors, 17,478 B), MetricRecord 'metrics' (5 scalars)
+2026-10-11T16:58:55  Round 10: update from bank_b <- ArrayRecord 'arrays' (6 weight tensors, 17,478 B), MetricRecord 'metrics' (5 scalars)
+2026-10-11T16:58:55  Round 10: FedAvg of 2 bank updates (weighted by rows) -> new global model (17,478 B) sent to every bank
+2026-10-11T16:59:16  Threshold step: bank_b sent 241 TP + 241 FP integer counts (no scores, no rows)
+2026-10-11T16:59:16  Threshold step: bank_a sent 241 TP + 241 FP integer counts (no scores, no rows)
+2026-10-11T16:59:16  Threshold step: summed counts -> cut-off logit 3.25 (pooled val F1 0.7895)
+2026-10-11T16:59:28  === Done in 274s. Global test (95 fraud): precision 0.7732 recall 0.7895 F1 0.7812 PR-AUC 0.7263. DEMO ONLY: reported results come from the single-machine runs. ===
+```
+- **Round 10 on each laptop:**
+```
+[Shubham, bank_a] 2026-10-11T16:58:51  Round 10: received global model (17.1 KB) -> trained on 48,787 rows (210 fraud) -> sent weights back (17.1 KB) | local loss 0.1400
+[Prachi,  bank_b] 2026-10-11T16:58:52  Round 10: received global model (17.1 KB) -> trained on 41,801 rows (164 fraud) -> sent weights back (17.1 KB) | local loss 0.2108
+```
+  In every round, Bank B's "sent weights back" time is 2–3 s before the server logs Bank B's update, so the two logs agree.
+- **Outcome (demo only, 2 banks, 10 rounds):** global test precision 0.7732, recall 0.7895, F1 0.7812, PR-AUC 0.7263; 274 s (≈24 s per round). It differs from the four-bank fallback (F1 0.7869) because only Banks A and B took part. It is not one of the six arms.
+- **Problems met:** (1) `ipconfig` lists a Hyper-V virtual adapter (`vEthernet (Default Switch)`, 172.17.240.1) first. The correct IP is the one under *Wi-Fi*. (2) Creating the firewall rule needs an Administrator terminal. (3) Prachi's clone is at `C:\Users\y16pr\fraudnet-synth-latest`, not the path in the setup guide. That works, because the commands only need to run from the project folder.
+- **Provenance:** `client_bank_b.log` was copied from Prachi's laptop (pasted text, not transferred as a file). All the other files in the folder come from the server laptop.
 
 ### 5.5 Four-laptop test
 **Pending (Monday).**
@@ -131,7 +159,7 @@ Bank D  Round 10: received global model (17.1 KB) -> trained on 20,854 rows (36 
 - **52 tests pass** (9 new in `test_demo_checks.py`).
 
 ## 6. Explain it to the guide (script)
-"Sir, you asked to see the model really move between banks, so in Step 8B we run federated learning across separate laptops on a phone hotspot. My laptop runs the Flower server, and each teammate's laptop runs one bank. Each bank received only its own data file, in person by pen drive, and a check program proves the laptop holds nothing else: no other bank's data, no raw dataset. The client refuses to start if that check fails. In every round, my server sends the current model, about 17 kilobytes, to every bank. Each bank trains it on its own rows and sends back only updated weights, and my server log shows exactly what arrived: one weight record and five numbers per bank, nothing else. Flower even ships our code to each laptop, but we limited that package to code files, so no data can travel with it. We've already tested a one-laptop fallback with five separate processes, and its results match our simulation exactly; the two-laptop and four-laptop tests are next. This demo shows the mechanism; our reported results still come from the controlled single-machine experiments."
+"Sir, you asked to see the model really move between banks, so in Step 8B we run federated learning across separate laptops on a phone hotspot. My laptop runs the Flower server, and each teammate's laptop runs one bank. Each bank received only its own data file, in person by pen drive, and a check program proves the laptop holds nothing else: no other bank's data, no raw dataset. The client refuses to start if that check fails. In every round, my server sends the current model, about 17 kilobytes, to every bank. Each bank trains it on its own rows and sends back only updated weights, and my server log shows exactly what arrived: one weight record and five numbers per bank, nothing else. Flower even ships our code to each laptop, but we limited that package to code files, so no data can travel with it. We tested a one-laptop fallback with five separate processes, and its results match our simulation exactly. Then we ran ten rounds between my laptop and Prachi's over a phone hotspot, and in every round her laptop's log and my server log agree. The four-laptop test is next. This demo shows the mechanism; our reported results still come from the controlled single-machine experiments."
 
 ## 7. Likely viva questions
 1. **What travels over the network?** Each round: the global model (17,478 bytes) from server to bank, and the updated weights (17,478 bytes) plus 5 scalar metrics from bank to server. After training: 241 TP and 241 FP integer counts per bank, and scalar local-test metrics. Also the code bundle once (154 KB, code and configs only).
@@ -141,7 +169,7 @@ Bank D  Round 10: received global model (17.1 KB) -> trained on 20,854 rows (36 
 5. **Is the traffic encrypted?** No. The demo uses Flower's insecure mode on a private hotspot. The content is only weights and counts, but a real deployment would enable TLS certificates. We state this as a limitation.
 
 ## 8. Limitations and honest notes
-- **The multi-laptop tests are not done yet.** The two-laptop test needs Prachi's laptop in person; the four-laptop test is planned for Monday. Only the one-laptop fallback has been run so far. §5.4/§5.5 must be filled with real logs before the review, and two full rehearsals are required (8B.5).
+- **The four-laptop test is not done yet** (planned for Monday). The one-laptop fallback (2026-10-10) and the two-laptop test (2026-10-11) have passed. §5.5 must be filled with real logs before the review, and two full four-laptop rehearsals are required (8B.5).
 - **The handover is simulation set-up** (see Q3). Code can check a laptop's contents but cannot stop a person deliberately copying files, which is why the handover is in person and zips are deleted.
 - **Synthetic data was generated on Shubham's laptop** (Steps 4–6, D-033: ready-made files for every bank). Teammates must not claim it was generated on their machines.
 - **The server holds the global test set** to measure results, a disclosed design choice. The server process reads nothing else.
@@ -151,4 +179,4 @@ Bank D  Round 10: received global model (17.1 KB) -> trained on 20,854 rows (36 
 - **Report reminder:** the project report and synopsis must be updated to describe this multi-device demo setup (D-020).
 
 ## 9. Next step
-Run the **two-laptop test with Prachi** (§4.3) and record it in §5.4. The **four-laptop test** follows on Monday. In parallel we move to **Step 9: the six-arm runner**, which repeats all six arms over several seeds and reports mean ± standard deviation, the per-bank augmentation delta table and an honest comparison with the literature.
+The two-laptop test has passed (§5.4). Next is the **four-laptop test** on Monday (§4.4): Pradeepa and Sathvik first complete `docs/MULTI_DEVICE_SETUP.md` Parts 1–2. Then come two full rehearsals before the review.

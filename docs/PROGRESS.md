@@ -11,7 +11,7 @@
 | 6 | Shared validation layer | 3 | ✅ Done (2026-10-08) | [STEP_06](steps/STEP_06_validation_gate.md) |
 | 7 | Isolated & centralized arms | 4 | ✅ Done (2026-10-08). Single seed; multi-seed in Step 9 | [STEP_07](steps/STEP_07_isolated_centralized_arms.md) |
 | 8 | Federated arms (Flower) | 4 | ✅ Done (2026-10-08). Single seed; bit-reproducible | [STEP_08](steps/STEP_08_federated_arms.md) |
-| 8B | Multi-device federated demo (live demo only, D-020) | 4 → demo | 🔄 Built 2026-10-10. One-laptop fallback ✅; 2-laptop test (Prachi) not yet run; 4-laptop test pending (Monday) | [STEP_08B](steps/STEP_08B_multi_device_demo.md) |
+| 8B | Multi-device federated demo (live demo only, D-020) | 4 → demo | 🔄 Built 2026-10-10. One-laptop fallback ✅; 2-laptop test (Prachi) ✅ 2026-10-11; 4-laptop test pending (Monday) | [STEP_08B](steps/STEP_08B_multi_device_demo.md) |
 | 9 | Six-arm runner & results | 4→7 | ✅ Done (2026-10-11). 5 seeds; Phase 4 exit criterion met | [STEP_09](steps/STEP_09_six_arm_results.md) |
 | 10 | FastAPI orchestrator | 5 | ✅ Done (2026-10-11) | [STEP_10](steps/STEP_10_fastapi_orchestrator.md) |
 | 11 | Express gateway + MongoDB | 5 | Not started | |

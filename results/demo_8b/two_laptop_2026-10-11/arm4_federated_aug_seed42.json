@@ -1,0 +1,319 @@
+{
+  "arm": "arm4_federated_aug",
+  "augmented": true,
+  "seed": 42,
+  "num_rounds": 10,
+  "local_epochs": 1,
+  "train_seconds": 250.9,
+  "threshold_logit": 3.25,
+  "threshold_val_stats": {
+    "val_f1": 0.7894736842105263,
+    "val_precision": 0.8108108108108109,
+    "val_recall": 0.7692307692307693,
+    "val_tp": 30,
+    "val_fp": 7,
+    "val_fraud_total": 39
+  },
+  "global_test": {
+    "precision": 0.7731958762886598,
+    "recall": 0.7894736842105263,
+    "f1": 0.78125,
+    "pr_auc": 0.7262519799035411,
+    "roc_auc": 0.9592764191462222,
+    "accuracy": 0.9992598597257957,
+    "threshold": 3.25,
+    "tp": 75,
+    "fp": 22,
+    "fn": 20,
+    "tn": 56629,
+    "n": 56746,
+    "n_fraud": 95
+  },
+  "local_test": {
+    "bank_a": {
+      "precision": 0.68,
+      "recall": 0.7727272727272727,
+      "f1": 0.723404255319149,
+      "pr_auc": 0.724028451610797,
+      "roc_auc": 0.9660509999126714,
+      "accuracy": 0.9987538343558282,
+      "tp": 17,
+      "fp": 8,
+      "fn": 5,
+      "tn": 10402,
+      "n_fraud": 22
+    },
+    "bank_b": {
+      "precision": 0.6818181818181818,
+      "recall": 0.8823529411764706,
+      "f1": 0.7692307692307693,
+      "pr_auc": 0.6168097274902825,
+      "roc_auc": 0.9236540071592909,
+      "accuracy": 0.998993288590604,
+      "tp": 15,
+      "fp": 7,
+      "fn": 2,
+      "tn": 8916,
+      "n_fraud": 17
+    }
+  },
+  "global_test_per_round": [
+    {
+      "round": 1,
+      "global_test_pr_auc": 0.7055982038766511,
+      "global_test_roc_auc": 0.9422854987462478
+    },
+    {
+      "round": 2,
+      "global_test_pr_auc": 0.7070250659163747,
+      "global_test_roc_auc": 0.9513469823081119
+    },
+    {
+      "round": 3,
+      "global_test_pr_auc": 0.7164539645055714,
+      "global_test_roc_auc": 0.9512583509930146
+    },
+    {
+      "round": 4,
+      "global_test_pr_auc": 0.718443984185812,
+      "global_test_roc_auc": 0.9541278130455262
+    },
+    {
+      "round": 5,
+      "global_test_pr_auc": 0.7213195012238601,
+      "global_test_roc_auc": 0.9554048843844444
+    },
+    {
+      "round": 6,
+      "global_test_pr_auc": 0.7245602033381335,
+      "global_test_roc_auc": 0.9554138032589196
+    },
+    {
+      "round": 7,
+      "global_test_pr_auc": 0.7256817665683908,
+      "global_test_roc_auc": 0.9566975637536942
+    },
+    {
+      "round": 8,
+      "global_test_pr_auc": 0.7261255179197531,
+      "global_test_roc_auc": 0.9564625142492955
+    },
+    {
+      "round": 9,
+      "global_test_pr_auc": 0.7241050269527679,
+      "global_test_roc_auc": 0.9582793633038484
+    },
+    {
+      "round": 10,
+      "global_test_pr_auc": 0.7262519799035411,
+      "global_test_roc_auc": 0.9592764191462222
+    }
+  ],
+  "global_test_round0": {
+    "round": 0,
+    "global_test_pr_auc": 0.0048652830515440015,
+    "global_test_roc_auc": 0.40981856593788935
+  },
+  "per_bank_per_round": [
+    {
+      "round": 1,
+      "bank": "bank_a",
+      "train_loss": 0.7275660813220065,
+      "num_examples": 48787,
+      "upload_bytes": 17478,
+      "val_loss": 0.3250019646406392,
+      "val_pr_auc": 0.7921464596517874,
+      "val_fraud": 22
+    },
+    {
+      "round": 1,
+      "bank": "bank_b",
+      "train_loss": 0.7417746718528838,
+      "num_examples": 41801,
+      "upload_bytes": 17478,
+      "val_loss": 0.3734448795975394,
+      "val_pr_auc": 0.6269083351844768,
+      "val_fraud": 17
+    },
+    {
+      "round": 2,
+      "bank": "bank_a",
+      "train_loss": 0.2556816653487115,
+      "num_examples": 48787,
+      "upload_bytes": 17478,
+      "val_loss": 0.2799823108957003,
+      "val_pr_auc": 0.7819561882003875,
+      "val_fraud": 22
+    },
+    {
+      "round": 2,
+      "bank": "bank_b",
+      "train_loss": 0.28056939072012743,
+      "num_examples": 41801,
+      "upload_bytes": 17478,
+      "val_loss": 0.33489685381742224,
+      "val_pr_auc": 0.6370224436325411,
+      "val_fraud": 17
+    },
+    {
+      "round": 3,
+      "bank": "bank_a",
+      "train_loss": 0.20838928593818468,
+      "num_examples": 48787,
+      "upload_bytes": 17478,
+      "val_loss": 0.2966240825128599,
+      "val_pr_auc": 0.7825279967678062,
+      "val_fraud": 22
+    },
+    {
+      "round": 3,
+      "bank": "bank_b",
+      "train_loss": 0.235750882196319,
+      "num_examples": 41801,
+      "upload_bytes": 17478,
+      "val_loss": 0.3077844609790368,
+      "val_pr_auc": 0.6397566606701517,
+      "val_fraud": 17
+    },
+    {
+      "round": 4,
+      "bank": "bank_a",
+      "train_loss": 0.18266031636391686,
+      "num_examples": 48787,
+      "upload_bytes": 17478,
+      "val_loss": 0.3143422932855969,
+      "val_pr_auc": 0.7818485062212274,
+      "val_fraud": 22
+    },
+    {
+      "round": 4,
+      "bank": "bank_b",
+      "train_loss": 0.24091955384014127,
+      "num_examples": 41801,
+      "upload_bytes": 17478,
+      "val_loss": 0.28301026141857144,
+      "val_pr_auc": 0.6613285363257914,
+      "val_fraud": 17
+    },
+    {
+      "round": 5,
+      "bank": "bank_a",
+      "train_loss": 0.17321669186585154,
+      "num_examples": 48787,
+      "upload_bytes": 17478,
+      "val_loss": 0.33590454613746795,
+      "val_pr_auc": 0.7877063439778401,
+      "val_fraud": 22
+    },
+    {
+      "round": 5,
+      "bank": "bank_b",
+      "train_loss": 0.20947631544168335,
+      "num_examples": 41801,
+      "upload_bytes": 17478,
+      "val_loss": 0.2789085663452877,
+      "val_pr_auc": 0.6614814815451705,
+      "val_fraud": 17
+    },
+    {
+      "round": 6,
+      "bank": "bank_a",
+      "train_loss": 0.16823074587626693,
+      "num_examples": 48787,
+      "upload_bytes": 17478,
+      "val_loss": 0.33718866002104714,
+      "val_pr_auc": 0.7850281715760004,
+      "val_fraud": 22
+    },
+    {
+      "round": 6,
+      "bank": "bank_b",
+      "train_loss": 0.21553144624456272,
+      "num_examples": 41801,
+      "upload_bytes": 17478,
+      "val_loss": 0.28753732197221216,
+      "val_pr_auc": 0.6653235589226094,
+      "val_fraud": 17
+    },
+    {
+      "round": 7,
+      "bank": "bank_a",
+      "train_loss": 0.18575752919774344,
+      "num_examples": 48787,
+      "upload_bytes": 17478,
+      "val_loss": 0.32217493379425455,
+      "val_pr_auc": 0.7851844936723616,
+      "val_fraud": 22
+    },
+    {
+      "round": 7,
+      "bank": "bank_b",
+      "train_loss": 0.19161671741808384,
+      "num_examples": 41801,
+      "upload_bytes": 17478,
+      "val_loss": 0.26184375510775104,
+      "val_pr_auc": 0.6632356014747687,
+      "val_fraud": 17
+    },
+    {
+      "round": 8,
+      "bank": "bank_a",
+      "train_loss": 0.15743690237310065,
+      "num_examples": 48787,
+      "upload_bytes": 17478,
+      "val_loss": 0.3273448810004535,
+      "val_pr_auc": 0.7873551009167074,
+      "val_fraud": 22
+    },
+    {
+      "round": 8,
+      "bank": "bank_b",
+      "train_loss": 0.19884394853041676,
+      "num_examples": 41801,
+      "upload_bytes": 17478,
+      "val_loss": 0.2470432435588068,
+      "val_pr_auc": 0.6666875368553038,
+      "val_fraud": 17
+    },
+    {
+      "round": 9,
+      "bank": "bank_a",
+      "train_loss": 0.1600883793136439,
+      "num_examples": 48787,
+      "upload_bytes": 17478,
+      "val_loss": 0.34121637291825546,
+      "val_pr_auc": 0.7930738775122718,
+      "val_fraud": 22
+    },
+    {
+      "round": 9,
+      "bank": "bank_b",
+      "train_loss": 0.18168917108358432,
+      "num_examples": 41801,
+      "upload_bytes": 17478,
+      "val_loss": 0.24048109356509775,
+      "val_pr_auc": 0.6702302274336488,
+      "val_fraud": 17
+    },
+    {
+      "round": 10,
+      "bank": "bank_a",
+      "train_loss": 0.14002006658272678,
+      "num_examples": 48787,
+      "upload_bytes": 17478,
+      "val_loss": 0.34770517149816366,
+      "val_pr_auc": 0.796879672409393,
+      "val_fraud": 22
+    },
+    {
+      "round": 10,
+      "bank": "bank_b",
+      "train_loss": 0.21082475358759625,
+      "num_examples": 41801,
+      "upload_bytes": 17478,
+      "val_loss": 0.27209680903566497,
+      "val_pr_auc": 0.6715399376649388,
+      "val_fraud": 17
+    }
+  ]
+}

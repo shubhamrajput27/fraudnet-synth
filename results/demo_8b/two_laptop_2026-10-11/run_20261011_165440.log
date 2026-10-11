@@ -1,0 +1,247 @@
+Using SuperLink: fraudnet (127.0.0.1:9093)
+Successfully started run 3747930036902952766
+[92mINFO [0m:      Starting logstream for run_id `3747930036902952766`
+[92mINFO [0m:      Start `flwr-serverapp` process
+[32m[1mSuccessfully installed fraudnet-synth to C:\Projects\fraudnet-demo\.flwr_server\apps\fraudnet-team.fraudnet-synth.0.8.0.60f68615.[0m
+[92mINFO [0m:      No non-`flwr` dependencies found in pyproject.toml. Proceeding with isolated runtime environment creation.
+[92mINFO [0m:      Created env for run in: C:\Projects\fraudnet-demo\.flwr_server\runtime-envs\3747930036902952766
+[92mINFO [0m:      Installing application dependencies...
+[92mINFO [0m:      uv sync took 0.2 seconds.
+[92mINFO [0m:      No additional application dependencies needed installation.
+[92mINFO [0m:      App dependencies installed successfully via uv sync.
+=== FraudNet-Synth demo run: arm4_federated_aug, 10 rounds, waiting for 2 banks; server data folder holds only the global test set ===
+[92mINFO [0m:      Starting OrderedFedAvg strategy:
+[92mINFO [0m:      	├── Number of rounds: 10
+[92mINFO [0m:      	├── ArrayRecord (0.02 MB)
+[92mINFO [0m:      	├── ConfigRecord (train): {'augmented': True, 'seed': 42}
+[92mINFO [0m:      	├── ConfigRecord (evaluate): {'augmented': True, 'seed': 42}
+[92mINFO [0m:      	├──> Sampling:
+[92mINFO [0m:      	│	├──Fraction: train (1.00) | evaluate ( 1.00)
+[92mINFO [0m:      	│	├──Minimum nodes: train (2) | evaluate (2)
+[92mINFO [0m:      	│	└──Minimum available nodes: 2
+[92mINFO [0m:      	└──> Keys in records:
+[92mINFO [0m:      		├── Weighted by: 'num-examples'
+[92mINFO [0m:      		├── ArrayRecord key: 'arrays'
+[92mINFO [0m:      		└── ConfigRecord key: 'config'
+[92mINFO [0m:      
+[92mINFO [0m:      Initial global evaluation results: {'global_test_pr_auc': 0.0048652830515440015, 'global_test_roc_auc': 0.40981856593788935}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 1/10]
+[92mINFO [0m:      configure_train: Sampled 2 nodes (out of 2)
+Round 1: update from bank_a <- ArrayRecord 'arrays' (6 weight tensors, 17,478 B), MetricRecord 'metrics' (5 scalars)
+Round 1: update from bank_b <- ArrayRecord 'arrays' (6 weight tensors, 17,478 B), MetricRecord 'metrics' (5 scalars)
+[92mINFO [0m:      aggregate_train: Received 2 results and 0 failures
+Round 1: FedAvg of 2 bank updates (weighted by rows) -> new global model (17,478 B) sent to every bank
+[92mINFO [0m:      	└──> Aggregated MetricRecord: {'train-loss': 0.7341225048304315, 'train-fraud': 188.77372278889035, 'upload-bytes': 17478.0}
+[92mINFO [0m:      configure_evaluate: Sampled 2 nodes (out of 2)
+[92mINFO [0m:      aggregate_evaluate: Received 2 results and 0 failures
+[92mINFO [0m:      	└──> Aggregated MetricRecord: {'val-loss': 0.3473579247745793, 'val-pr-auc': 0.7158905835038546, 'val-fraud': 19.69254594259756}
+[92mINFO [0m:      Global evaluation
+[92mINFO [0m:      	└──> MetricRecord: {'global_test_pr_auc': 0.7055982038766511, 'global_test_roc_auc': 0.9422854987462478}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 2/10]
+[92mINFO [0m:      configure_train: Sampled 2 nodes (out of 2)
+Round 2: update from bank_a <- ArrayRecord 'arrays' (6 weight tensors, 17,478 B), MetricRecord 'metrics' (5 scalars)
+Round 2: update from bank_b <- ArrayRecord 'arrays' (6 weight tensors, 17,478 B), MetricRecord 'metrics' (5 scalars)
+[92mINFO [0m:      aggregate_train: Received 2 results and 0 failures
+Round 2: FedAvg of 2 bank updates (weighted by rows) -> new global model (17,478 B) sent to every bank
+[92mINFO [0m:      	└──> Aggregated MetricRecord: {'train-loss': 0.2671658774767037, 'train-fraud': 188.77372278889035, 'upload-bytes': 17478.0}
+[92mINFO [0m:      configure_evaluate: Sampled 2 nodes (out of 2)
+[92mINFO [0m:      aggregate_evaluate: Received 2 results and 0 failures
+[92mINFO [0m:      	└──> Aggregated MetricRecord: {'val-loss': 0.3053248678707258, 'val-pr-auc': 0.7150705968088664, 'val-fraud': 19.69254594259756}
+[92mINFO [0m:      Global evaluation
+[92mINFO [0m:      	└──> MetricRecord: {'global_test_pr_auc': 0.7070250659163747, 'global_test_roc_auc': 0.9513469823081119}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 3/10]
+[92mINFO [0m:      configure_train: Sampled 2 nodes (out of 2)
+Round 3: update from bank_a <- ArrayRecord 'arrays' (6 weight tensors, 17,478 B), MetricRecord 'metrics' (5 scalars)
+Round 3: update from bank_b <- ArrayRecord 'arrays' (6 weight tensors, 17,478 B), MetricRecord 'metrics' (5 scalars)
+[92mINFO [0m:      aggregate_train: Received 2 results and 0 failures
+Round 3: FedAvg of 2 bank updates (weighted by rows) -> new global model (17,478 B) sent to every bank
+[92mINFO [0m:      	└──> Aggregated MetricRecord: {'train-loss': 0.22101504304935032, 'train-fraud': 188.77372278889035, 'upload-bytes': 17478.0}
+[92mINFO [0m:      configure_evaluate: Sampled 2 nodes (out of 2)
+[92mINFO [0m:      aggregate_evaluate: Received 2 results and 0 failures
+[92mINFO [0m:      	└──> Aggregated MetricRecord: {'val-loss': 0.30177449462764516, 'val-pr-auc': 0.7166403370159462, 'val-fraud': 19.69254594259756}
+[92mINFO [0m:      Global evaluation
+[92mINFO [0m:      	└──> MetricRecord: {'global_test_pr_auc': 0.7164539645055714, 'global_test_roc_auc': 0.9512583509930146}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 4/10]
+[92mINFO [0m:      configure_train: Sampled 2 nodes (out of 2)
+Round 4: update from bank_a <- ArrayRecord 'arrays' (6 weight tensors, 17,478 B), MetricRecord 'metrics' (5 scalars)
+Round 4: update from bank_b <- ArrayRecord 'arrays' (6 weight tensors, 17,478 B), MetricRecord 'metrics' (5 scalars)
+[92mINFO [0m:      aggregate_train: Received 2 results and 0 failures
+Round 4: FedAvg of 2 bank updates (weighted by rows) -> new global model (17,478 B) sent to every bank
+[92mINFO [0m:      	└──> Aggregated MetricRecord: {'train-loss': 0.2095435060330083, 'train-fraud': 188.77372278889035, 'upload-bytes': 17478.0}
+[92mINFO [0m:      configure_evaluate: Sampled 2 nodes (out of 2)
+[92mINFO [0m:      aggregate_evaluate: Received 2 results and 0 failures
+[92mINFO [0m:      	└──> Aggregated MetricRecord: {'val-loss': 0.29988284847395086, 'val-pr-auc': 0.7262296475145786, 'val-fraud': 19.69254594259756}
+[92mINFO [0m:      Global evaluation
+[92mINFO [0m:      	└──> MetricRecord: {'global_test_pr_auc': 0.718443984185812, 'global_test_roc_auc': 0.9541278130455262}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 5/10]
+[92mINFO [0m:      configure_train: Sampled 2 nodes (out of 2)
+Round 5: update from bank_a <- ArrayRecord 'arrays' (6 weight tensors, 17,478 B), MetricRecord 'metrics' (5 scalars)
+Round 5: update from bank_b <- ArrayRecord 'arrays' (6 weight tensors, 17,478 B), MetricRecord 'metrics' (5 scalars)
+[92mINFO [0m:      aggregate_train: Received 2 results and 0 failures
+Round 5: FedAvg of 2 bank updates (weighted by rows) -> new global model (17,478 B) sent to every bank
+[92mINFO [0m:      	└──> Aggregated MetricRecord: {'train-loss': 0.1899483619004405, 'train-fraud': 188.77372278889035, 'upload-bytes': 17478.0}
+[92mINFO [0m:      configure_evaluate: Sampled 2 nodes (out of 2)
+[92mINFO [0m:      aggregate_evaluate: Received 2 results and 0 failures
+[92mINFO [0m:      	└──> Aggregated MetricRecord: {'val-loss': 0.30960142517204925, 'val-pr-auc': 0.7294547297847745, 'val-fraud': 19.69254594259756}
+[92mINFO [0m:      Global evaluation
+[92mINFO [0m:      	└──> MetricRecord: {'global_test_pr_auc': 0.7213195012238601, 'global_test_roc_auc': 0.9554048843844444}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 6/10]
+[92mINFO [0m:      configure_train: Sampled 2 nodes (out of 2)
+Round 6: update from bank_a <- ArrayRecord 'arrays' (6 weight tensors, 17,478 B), MetricRecord 'metrics' (5 scalars)
+Round 6: update from bank_b <- ArrayRecord 'arrays' (6 weight tensors, 17,478 B), MetricRecord 'metrics' (5 scalars)
+[92mINFO [0m:      aggregate_train: Received 2 results and 0 failures
+Round 6: FedAvg of 2 bank updates (weighted by rows) -> new global model (17,478 B) sent to every bank
+[92mINFO [0m:      	└──> Aggregated MetricRecord: {'train-loss': 0.19005721931750785, 'train-fraud': 188.77372278889035, 'upload-bytes': 17478.0}
+[92mINFO [0m:      configure_evaluate: Sampled 2 nodes (out of 2)
+[92mINFO [0m:      aggregate_evaluate: Received 2 results and 0 failures
+[92mINFO [0m:      	└──> Aggregated MetricRecord: {'val-loss': 0.3142750237337983, 'val-pr-auc': 0.7297855927446295, 'val-fraud': 19.69254594259756}
+[92mINFO [0m:      Global evaluation
+[92mINFO [0m:      	└──> MetricRecord: {'global_test_pr_auc': 0.7245602033381335, 'global_test_roc_auc': 0.9554138032589196}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 7/10]
+[92mINFO [0m:      configure_train: Sampled 2 nodes (out of 2)
+Round 7: update from bank_a <- ArrayRecord 'arrays' (6 weight tensors, 17,478 B), MetricRecord 'metrics' (5 scalars)
+Round 7: update from bank_b <- ArrayRecord 'arrays' (6 weight tensors, 17,478 B), MetricRecord 'metrics' (5 scalars)
+[92mINFO [0m:      aggregate_train: Received 2 results and 0 failures
+Round 7: FedAvg of 2 bank updates (weighted by rows) -> new global model (17,478 B) sent to every bank
+[92mINFO [0m:      	└──> Aggregated MetricRecord: {'train-loss': 0.18846119774985243, 'train-fraud': 188.77372278889035, 'upload-bytes': 17478.0}
+[92mINFO [0m:      configure_evaluate: Sampled 2 nodes (out of 2)
+[92mINFO [0m:      aggregate_evaluate: Received 2 results and 0 failures
+[92mINFO [0m:      	└──> Aggregated MetricRecord: {'val-loss': 0.29433264918464574, 'val-pr-auc': 0.7289062004529481, 'val-fraud': 19.69254594259756}
+[92mINFO [0m:      Global evaluation
+[92mINFO [0m:      	└──> MetricRecord: {'global_test_pr_auc': 0.7256817665683908, 'global_test_roc_auc': 0.9566975637536942}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 8/10]
+[92mINFO [0m:      configure_train: Sampled 2 nodes (out of 2)
+Round 8: update from bank_a <- ArrayRecord 'arrays' (6 weight tensors, 17,478 B), MetricRecord 'metrics' (5 scalars)
+Round 8: update from bank_b <- ArrayRecord 'arrays' (6 weight tensors, 17,478 B), MetricRecord 'metrics' (5 scalars)
+[92mINFO [0m:      aggregate_train: Received 2 results and 0 failures
+Round 8: FedAvg of 2 bank updates (weighted by rows) -> new global model (17,478 B) sent to every bank
+[92mINFO [0m:      	└──> Aggregated MetricRecord: {'train-loss': 0.17654380324763116, 'train-fraud': 188.77372278889035, 'upload-bytes': 17478.0}
+[92mINFO [0m:      configure_evaluate: Sampled 2 nodes (out of 2)
+[92mINFO [0m:      aggregate_evaluate: Received 2 results and 0 failures
+[92mINFO [0m:      	└──> Aggregated MetricRecord: {'val-loss': 0.29028641317429604, 'val-pr-auc': 0.7316681288586366, 'val-fraud': 19.69254594259756}
+[92mINFO [0m:      Global evaluation
+[92mINFO [0m:      	└──> MetricRecord: {'global_test_pr_auc': 0.7261255179197531, 'global_test_roc_auc': 0.9564625142492955}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 9/10]
+[92mINFO [0m:      configure_train: Sampled 2 nodes (out of 2)
+Round 9: update from bank_a <- ArrayRecord 'arrays' (6 weight tensors, 17,478 B), MetricRecord 'metrics' (5 scalars)
+Round 9: update from bank_b <- ArrayRecord 'arrays' (6 weight tensors, 17,478 B), MetricRecord 'metrics' (5 scalars)
+[92mINFO [0m:      aggregate_train: Received 2 results and 0 failures
+Round 9: FedAvg of 2 bank updates (weighted by rows) -> new global model (17,478 B) sent to every bank
+[92mINFO [0m:      	└──> Aggregated MetricRecord: {'train-loss': 0.1700558661416485, 'train-fraud': 188.77372278889035, 'upload-bytes': 17478.0}
+[92mINFO [0m:      configure_evaluate: Sampled 2 nodes (out of 2)
+[92mINFO [0m:      aggregate_evaluate: Received 2 results and 0 failures
+[92mINFO [0m:      	└──> Aggregated MetricRecord: {'val-loss': 0.2947279671048531, 'val-pr-auc': 0.7363826617522631, 'val-fraud': 19.69254594259756}
+[92mINFO [0m:      Global evaluation
+[92mINFO [0m:      	└──> MetricRecord: {'global_test_pr_auc': 0.7241050269527679, 'global_test_roc_auc': 0.9582793633038484}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 10/10]
+[92mINFO [0m:      configure_train: Sampled 2 nodes (out of 2)
+Round 10: update from bank_a <- ArrayRecord 'arrays' (6 weight tensors, 17,478 B), MetricRecord 'metrics' (5 scalars)
+Round 10: update from bank_b <- ArrayRecord 'arrays' (6 weight tensors, 17,478 B), MetricRecord 'metrics' (5 scalars)
+[92mINFO [0m:      aggregate_train: Received 2 results and 0 failures
+Round 10: FedAvg of 2 bank updates (weighted by rows) -> new global model (17,478 B) sent to every bank
+[92mINFO [0m:      	└──> Aggregated MetricRecord: {'train-loss': 0.1726922386307966, 'train-fraud': 188.77372278889035, 'upload-bytes': 17478.0}
+[92mINFO [0m:      configure_evaluate: Sampled 2 nodes (out of 2)
+[92mINFO [0m:      aggregate_evaluate: Received 2 results and 0 failures
+[92mINFO [0m:      	└──> Aggregated MetricRecord: {'val-loss': 0.31281260695063434, 'val-pr-auc': 0.7390365365114258, 'val-fraud': 19.69254594259756}
+[92mINFO [0m:      Global evaluation
+[92mINFO [0m:      	└──> MetricRecord: {'global_test_pr_auc': 0.7262519799035411, 'global_test_roc_auc': 0.9592764191462222}
+[92mINFO [0m:      
+[92mINFO [0m:      Strategy execution finished in 250.94s
+[92mINFO [0m:      
+[92mINFO [0m:      Final results:
+[92mINFO [0m:      
+[92mINFO [0m:      	Global Arrays:
+[92mINFO [0m:      		ArrayRecord (0.017 MB)
+[92mINFO [0m:      	
+[92mINFO [0m:      	Aggregated ClientApp-side Train Metrics:
+[92mINFO [0m:      	{ 1: { 'train-fraud': '1.8877e+02',
+[92mINFO [0m:      	       'train-loss': '7.3412e-01',
+[92mINFO [0m:      	       'upload-bytes': '1.7478e+04'},
+[92mINFO [0m:      	  2: { 'train-fraud': '1.8877e+02',
+[92mINFO [0m:      	       'train-loss': '2.6717e-01',
+[92mINFO [0m:      	       'upload-bytes': '1.7478e+04'},
+[92mINFO [0m:      	  3: { 'train-fraud': '1.8877e+02',
+[92mINFO [0m:      	       'train-loss': '2.2102e-01',
+[92mINFO [0m:      	       'upload-bytes': '1.7478e+04'},
+[92mINFO [0m:      	  4: { 'train-fraud': '1.8877e+02',
+[92mINFO [0m:      	       'train-loss': '2.0954e-01',
+[92mINFO [0m:      	       'upload-bytes': '1.7478e+04'},
+[92mINFO [0m:      	  5: { 'train-fraud': '1.8877e+02',
+[92mINFO [0m:      	       'train-loss': '1.8995e-01',
+[92mINFO [0m:      	       'upload-bytes': '1.7478e+04'},
+[92mINFO [0m:      	  6: { 'train-fraud': '1.8877e+02',
+[92mINFO [0m:      	       'train-loss': '1.9006e-01',
+[92mINFO [0m:      	       'upload-bytes': '1.7478e+04'},
+[92mINFO [0m:      	  7: { 'train-fraud': '1.8877e+02',
+[92mINFO [0m:      	       'train-loss': '1.8846e-01',
+[92mINFO [0m:      	       'upload-bytes': '1.7478e+04'},
+[92mINFO [0m:      	  8: { 'train-fraud': '1.8877e+02',
+[92mINFO [0m:      	       'train-loss': '1.7654e-01',
+[92mINFO [0m:      	       'upload-bytes': '1.7478e+04'},
+[92mINFO [0m:      	  9: { 'train-fraud': '1.8877e+02',
+[92mINFO [0m:      	       'train-loss': '1.7006e-01',
+[92mINFO [0m:      	       'upload-bytes': '1.7478e+04'},
+[92mINFO [0m:      	  10: { 'train-fraud': '1.8877e+02',
+[92mINFO [0m:      	        'train-loss': '1.7269e-01',
+[92mINFO [0m:      	        'upload-bytes': '1.7478e+04'}}
+[92mINFO [0m:      	
+[92mINFO [0m:      	Aggregated ClientApp-side Evaluate Metrics:
+[92mINFO [0m:      	{ 1: { 'val-fraud': '1.9693e+01',
+[92mINFO [0m:      	       'val-loss': '3.4736e-01',
+[92mINFO [0m:      	       'val-pr-auc': '7.1589e-01'},
+[92mINFO [0m:      	  2: { 'val-fraud': '1.9693e+01',
+[92mINFO [0m:      	       'val-loss': '3.0532e-01',
+[92mINFO [0m:      	       'val-pr-auc': '7.1507e-01'},
+[92mINFO [0m:      	  3: { 'val-fraud': '1.9693e+01',
+[92mINFO [0m:      	       'val-loss': '3.0177e-01',
+[92mINFO [0m:      	       'val-pr-auc': '7.1664e-01'},
+[92mINFO [0m:      	  4: { 'val-fraud': '1.9693e+01',
+[92mINFO [0m:      	       'val-loss': '2.9988e-01',
+[92mINFO [0m:      	       'val-pr-auc': '7.2623e-01'},
+[92mINFO [0m:      	  5: { 'val-fraud': '1.9693e+01',
+[92mINFO [0m:      	       'val-loss': '3.0960e-01',
+[92mINFO [0m:      	       'val-pr-auc': '7.2945e-01'},
+[92mINFO [0m:      	  6: { 'val-fraud': '1.9693e+01',
+[92mINFO [0m:      	       'val-loss': '3.1428e-01',
+[92mINFO [0m:      	       'val-pr-auc': '7.2979e-01'},
+[92mINFO [0m:      	  7: { 'val-fraud': '1.9693e+01',
+[92mINFO [0m:      	       'val-loss': '2.9433e-01',
+[92mINFO [0m:      	       'val-pr-auc': '7.2891e-01'},
+[92mINFO [0m:      	  8: { 'val-fraud': '1.9693e+01',
+[92mINFO [0m:      	       'val-loss': '2.9029e-01',
+[92mINFO [0m:      	       'val-pr-auc': '7.3167e-01'},
+[92mINFO [0m:      	  9: { 'val-fraud': '1.9693e+01',
+[92mINFO [0m:      	       'val-loss': '2.9473e-01',
+[92mINFO [0m:      	       'val-pr-auc': '7.3638e-01'},
+[92mINFO [0m:      	  10: { 'val-fraud': '1.9693e+01',
+[92mINFO [0m:      	        'val-loss': '3.1281e-01',
+[92mINFO [0m:      	        'val-pr-auc': '7.3904e-01'}}
+[92mINFO [0m:      	
+[92mINFO [0m:      	ServerApp-side Evaluate Metrics:
+[92mINFO [0m:      	{ 0: {'global_test_pr_auc': '4.8653e-03', 'global_test_roc_auc': '4.0982e-01'},
+[92mINFO [0m:      	  1: {'global_test_pr_auc': '7.0560e-01', 'global_test_roc_auc': '9.4229e-01'},
+[92mINFO [0m:      	  2: {'global_test_pr_auc': '7.0703e-01', 'global_test_roc_auc': '9.5135e-01'},
+[92mINFO [0m:      	  3: {'global_test_pr_auc': '7.1645e-01', 'global_test_roc_auc': '9.5126e-01'},
+[92mINFO [0m:      	  4: {'global_test_pr_auc': '7.1844e-01', 'global_test_roc_auc': '9.5413e-01'},
+[92mINFO [0m:      	  5: {'global_test_pr_auc': '7.2132e-01', 'global_test_roc_auc': '9.5540e-01'},
+[92mINFO [0m:      	  6: {'global_test_pr_auc': '7.2456e-01', 'global_test_roc_auc': '9.5541e-01'},
+[92mINFO [0m:      	  7: {'global_test_pr_auc': '7.2568e-01', 'global_test_roc_auc': '9.5670e-01'},
+[92mINFO [0m:      	  8: {'global_test_pr_auc': '7.2613e-01', 'global_test_roc_auc': '9.5646e-01'},
+[92mINFO [0m:      	  9: {'global_test_pr_auc': '7.2411e-01', 'global_test_roc_auc': '9.5828e-01'},
+[92mINFO [0m:      	  10: {'global_test_pr_auc': '7.2625e-01', 'global_test_roc_auc': '9.5928e-01'}}
+[92mINFO [0m:      
+Threshold step: bank_b sent 241 TP + 241 FP integer counts (no scores, no rows)
+Threshold step: bank_a sent 241 TP + 241 FP integer counts (no scores, no rows)
+Threshold step: summed counts -> cut-off logit 3.25 (pooled val F1 0.7895)
+=== Done in 274s. Global test (95 fraud): precision 0.7732 recall 0.7895 F1 0.7812 PR-AUC 0.7263. DEMO ONLY: reported results come from the single-machine runs. ===
+[92mINFO [0m:      
