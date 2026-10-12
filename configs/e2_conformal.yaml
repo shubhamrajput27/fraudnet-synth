@@ -1,0 +1,6 @@
+# Optional extension E2: conformal risk control of the miss (false-negative) rate (decisions D-062 to D-065).
+alphas: [0.05, 0.10, 0.20]        # D-064: target expected miss rates
+seeds: [42, 43, 44, 45, 46]       # federated Arm 3 models (real data), as in Step 9
+guarantee_check:
+  splits: 2000                    # D-065: random calibration/evaluation re-splits per pool, alpha and seed
+results_dir: results/extensions/e2_conformal

@@ -44,3 +44,6 @@ frontend/dist/
 
 # Step 14: demo launcher logs
 demo/logs/
+
+# Extension E2: saved federated models (rebuilt deterministically by the E2 script)
+results/extensions/**/*.pt

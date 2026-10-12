@@ -61,7 +61,7 @@ python -m tests.run_all                    # Python (pytest), gateway (node --te
 |---|---|
 | [docs/PROJECT_EXPLAINED.md](docs/PROJECT_EXPLAINED.md) | beginner introduction to the whole project |
 | [docs/steps/](docs/steps/) | one "show your guide" document per build step (0–14, 8B) |
-| [docs/VIVA_QA.md](docs/VIVA_QA.md) | 105 viva questions with answers |
+| [docs/VIVA_QA.md](docs/VIVA_QA.md) | 110 viva questions with answers |
 | [docs/DECISIONS.md](docs/DECISIONS.md) | every design decision, alternatives and reasons |
 | [docs/GLOSSARY.md](docs/GLOSSARY.md) | every technical term |
 | [docs/PROGRESS.md](docs/PROGRESS.md) | step status |

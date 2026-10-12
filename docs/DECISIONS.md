@@ -375,3 +375,21 @@ Each entry records the decision, the alternatives considered, the reason and the
 ## D-061: E1 fairness metrics
 - **Date:** 2026-10-12 (Extension E1). **Approved by:** Shubham.
 - **Decision:** per-bank F1, recall and PR-AUC on each bank's own local test; worst-bank F1 and F1 spread (std across banks); global F1/PR-AUC as cost; paired t-based 95% CIs vs FedAvg over 5 seeds. Real data only (Arm 3 setting).
+
+## D-062: Conformal risk control rule for the miss rate
+- **Date:** 2026-10-12 (Extension E2).
+- **Decision:** strictest grid cut-off with (misses + 1)/(n + 1) ≤ α; "flag all" if none qualifies; same 241-point grid as D-031 (only more cautious than the exact rule).
+- **Reason:** finite-sample, distribution-free guarantee on the expected miss rate; computable from counts.
+
+## D-063: Global calibration via per-bank counts on local validation
+- **Date:** 2026-10-12 (Extension E2). **Chosen by:** Shubham.
+- **Decision:** global = sum of the four banks' validation-fraud miss counts (49 frauds); per-bank = own validation frauds. Model: federated Arm 3, seeds 42–46, re-run with the model saved and verified identical to Step 9.
+- **Alternatives:** the experimenter's global validation set (no bank holds it).
+
+## D-064: α ∈ {0.05, 0.10, 0.20}
+- **Date:** 2026-10-12 (Extension E2). **Chosen by:** Shubham.
+- **Reason:** strict to loose; shows that small banks can't certify strict α alone (minimum 1/(n+1)).
+
+## D-065: Guarantee check by random re-splits
+- **Date:** 2026-10-12 (Extension E2). **Chosen by:** Shubham.
+- **Decision:** 2,000 random calibration/evaluation splits of each pool's val+test frauds per α and seed; report the average miss rate, its Monte Carlo standard error and the share of splits above α; "within α" = mean ≤ α + 2·SE. Used only to check the method; nothing reported is chosen on test data.

@@ -160,3 +160,9 @@ Terms are added as each step introduces them. The step number is in brackets.
 | **q-FedAvg** [E1] | Aggregation that gives clients with higher global-model loss more weight; q sets the strength (q = 0: equal weights). |
 | **Step constant L (Lipschitz estimate)** [E1] | Scales the size of each q-FedAvg update; tuned on validation. |
 | **Global-model loss** [E1] | The loss of the received shared model on a bank's own training data, before local training. |
+| **Miss rate / false-negative rate (FNR)** [E2] | Missed frauds ÷ all frauds (1 − recall). |
+| **Conformal risk control (CRC)** [E2] | Picks a threshold from calibration data so the expected miss rate is ≤ α. |
+| **Calibration set** [E2] | Labelled data used only to set the threshold (here the banks' validation frauds). |
+| **Exchangeability** [E2] | Assumption that calibration and future frauds behave like random draws from the same population. |
+| **Marginal (average) guarantee** [E2] | Holds on average over calibration sets, not necessarily for each one. |
+| **Minimum feasible α** [E2] | 1/(n+1) for n calibration frauds; stricter targets force "flag everything". |
