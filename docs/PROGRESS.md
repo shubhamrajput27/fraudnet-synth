@@ -17,6 +17,6 @@
 | 11 | Express gateway + MongoDB | 5 | ✅ Done (2026-10-11). Milestone: full run triggered + persisted via API | [STEP_11](steps/STEP_11_gateway_mongodb.md) |
 | 12 | React dashboard | 6 | ✅ Done (2026-10-11) | [STEP_12](steps/STEP_12_react_dashboard.md) |
 | 13 | Integration & full evaluation | 7 | ✅ Done (2026-10-12). Full run from dashboard identical to Step 9; annexure generated | [STEP_13](steps/STEP_13_integration_evaluation.md) |
-| 14 | Testing, docs, demo hardening | 8 | Not started | |
+| 14 | Testing, docs, demo hardening | 8 | ✅ Done (2026-10-12). All suites pass; offline demo verified | [STEP_14](steps/STEP_14_testing_docs_demo.md) |
 | E1 | q-FedAvg (optional extension) | — | Only after Step 14, if confirmed | |
 | E2 | Conformal risk control (optional extension) | — | Only after Step 14, if confirmed | |

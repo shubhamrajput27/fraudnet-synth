@@ -348,3 +348,14 @@ Each entry records the decision, the alternatives considered, the reason and the
 - **Date:** 2026-10-12 (Step 13). **Chosen by:** Shubham (rewrite + re-run).
 - **Decision:** dashboard runs are driven by `services/gateway/scripts/full_run_ui.js` (committed). It refuses unknown arguments, judges "finished" by the run's own card only, resizes before capturing, and `--reopen` retakes are logged in `retake_output.txt`. Main evidence: job `20261012-142636-run-eed13e`; two earlier dashboard runs are kept as additional confirmation (all three identical to Step 9).
 - **Context:** an earlier session's run and annexure existed without their generating code; one run was started by mistake during the fix (see `results/integration/README.md`).
+
+## D-057: Offline demo = pre-flight check + one-command launcher
+- **Date:** 2026-10-12 (Step 14). **Chosen by:** Shubham.
+- **Decision:** `python -m demo.preflight` (19 checks with fix hints) and `python -m demo.start` (pre-flight, FastAPI + gateway with `HF_HUB_OFFLINE`/`TRANSFORMERS_OFFLINE`, health wait, browser; `--smoke` tour). The demo uses existing results and cached synthetic data.
+- **Alternatives:** pre-flight only (more to remember on viva day); a frozen bundle of results and model (~10 MB duplicated).
+- **Reason:** one command, failures explained before the examiners see them. Verified with Python's internet blocked.
+
+## D-058: Viva sheet = curated top 20 + generated step questions
+- **Date:** 2026-10-12 (Step 14). **Chosen by:** Shubham.
+- **Decision:** `demo/viva_sheet.py` combines `docs/viva_top20_source.md` (hand-written, citing verified results) with every step doc's "Likely viva questions" into `docs/VIVA_QA.md` (100 Q&As).
+- **Alternatives:** generated only (no big-picture questions); hand-written only (drifts from step docs).

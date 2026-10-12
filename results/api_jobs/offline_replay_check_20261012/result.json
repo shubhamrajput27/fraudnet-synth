@@ -1,0 +1,17 @@
+{
+  "mode": "replay",
+  "banks": {
+    "bank_c": {
+      "mode": "schema",
+      "folder": "data/clients/bank_c/generations/replay_offline_replay_check_20261012",
+      "seconds": 10.6,
+      "candidates": 300,
+      "validated": 234,
+      "pass_rate_pct": 78.0,
+      "identical_to_experiment_files": {
+        "synthetic_candidates.csv": true,
+        "synthetic_validated.csv": true
+      }
+    }
+  }
+}

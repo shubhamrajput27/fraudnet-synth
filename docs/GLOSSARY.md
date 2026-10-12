@@ -152,3 +152,7 @@ Terms are added as each step introduces them. The step number is in brackets.
 | **Results annexure** [13] | The report appendix of final tables and figures, generated from saved runs. |
 | **Provenance** [13] | The recorded source file and SHA-256 checksum of each reported table or figure. |
 | **Retake** [13] | Re-opening a finished run from history to capture a screenshot again; always labelled as such. |
+| **Regression test** [14] | A test that catches a previously working feature breaking after a change. |
+| **Pre-flight check** [14] | A script that verifies every demo prerequisite and explains how to fix failures. |
+| **Offline mode (HF_HUB_OFFLINE)** [14] | Flags that stop libraries from reaching the internet, so the demo can't hang on a download. |
+| **Smoke test** [14] | A quick end-to-end check that the main paths work. |

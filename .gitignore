@@ -41,3 +41,6 @@ data/clients/**/generations/
 
 # Step 12: dashboard build output (rebuild with: cd frontend && npm run build)
 frontend/dist/
+
+# Step 14: demo launcher logs
+demo/logs/
