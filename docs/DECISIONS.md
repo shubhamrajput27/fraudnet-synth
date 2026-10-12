@@ -359,3 +359,19 @@ Each entry records the decision, the alternatives considered, the reason and the
 - **Date:** 2026-10-12 (Step 14). **Chosen by:** Shubham.
 - **Decision:** `demo/viva_sheet.py` combines `docs/viva_top20_source.md` (hand-written, citing verified results) with every step doc's "Likely viva questions" into `docs/VIVA_QA.md` (100 Q&As).
 - **Alternatives:** generated only (no big-picture questions); hand-written only (drifts from step docs).
+
+## D-059: E1 uses Flower's QFedAvg with the received model's loss and a fixed reply order
+- **Date:** 2026-10-12 (Extension E1). **Loss signal chosen by:** Shubham.
+- **Decision:** `OrderedQFedAvg` (QFedAvg + D-032 ordering); banks report `global-model-loss` = balanced weighted BCE of the received global model on their training data before local training (one scalar). FedAvg remains the default and is bit-identical to Step 9.
+- **Alternatives:** post-training loss (already sent, but measures self-fit, not how the shared model serves the bank).
+- **Reason:** faithful to q-FedAvg's definition; no extra privacy cost.
+
+## D-060: q and L tuned on validation (seed 42)
+- **Date:** 2026-10-12 (Extension E1). **Approved by:** Shubham.
+- **Decision:** grid q ∈ {0.5, 1, 2} × L ∈ {1, 3, 10}; for each q the L with the best pooled validation F1 (summed bank counts). Chosen L = 1 for all q. q = 0 also run (L = 1).
+- **Context:** Flower's default L = 1/learning rate = 1000 froze training with Adam clients (probe: PR-AUC 0.005).
+- **Limitation:** L = 1 is the grid edge.
+
+## D-061: E1 fairness metrics
+- **Date:** 2026-10-12 (Extension E1). **Approved by:** Shubham.
+- **Decision:** per-bank F1, recall and PR-AUC on each bank's own local test; worst-bank F1 and F1 spread (std across banks); global F1/PR-AUC as cost; paired t-based 95% CIs vs FedAvg over 5 seeds. Real data only (Arm 3 setting).

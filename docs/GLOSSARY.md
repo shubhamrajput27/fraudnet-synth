@@ -156,3 +156,7 @@ Terms are added as each step introduces them. The step number is in brackets.
 | **Pre-flight check** [14] | A script that verifies every demo prerequisite and explains how to fix failures. |
 | **Offline mode (HF_HUB_OFFLINE)** [14] | Flags that stop libraries from reaching the internet, so the demo can't hang on a download. |
 | **Smoke test** [14] | A quick end-to-end check that the main paths work. |
+| **Fairness (in FL)** [E1] | How evenly a shared model performs across clients; measured here as worst-bank F1 and spread. |
+| **q-FedAvg** [E1] | Aggregation that gives clients with higher global-model loss more weight; q sets the strength (q = 0: equal weights). |
+| **Step constant L (Lipschitz estimate)** [E1] | Scales the size of each q-FedAvg update; tuned on validation. |
+| **Global-model loss** [E1] | The loss of the received shared model on a bank's own training data, before local training. |

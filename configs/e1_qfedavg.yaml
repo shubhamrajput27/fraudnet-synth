@@ -1,0 +1,14 @@
+# Optional extension E1: q-FedAvg vs FedAvg, per-bank fairness (decisions D-059 to D-061).
+# Real data only (Arm 3 setting); 30 rounds x 1 local epoch as in D-029/D-030.
+
+tune:                         # D-060: chosen on VALIDATION data only (pooled val F1 from summed bank counts)
+  seed: 42
+  q_grid: [0.5, 1, 2]
+  L_grid: [1, 3, 10]          # step constant L = 1 / client_learning_rate in Flower's QFedAvg
+
+final:
+  seeds: [42, 43, 44, 45, 46]
+  q0_L: 1                     # q = 0 (equal say per bank); L doesn't change the q = 0 update
+
+confidence: 0.95
+results_dir: results/extensions/e1_qfedavg

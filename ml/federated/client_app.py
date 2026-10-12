@@ -67,10 +67,21 @@ def _setup(msg: Message, context: Context):
     return idx, bank, augmented, seed, model, cfg
 
 
+def _weighted_loss(model, x, y) -> float:
+    """Balanced weighted BCE (the training loss, D-010) of `model` on (x, y); no gradients, no randomness."""
+    s = predict_scores(model, x)
+    return float(torch.nn.functional.binary_cross_entropy_with_logits(
+        torch.from_numpy(s), torch.from_numpy(y.astype(np.float64)),
+        pos_weight=torch.tensor(balanced_pos_weight(y), dtype=torch.float64)).item())
+
+
 def train_fn(msg: Message, context: Context) -> Message:
     idx, bank, augmented, seed, model, cfg = _setup(msg, context)
     received_kb = msg.content["arrays"].count_bytes() / 1024
     x, y = bank_data(bank, augmented, seed)["train"]
+    # Loss of the RECEIVED global model on this bank's training data, before local training (one scalar).
+    # q-FedAvg (extension E1, D-059) uses it to see which bank the shared model serves worst; FedAvg ignores it.
+    global_loss = _weighted_loss(model, x, y)
     rnd = int(cfg["server-round"])
     local_seed = seed + 1000 * rnd + idx           # different per round and bank, but reproducible
     set_seed(local_seed)
@@ -80,6 +91,7 @@ def train_fn(msg: Message, context: Context) -> Message:
         "num-examples": int(len(y)),               # FedAvg weights the average by this
         "bank-idx": idx,
         "train-loss": float(log["history"][-1]["train_loss"]),
+        "global-model-loss": global_loss,
         "train-fraud": int(y.sum()),
         "upload-bytes": int(arrays.count_bytes()),
     })

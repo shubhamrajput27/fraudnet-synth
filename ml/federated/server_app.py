@@ -17,7 +17,7 @@ import numpy as np
 import pandas as pd
 from flwr.app import ArrayRecord, ConfigRecord, Context, Message, MessageType, MetricRecord, RecordDict
 from flwr.serverapp import Grid, ServerApp
-from flwr.serverapp.strategy import FedAvg
+from flwr.serverapp.strategy import FedAvg, QFedAvg
 from sklearn.metrics import average_precision_score, roc_auc_score
 
 from ml.data.load import DATA_ROOT, PROJECT_ROOT, load_config
@@ -79,6 +79,29 @@ class OrderedFedAvg(FedAvg):
 
     def aggregate_evaluate(self, server_round, replies):
         return super().aggregate_evaluate(server_round, sorted(replies, key=_bank_idx))
+
+
+class OrderedQFedAvg(QFedAvg):
+    """Extension E1 (D-059): Flower's q-FedAvg, with the same fixed reply order as OrderedFedAvg.
+
+    Banks whose received global model has a higher loss ('global-model-loss', computed before local
+    training) get a bigger say. q = 0 gives every bank an EQUAL say (an unweighted average), which is
+    not our row-weighted FedAvg. L = 1 / client_learning_rate is tuned on validation data (D-060)."""
+
+    def aggregate_train(self, server_round, replies):
+        return super().aggregate_train(server_round, sorted(replies, key=_bank_idx))
+
+    def aggregate_evaluate(self, server_round, replies):
+        return super().aggregate_evaluate(server_round, sorted(replies, key=_bank_idx))
+
+
+def make_strategy(**common):
+    """FedAvg by default. Extension E1 sets FRAUDNET_STRATEGY=qfedavg, FRAUDNET_Q and FRAUDNET_QFFL_L."""
+    if os.environ.get("FRAUDNET_STRATEGY", "fedavg") == "qfedavg":
+        q, L = float(os.environ["FRAUDNET_Q"]), float(os.environ["FRAUDNET_QFFL_L"])
+        return OrderedQFedAvg(client_learning_rate=1.0 / L, q=q, train_loss_key="global-model-loss", **common), \
+            {"strategy": "qfedavg", "q": q, "L": L}
+    return OrderedFedAvg(**common), {"strategy": "fedavg"}
 
 
 def _per_bank(kind: str):
@@ -144,10 +167,10 @@ def run_arm(grid: Grid, arm: str, augmented: bool, seed: int, num_rounds: int, e
 
     set_seed(seed)  # same initial weights as every Step 7 model (paired comparison)
     initial = ArrayRecord(build_model(MODEL_CFG).state_dict())
-    strategy = OrderedFedAvg(fraction_train=FL_CFG["fraction_train"], fraction_evaluate=FL_CFG["fraction_evaluate"],
-                      min_train_nodes=expected_banks, min_evaluate_nodes=expected_banks,
-                      min_available_nodes=expected_banks,
-                      train_metrics_aggr_fn=_per_bank("train"), evaluate_metrics_aggr_fn=_per_bank("evaluate"))
+    strategy, strategy_info = make_strategy(
+        fraction_train=FL_CFG["fraction_train"], fraction_evaluate=FL_CFG["fraction_evaluate"],
+        min_train_nodes=expected_banks, min_evaluate_nodes=expected_banks, min_available_nodes=expected_banks,
+        train_metrics_aggr_fn=_per_bank("train"), evaluate_metrics_aggr_fn=_per_bank("evaluate"))
     eval_fn, global_history = _global_eval_fn(global_test, arm, seed)
     base_cfg = {"augmented": augmented, "seed": seed}
 
@@ -190,8 +213,9 @@ def run_arm(grid: Grid, arm: str, augmented: bool, seed: int, num_rounds: int, e
             e = next(x for x in ev if x["bank-idx"] == t["bank-idx"])
             per_round.append({"round": rnd, "bank": BANKS[int(t["bank-idx"])], "train_loss": t["train-loss"],
                               "num_examples": t["num-examples"], "upload_bytes": t["upload-bytes"],
-                              "val_loss": e["val-loss"], "val_pr_auc": e["val-pr-auc"], "val_fraud": e["val-fraud"]})
-    return {"arm": arm, "augmented": augmented, "seed": seed, "num_rounds": num_rounds,
+                              "val_loss": e["val-loss"], "val_pr_auc": e["val-pr-auc"], "val_fraud": e["val-fraud"],
+                              "global_model_loss": t.get("global-model-loss")})
+    return {"arm": arm, "augmented": augmented, "seed": seed, "num_rounds": num_rounds, **strategy_info,
             "local_epochs": FL_CFG["local_epochs"], "train_seconds": round(train_seconds, 1),
             "threshold_logit": threshold, "threshold_val_stats": {**val_stats, "val_fraud_total": n_fraud},
             "global_test": global_metrics, "local_test": local,

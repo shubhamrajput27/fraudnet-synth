@@ -13,9 +13,15 @@ from ml.data.load import PROJECT_ROOT
 DOCS = PROJECT_ROOT / "docs"
 
 
+def _order(p):
+    """Numbered steps first (0, 1, ..., 8, 8B, ...), then extensions (STEP_E1, STEP_E2) by name."""
+    m = re.search(r"STEP_(\d+)", p.name)
+    return (0, int(m[1]), p.name) if m else (1, 0, p.name)
+
+
 def step_sections():
     out = []
-    for f in sorted((DOCS / "steps").glob("STEP_*.md"), key=lambda p: (int(re.search(r"STEP_(\d+)", p.name)[1]), p.name)):
+    for f in sorted((DOCS / "steps").glob("STEP_*.md"), key=_order):
         text = f.read_text(encoding="utf-8")
         title = text.splitlines()[0].lstrip("# ").strip()
         m = re.search(r"^## \d+\. Likely viva questions\s*\n(.*?)(?=^## )", text, re.S | re.M)
