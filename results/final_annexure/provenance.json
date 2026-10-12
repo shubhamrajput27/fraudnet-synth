@@ -1,0 +1,187 @@
+{
+  "generated_utc": "2026-10-12T09:14:22+00:00",
+  "git_commit": "ee02daf",
+  "dashboard_job": "20261012-142636-run-eed13e",
+  "dashboard_job_params": {
+    "arms": "all",
+    "seeds": [
+      42,
+      43,
+      44,
+      45,
+      46
+    ]
+  },
+  "dashboard_job_started": "2026-10-12T08:56:36+00:00",
+  "dashboard_job_finished": "2026-10-12T09:11:25+00:00",
+  "items": [
+    {
+      "id": "Table A1",
+      "file": "results/final_annexure/tables/T01_dataset_summary.csv",
+      "source": "results/eda/eda_summary.json",
+      "source_sha256": "45e47a776a02ca19eccec4ff0333df69844f9234ce9e79ebedcf8488ec219182"
+    },
+    {
+      "id": "Figure A1",
+      "file": "results/final_annexure/figures/F01_class_balance.png",
+      "source": "results/eda/class_balance.png",
+      "source_sha256": "ab987fe1355b85f90466cf8214c0efe5284d1e3701de60ea81da65c7ff5034f1"
+    },
+    {
+      "id": "Table A2",
+      "file": "results/final_annexure/tables/T02_split_and_shards.csv",
+      "source": "results/partition/shard_stats.csv",
+      "source_sha256": "19d95bf441ac7d0d80295e1a41e23e8b9b62b3af558ba98cc0f6264750d407b5"
+    },
+    {
+      "id": "Figure A2",
+      "file": "results/final_annexure/figures/F02_shard_stats.png",
+      "source": "results/partition/shard_stats.png",
+      "source_sha256": "79f1b02a414ee942c40fda9f5af247d2a1a15b3918b8a59d21af1a2c0952a3dd"
+    },
+    {
+      "id": "Table A3",
+      "file": "results/final_annexure/tables/T03_synthetic_and_gate.csv",
+      "source": "results/validation/validation_summary.csv",
+      "source_sha256": "9288692d6aa4506d242a179c6e17f2a34510fd4ab4265c34376ebfa20532c4f8"
+    },
+    {
+      "id": "Table A3",
+      "file": "results/final_annexure/tables/T03_synthetic_and_gate.csv",
+      "source": "results/ctgan/bank_a_summary.json",
+      "source_sha256": "ddf5b66b11895dd74b249f3600a08cd782c9ae2dee4712f445e263b35bedf50e"
+    },
+    {
+      "id": "Table A3",
+      "file": "results/final_annexure/tables/T03_synthetic_and_gate.csv",
+      "source": "results/validation/bank_a_report.json",
+      "source_sha256": "0e22e608eb0367019523afaf22309873cf21c0f00fe53c0dc348402e410b6366"
+    },
+    {
+      "id": "Table A3",
+      "file": "results/final_annexure/tables/T03_synthetic_and_gate.csv",
+      "source": "results/ctgan/bank_b_summary.json",
+      "source_sha256": "24cfbf09e984cdcb93a7a16605e6e7ce93142d36473fb8a1b1405ea2ae1c1094"
+    },
+    {
+      "id": "Table A3",
+      "file": "results/final_annexure/tables/T03_synthetic_and_gate.csv",
+      "source": "results/validation/bank_b_report.json",
+      "source_sha256": "2b34e5d4e8d358f36ea07b0f97a965f0fc198667762d127c9c13876c6000fca9"
+    },
+    {
+      "id": "Table A3",
+      "file": "results/final_annexure/tables/T03_synthetic_and_gate.csv",
+      "source": "results/llm/bank_c_summary.json",
+      "source_sha256": "7f68554c52736108833ddf6afa8b7d08e5ecf02e97ed57210959ba49e5cf765e"
+    },
+    {
+      "id": "Table A3",
+      "file": "results/final_annexure/tables/T03_synthetic_and_gate.csv",
+      "source": "results/validation/bank_c_report.json",
+      "source_sha256": "c419d89de8c3b80830077d88bbe914b3c98ed5c1ddd04c918705bea2f85b2f62"
+    },
+    {
+      "id": "Table A3",
+      "file": "results/final_annexure/tables/T03_synthetic_and_gate.csv",
+      "source": "results/llm/bank_d_summary.json",
+      "source_sha256": "a83f780639507a6c8584bed47e833184301f92bf70c652db127a24d88d06dc6c"
+    },
+    {
+      "id": "Table A3",
+      "file": "results/final_annexure/tables/T03_synthetic_and_gate.csv",
+      "source": "results/validation/bank_d_report.json",
+      "source_sha256": "7b36be220215ee5106f939f96422e7514adf6ad115cd38b4ea403c2887002d79"
+    },
+    {
+      "id": "Figure A3",
+      "file": "results/final_annexure/figures/F03_bank_a_real_vs_synthetic.png",
+      "source": "results/ctgan/bank_a_real_vs_synthetic.png",
+      "source_sha256": "24a2c8ba2c45e2f4974ddec50ebf8d6730de565b45bf3d9f9b9a5bec0fc89f82"
+    },
+    {
+      "id": "Figure A4",
+      "file": "results/final_annexure/figures/F04_bank_c_real_vs_synthetic.png",
+      "source": "results/llm/bank_c_real_vs_synthetic.png",
+      "source_sha256": "8e21b0afc65becb00bbd2931f27fdbf64b69efdf630b11f00b98ed768dabcae5"
+    },
+    {
+      "id": "Figure A5",
+      "file": "results/final_annexure/figures/F05_gate_outcomes.png",
+      "source": "results/validation/gate_outcomes.png",
+      "source_sha256": "3405256911959530414034d977026b4268a65910ed6b1e2863a06b37d7e58ae4"
+    },
+    {
+      "id": "Table A4",
+      "file": "results/final_annexure/tables/T04_six_arm_global.csv",
+      "source": "results/api_jobs/20261012-142636-run-eed13e/six_arm_global_table.csv",
+      "source_sha256": "4bfd40bd3859d80f4962691b4954b2d15549ad6163d184a853a688ba0ccdbdab"
+    },
+    {
+      "id": "Table A5",
+      "file": "results/final_annexure/tables/T05_local_tests.csv",
+      "source": "results/api_jobs/20261012-142636-run-eed13e/local_test_table.csv",
+      "source_sha256": "f9409a8f2f08be9fcc43dddfc7a065de483b7e72c3352816b8d1a19908f470bf"
+    },
+    {
+      "id": "Table A6",
+      "file": "results/final_annexure/tables/T06_paired_global.csv",
+      "source": "results/api_jobs/20261012-142636-run-eed13e/paired_comparisons.csv",
+      "source_sha256": "b1eb47249d70c9e9db58218cbd3f771c84876a0d0185c3e7eacef22d853a19bc"
+    },
+    {
+      "id": "Figure A6",
+      "file": "results/final_annexure/figures/F06_six_arm_f1_prauc.png",
+      "source": "results/api_jobs/20261012-142636-run-eed13e/six_arm_f1_prauc.png",
+      "source_sha256": "a9a682efa64284d69c6c197d9200aae63e53f97e8bbbba225c05ec243af3fbd4"
+    },
+    {
+      "id": "Figure A7",
+      "file": "results/final_annexure/figures/F07_paired_deltas.png",
+      "source": "results/api_jobs/20261012-142636-run-eed13e/paired_deltas.png",
+      "source_sha256": "b4c4e526aa8a92673cfc90534249ad5a5893a608502414da2c4b79a3c051a75d"
+    },
+    {
+      "id": "Figure A8",
+      "file": "results/final_annexure/figures/F08_convergence_seeds.png",
+      "source": "results/api_jobs/20261012-142636-run-eed13e/convergence_seeds.png",
+      "source_sha256": "01f68708b3470b9930a281b7d6f4915a598c8100426b2e6fcfbafbdf9a8c808c"
+    },
+    {
+      "id": "Figure A9",
+      "file": "results/final_annexure/figures/F09_per_bank_arm3.png",
+      "source": "results/federated/convergence_per_bank_arm3_federated_real.png",
+      "source_sha256": "db3c9736296cda4118e6c385b56040dd766c10d422f13d2f2a7f6a34a9b32990"
+    },
+    {
+      "id": "Table A7",
+      "file": "results/final_annexure/tables/T07_dashboard_vs_cli.csv",
+      "source": "results/api_jobs/20261012-142636-run-eed13e/long_results.csv",
+      "source_sha256": "104d42e18407c380807da7a3526fe2b9e65fc7bcf064c5a4aff1267f86c8cde9"
+    },
+    {
+      "id": "Table A7",
+      "file": "results/final_annexure/tables/T07_dashboard_vs_cli.csv",
+      "source": "results/six_arms/long_results.csv",
+      "source_sha256": "7625581ea18cd1b2f42a588aa9865118e41c57f15038ea6103cd1eb771d3a44f"
+    },
+    {
+      "id": "Figure A10",
+      "file": "results/final_annexure/figures/F10_full_run_finished.png",
+      "source": "results/integration/04_full_run_finished.png",
+      "source_sha256": "645d96fdb867d3be9801d2e14dacd2bd8f99c973776a74eda4c10ed5352994d2"
+    },
+    {
+      "id": "Figure A11",
+      "file": "results/final_annexure/figures/F11_results_page_light.png",
+      "source": "results/dashboard_demo/02b_six_arm_results_light.png",
+      "source_sha256": "16b780aee1f07f4c81f4d0c91bd4d45e9e649a25ee9b6519166599dc45fb7436"
+    },
+    {
+      "id": "Figure A12",
+      "file": "results/final_annexure/figures/F12_predict_page.png",
+      "source": "results/dashboard_demo/05_predict_fraud_example.png",
+      "source_sha256": "66577ce1481dd711cdedab67532a16de5012c51ea303320aeb35bd5976b73a33"
+    }
+  ]
+}

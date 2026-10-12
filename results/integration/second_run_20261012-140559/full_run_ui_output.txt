@@ -1,0 +1,14 @@
+[    3s] arms ticked: 6 of 6; seeds: 42, 43, 44, 45, 46
+[    3s] full run started FROM THE DASHBOARD: 20261012-140559-run-9d99cb
+[    5s] screenshot 01_full_run_started.png
+[  191s] first federated arm on screen (30 round points)
+[  192s] screenshot 02_full_run_first_federated_rounds.png
+[  252s] progress: 60 round points, 12 models finished
+[  493s] progress: 120 round points, 24 models finished
+[  708s] screenshot 03_full_run_midway.png
+[  754s] progress: 180 round points, 36 models finished
+[  954s] progress: 240 round points, 48 models finished
+[ 1169s] progress: 300 round points, 60 models finished
+[ 1171s] finished: 300 round points, 60 models
+[ 1172s] screenshot 04_full_run_finished.png
+[ 1172s] browser console: no errors or exceptions

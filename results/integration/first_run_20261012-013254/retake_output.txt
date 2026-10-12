@@ -1,0 +1,3 @@
+[    3s] re-opened finished run 20261012-013254-run-b5ac84: 300 round points (replayed from MongoDB)
+[    5s] screenshot 04_full_run_finished.png
+[    5s] browser console: no errors or exceptions

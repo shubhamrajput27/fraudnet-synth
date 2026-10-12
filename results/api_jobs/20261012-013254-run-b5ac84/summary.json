@@ -1,0 +1,11 @@
+{
+  "seeds": [
+    42,
+    43,
+    44,
+    45,
+    46
+  ],
+  "n_rows": 180,
+  "verdict_counts": "{('augmentation', 'higher'): 3, ('augmentation', 'lower'): 2, ('augmentation', 'no clear difference'): 67, ('fed_vs_central', 'higher'): 1, ('fed_vs_central', 'lower'): 2, ('fed_vs_central', 'no clear difference'): 5, ('federation', 'higher'): 17, ('federation', 'lower'): 3, ('federation', 'no clear difference'): 12}"
+}

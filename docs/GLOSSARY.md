@@ -148,3 +148,7 @@ Terms are added as each step introduces them. The step number is in brackets.
 | **Design tokens** [12] | Named colours and sizes (e.g. `--surface`) defined once, with light and dark versions. |
 | **sessionStorage** [12] | Browser storage that lasts until the tab closes; holds our login token. |
 | **Headless browser / DevTools protocol** [12] | A browser without a window, controlled by a script; used to test the dashboard and take screenshots. |
+| **Integration / end-to-end test** [13] | Testing all tiers together through the real user interface. |
+| **Results annexure** [13] | The report appendix of final tables and figures, generated from saved runs. |
+| **Provenance** [13] | The recorded source file and SHA-256 checksum of each reported table or figure. |
+| **Retake** [13] | Re-opening a finished run from history to capture a screenshot again; always labelled as such. |

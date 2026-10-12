@@ -1,0 +1,5 @@
+bank,mode,real train fraud,candidates,mean KS (lower = closer),mean |corr diff|,validated,pass rate %,fidelity validated,too close to real (privacy),patterned decimals % (report-only)
+bank_a,Augment (CTGAN),105,1000,0.219,0.148,868,86.8,0.8041,0,1.5
+bank_b,Augment (CTGAN),82,1000,0.223,0.153,814,81.4,0.8002,0,1.7
+bank_c,Schema (LLM),28,300,0.26,0.493,234,78.0,0.7461,0,68.9
+bank_d,Schema (LLM),18,300,0.252,0.493,264,88.0,0.7559,0,63.6

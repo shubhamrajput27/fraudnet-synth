@@ -1,0 +1,8 @@
+quantity,value
+transactions,"284,807"
+fraud / genuine,"492 / 284,315"
+fraud rate,0.1727%
+accuracy of 'always genuine',99.8273%
+missing values,0
+"exact duplicate rows (dropped, D-005)",1081
+time span (hours),48.0

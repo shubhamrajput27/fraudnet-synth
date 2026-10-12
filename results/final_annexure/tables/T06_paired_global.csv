@@ -1,0 +1,25 @@
+family,comparison,bank,metric,mean diff,95% CI,seeds up,verdict
+augmentation,Arm 2 - Arm 1,bank_a,f1,-0.0141,"[-0.0386, +0.0103]",2/5,no clear difference
+augmentation,Arm 2 - Arm 1,bank_a,pr_auc,-0.0004,"[-0.0077, +0.0069]",2/5,no clear difference
+federation,Arm 3 - Arm 1,bank_a,f1,-0.0132,"[-0.0203, -0.0060]",0/5,lower
+federation,Arm 3 - Arm 1,bank_a,pr_auc,+0.0113,"[+0.0044, +0.0181]",5/5,higher
+augmentation,Arm 2 - Arm 1,bank_b,f1,+0.0013,"[-0.0143, +0.0170]",2/5,no clear difference
+augmentation,Arm 2 - Arm 1,bank_b,pr_auc,+0.0013,"[-0.0096, +0.0123]",2/5,no clear difference
+federation,Arm 3 - Arm 1,bank_b,f1,+0.0065,"[-0.0069, +0.0199]",4/5,no clear difference
+federation,Arm 3 - Arm 1,bank_b,pr_auc,+0.0008,"[-0.0092, +0.0108]",3/5,no clear difference
+augmentation,Arm 2 - Arm 1,bank_c,f1,-0.0000,"[-0.0226, +0.0226]",2/5,no clear difference
+augmentation,Arm 2 - Arm 1,bank_c,pr_auc,-0.0008,"[-0.0095, +0.0079]",1/5,no clear difference
+federation,Arm 3 - Arm 1,bank_c,f1,+0.0978,"[+0.0768, +0.1189]",5/5,higher
+federation,Arm 3 - Arm 1,bank_c,pr_auc,+0.0138,"[+0.0075, +0.0201]",5/5,higher
+augmentation,Arm 2 - Arm 1,bank_d,f1,+0.0440,"[-0.0072, +0.0951]",4/5,no clear difference
+augmentation,Arm 2 - Arm 1,bank_d,pr_auc,-0.0106,"[-0.0320, +0.0108]",1/5,no clear difference
+federation,Arm 3 - Arm 1,bank_d,f1,+0.3398,"[+0.2986, +0.3811]",5/5,higher
+federation,Arm 3 - Arm 1,bank_d,pr_auc,+0.0541,"[+0.0378, +0.0705]",5/5,higher
+augmentation,Arm 4 - Arm 3,all banks,f1,+0.0011,"[-0.0202, +0.0225]",2/5,no clear difference
+augmentation,Arm 4 - Arm 3,all banks,pr_auc,+0.0012,"[-0.0077, +0.0102]",2/5,no clear difference
+augmentation,Arm 6 - Arm 5,all banks,f1,-0.0047,"[-0.0485, +0.0392]",3/5,no clear difference
+augmentation,Arm 6 - Arm 5,all banks,pr_auc,-0.0017,"[-0.0080, +0.0045]",2/5,no clear difference
+fed_vs_central,Arm 3 - Arm 5,all banks,f1,+0.0214,"[-0.0169, +0.0596]",4/5,no clear difference
+fed_vs_central,Arm 3 - Arm 5,all banks,pr_auc,-0.0109,"[-0.0207, -0.0010]",1/5,lower
+fed_vs_central,Arm 4 - Arm 6,all banks,f1,+0.0271,"[-0.0074, +0.0616]",3/5,no clear difference
+fed_vs_central,Arm 4 - Arm 6,all banks,pr_auc,-0.0079,"[-0.0208, +0.0050]",1/5,no clear difference
