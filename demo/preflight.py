@@ -8,7 +8,6 @@ Exit code 0 = ready (warnings allowed), 1 = something must be fixed first.
 import os
 import socket
 import sys
-from pathlib import Path
 
 from dotenv import dotenv_values
 

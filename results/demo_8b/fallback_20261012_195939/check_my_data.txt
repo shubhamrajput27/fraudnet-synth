@@ -1,0 +1,16 @@
+[bank_a] bank_a: 4 files + manifest, 69,546 real rows (149 fraud), checksums OK
+[bank_a] bank_b: empty | bank_c: empty | bank_d: empty
+[bank_a] raw Kaggle file: absent | global train/val: absent | global test: absent
+[bank_a] RESULT: OK
+[bank_b] bank_b: 4 files + manifest, 59,599 real rows (116 fraud), checksums OK
+[bank_b] bank_a: empty | bank_c: empty | bank_d: empty
+[bank_b] raw Kaggle file: absent | global train/val: absent | global test: absent
+[bank_b] RESULT: OK
+[bank_c] bank_c: 4 files + manifest, 39,695 real rows (40 fraud), checksums OK
+[bank_c] bank_a: empty | bank_b: empty | bank_d: empty
+[bank_c] raw Kaggle file: absent | global train/val: absent | global test: absent
+[bank_c] RESULT: OK
+[bank_d] bank_d: 4 files + manifest, 29,767 real rows (26 fraud), checksums OK
+[bank_d] bank_a: empty | bank_b: empty | bank_c: empty
+[bank_d] raw Kaggle file: absent | global train/val: absent | global test: absent
+[bank_d] RESULT: OK

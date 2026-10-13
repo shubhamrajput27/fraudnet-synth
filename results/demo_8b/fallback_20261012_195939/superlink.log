@@ -1,0 +1,575 @@
+[93mWARNING [0m:   Option `--insecure` was set. Starting insecure HTTP server with unencrypted communication (TLS disabled). Proceed only if you understand the risks.
+[93mWARNING [0m:   SuperNode authentication is disabled. The SuperLink will accept connections from any SuperNode.
+[92mINFO [0m:      Starting Flower SuperLink
+[92mINFO [0m:      Starting the SuperLink Runtime HTTP API on 127.0.0.1:9093.
+[92mINFO [0m:      Starting the SuperLink Control HTTP API on 127.0.0.1:9093.
+2026-10-12T14:29:42.821Z INFO [uvicorn.error] Started server process [31708]
+2026-10-12T14:29:42.821Z INFO [uvicorn.error] Waiting for application startup.
+[92mINFO [0m:      FastAPI lifespan: startup
+[92mINFO [0m:      SuperLinkLifespan: start
+[92mINFO [0m:      Flower Deployment Runtime: Starting Fleet API (gRPC-rere) on 0.0.0.0:9092
+2026-10-12T14:29:42.851Z INFO [uvicorn.error] Application startup complete.
+2026-10-12T14:29:42.852Z INFO [uvicorn.error] Uvicorn running on http://127.0.0.1:9093 (Press CTRL+C to quit)
+[92mINFO [0m:      Starting Flower SuperExec
+[92mINFO [0m:      [Fleet.ActivateNode] Activated node_id=10074576750258311177
+[92mINFO [0m:      [Fleet.ActivateNode] Activated node_id=16231204542992672222
+[92mINFO [0m:      [Fleet.ActivateNode] Activated node_id=10442872607971068025
+[92mINFO [0m:      [Fleet.ActivateNode] Activated node_id=7375648060811479395
+[92mINFO [0m:      ControlServicer.StartRun
+[92mINFO [0m:      Created run 18022119505372697734 in federation @none/default
+2026-10-12T14:31:09.574Z INFO [uvicorn.access] 127.0.0.1:61104 - "POST /v1/control/start-run HTTP/1.1" 200
+[92mINFO [0m:      ControlServicer.StreamLogs
+2026-10-12T14:31:09.585Z INFO [uvicorn.access] 127.0.0.1:61104 - "POST /v1/control/stream-logs HTTP/1.1" 200
+[92mINFO [0m:      Started task 11699074504522512823 of run 18022119505372697734
+2026-10-12T14:31:11.687Z INFO [uvicorn.access] 127.0.0.1:61106 - "POST /v1/runtime/pull-task-input HTTP/1.1" 200
+2026-10-12T14:31:29.214Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-messages HTTP/1.1" 200
+2026-10-12T14:31:29.225Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:31:29.238Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:31:29.245Z INFO [uvicorn.access] 127.0.0.1:61111 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:31:29.254Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:31:29.259Z INFO [uvicorn.access] 127.0.0.1:61111 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:31:29.267Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:31:29.274Z INFO [uvicorn.access] 127.0.0.1:61111 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:31:29.282Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:31:29.288Z INFO [uvicorn.access] 127.0.0.1:61111 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:31:29.296Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:31:29.304Z INFO [uvicorn.access] 127.0.0.1:61111 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:31:29.310Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:31:29.321Z INFO [uvicorn.access] 127.0.0.1:61111 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:31:29.326Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:31:29.336Z INFO [uvicorn.access] 127.0.0.1:61111 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:31:29.341Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:31:29.351Z INFO [uvicorn.access] 127.0.0.1:61111 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:31:29.356Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:31:29.361Z INFO [uvicorn.access] 127.0.0.1:61111 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:31:29.371Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-messages HTTP/1.1" 200
+[92mINFO [0m:      [Fleet.GetRun] Requesting `Run` for run_id=18022119505372697734
+[92mINFO [0m:      [Fleet.GetRun] Requesting `Run` for run_id=18022119505372697734
+[92mINFO [0m:      [Fleet.GetFab] Requesting FAB for fab_hash=4ff90a5b645eb56c05a37ae33ddb1a79ee6d6a17a69aefb4086a9bf221101f3c
+[92mINFO [0m:      [Fleet.GetFab] Requesting FAB for fab_hash=4ff90a5b645eb56c05a37ae33ddb1a79ee6d6a17a69aefb4086a9bf221101f3c
+[92mINFO [0m:      [Fleet.GetRun] Requesting `Run` for run_id=18022119505372697734
+[92mINFO [0m:      [Fleet.GetRun] Requesting `Run` for run_id=18022119505372697734
+[92mINFO [0m:      [Fleet.GetFab] Requesting FAB for fab_hash=4ff90a5b645eb56c05a37ae33ddb1a79ee6d6a17a69aefb4086a9bf221101f3c
+[92mINFO [0m:      [Fleet.GetFab] Requesting FAB for fab_hash=4ff90a5b645eb56c05a37ae33ddb1a79ee6d6a17a69aefb4086a9bf221101f3c
+2026-10-12T14:31:32.380Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-messages HTTP/1.1" 200
+2026-10-12T14:31:35.389Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-messages HTTP/1.1" 200
+2026-10-12T14:31:38.399Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-messages HTTP/1.1" 200
+2026-10-12T14:31:41.408Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-messages HTTP/1.1" 200
+2026-10-12T14:31:44.422Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-messages HTTP/1.1" 200
+2026-10-12T14:31:47.432Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-messages HTTP/1.1" 200
+2026-10-12T14:31:50.442Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-messages HTTP/1.1" 200
+2026-10-12T14:31:53.452Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-messages HTTP/1.1" 200
+[92mINFO [0m:      [Fleet.PushMessages] Push replies from node_id=10074576750258311177
+[92mINFO [0m:      [Fleet.PushMessages] Push replies from node_id=7375648060811479395
+[92mINFO [0m:      [Fleet.PushMessages] Push replies from node_id=16231204542992672222
+[92mINFO [0m:      [Fleet.PushMessages] Push replies from node_id=10442872607971068025
+2026-10-12T14:31:56.465Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-messages HTTP/1.1" 200
+2026-10-12T14:31:56.500Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:31:56.511Z INFO [uvicorn.access] 127.0.0.1:54886 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:31:56.528Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:31:56.539Z INFO [uvicorn.access] 127.0.0.1:54886 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:31:56.546Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:31:56.561Z INFO [uvicorn.access] 127.0.0.1:54886 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:31:56.572Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:31:56.581Z INFO [uvicorn.access] 127.0.0.1:54886 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:31:56.598Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:31:56.614Z INFO [uvicorn.access] 127.0.0.1:54886 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:31:56.626Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:31:56.639Z INFO [uvicorn.access] 127.0.0.1:54886 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:31:56.650Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:31:56.662Z INFO [uvicorn.access] 127.0.0.1:54886 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:31:56.671Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:31:56.674Z INFO [uvicorn.access] 127.0.0.1:54886 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:31:56.686Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/confirm-message-received HTTP/1.1" 200
+2026-10-12T14:31:56.705Z INFO [uvicorn.access] 127.0.0.1:54886 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:31:56.708Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:31:56.726Z INFO [uvicorn.access] 127.0.0.1:54886 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:31:56.728Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:31:56.745Z INFO [uvicorn.access] 127.0.0.1:54886 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:31:56.752Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:31:56.768Z INFO [uvicorn.access] 127.0.0.1:54886 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:31:56.781Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:31:56.795Z INFO [uvicorn.access] 127.0.0.1:54886 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:31:56.805Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:31:56.813Z INFO [uvicorn.access] 127.0.0.1:54886 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:31:56.829Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:31:56.838Z INFO [uvicorn.access] 127.0.0.1:54886 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:31:56.858Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:31:56.866Z INFO [uvicorn.access] 127.0.0.1:54886 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:31:56.870Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:31:56.880Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/confirm-message-received HTTP/1.1" 200
+2026-10-12T14:31:56.895Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:31:56.898Z INFO [uvicorn.access] 127.0.0.1:54886 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:31:56.912Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:31:56.934Z INFO [uvicorn.access] 127.0.0.1:54886 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:31:56.942Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:31:56.954Z INFO [uvicorn.access] 127.0.0.1:54886 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:31:56.961Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:31:56.971Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:31:56.974Z INFO [uvicorn.access] 127.0.0.1:54886 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:31:57.019Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:31:57.019Z INFO [uvicorn.access] 127.0.0.1:54886 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:31:57.034Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:31:57.043Z INFO [uvicorn.access] 127.0.0.1:54886 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:31:57.052Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:31:57.061Z INFO [uvicorn.access] 127.0.0.1:54886 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:31:57.065Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:31:57.075Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/confirm-message-received HTTP/1.1" 200
+2026-10-12T14:31:57.091Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:31:57.099Z INFO [uvicorn.access] 127.0.0.1:54886 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:31:57.111Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:31:57.123Z INFO [uvicorn.access] 127.0.0.1:54886 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:31:57.144Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:31:57.160Z INFO [uvicorn.access] 127.0.0.1:54886 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:31:57.177Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:31:57.189Z INFO [uvicorn.access] 127.0.0.1:54886 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:31:57.200Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:31:57.209Z INFO [uvicorn.access] 127.0.0.1:54886 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:31:57.219Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:31:57.235Z INFO [uvicorn.access] 127.0.0.1:54886 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:31:57.239Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:31:57.252Z INFO [uvicorn.access] 127.0.0.1:54886 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:31:57.255Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:31:57.263Z INFO [uvicorn.access] 127.0.0.1:54886 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:31:57.282Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/confirm-message-received HTTP/1.1" 200
+2026-10-12T14:31:57.336Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-messages HTTP/1.1" 200
+2026-10-12T14:31:57.354Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:31:57.357Z INFO [uvicorn.access] 127.0.0.1:54886 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:31:57.389Z INFO [uvicorn.access] 127.0.0.1:54886 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:31:57.395Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:31:57.407Z INFO [uvicorn.access] 127.0.0.1:54886 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:31:57.415Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:31:57.426Z INFO [uvicorn.access] 127.0.0.1:54886 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:31:57.436Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:31:57.440Z INFO [uvicorn.access] 127.0.0.1:54886 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:31:57.452Z INFO [uvicorn.access] 127.0.0.1:54886 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:31:57.458Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:31:57.473Z INFO [uvicorn.access] 127.0.0.1:54886 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:31:57.473Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:31:57.494Z INFO [uvicorn.access] 127.0.0.1:54886 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:31:57.496Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:31:57.523Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:31:57.532Z INFO [uvicorn.access] 127.0.0.1:54886 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:31:57.562Z INFO [uvicorn.access] 127.0.0.1:54886 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:31:57.569Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:31:57.599Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-messages HTTP/1.1" 200
+2026-10-12T14:32:00.607Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-messages HTTP/1.1" 200
+2026-10-12T14:32:03.618Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-messages HTTP/1.1" 200
+2026-10-12T14:32:06.628Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-messages HTTP/1.1" 200
+2026-10-12T14:32:09.639Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-messages HTTP/1.1" 200
+[92mINFO [0m:      [Fleet.PushMessages] Push replies from node_id=10074576750258311177
+[92mINFO [0m:      [Fleet.PushMessages] Push replies from node_id=7375648060811479395
+2026-10-12T14:32:12.651Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-messages HTTP/1.1" 200
+2026-10-12T14:32:12.673Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:12.696Z INFO [uvicorn.access] 127.0.0.1:49391 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:12.700Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:12.714Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/confirm-message-received HTTP/1.1" 200
+2026-10-12T14:32:12.731Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:12.773Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:12.776Z INFO [uvicorn.access] 127.0.0.1:49391 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:12.795Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/confirm-message-received HTTP/1.1" 200
+[92mINFO [0m:      [Fleet.PushMessages] Push replies from node_id=16231204542992672222
+[92mINFO [0m:      [Fleet.PushMessages] Push replies from node_id=10442872607971068025
+2026-10-12T14:32:15.804Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-messages HTTP/1.1" 200
+2026-10-12T14:32:15.842Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:15.843Z INFO [uvicorn.access] 127.0.0.1:49391 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:15.851Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:15.860Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/confirm-message-received HTTP/1.1" 200
+2026-10-12T14:32:15.891Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:15.893Z INFO [uvicorn.access] 127.0.0.1:49391 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:15.901Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:15.909Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/confirm-message-received HTTP/1.1" 200
+2026-10-12T14:32:15.991Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-messages HTTP/1.1" 200
+2026-10-12T14:32:16.006Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:32:16.007Z INFO [uvicorn.access] 127.0.0.1:49391 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:32:16.019Z INFO [uvicorn.access] 127.0.0.1:49391 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:32:16.019Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:32:16.033Z INFO [uvicorn.access] 127.0.0.1:49391 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:32:16.033Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:32:16.047Z INFO [uvicorn.access] 127.0.0.1:49391 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:32:16.049Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:32:16.061Z INFO [uvicorn.access] 127.0.0.1:49391 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:32:16.063Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:32:16.075Z INFO [uvicorn.access] 127.0.0.1:49391 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:32:16.075Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:32:16.087Z INFO [uvicorn.access] 127.0.0.1:49391 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:32:16.090Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:32:16.105Z INFO [uvicorn.access] 127.0.0.1:49391 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:32:16.109Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:32:16.123Z INFO [uvicorn.access] 127.0.0.1:49391 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:32:16.127Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:32:16.133Z INFO [uvicorn.access] 127.0.0.1:49391 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:32:16.142Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-messages HTTP/1.1" 200
+2026-10-12T14:32:19.149Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-messages HTTP/1.1" 200
+2026-10-12T14:32:22.159Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-messages HTTP/1.1" 200
+2026-10-12T14:32:25.170Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-messages HTTP/1.1" 200
+2026-10-12T14:32:28.181Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-messages HTTP/1.1" 200
+2026-10-12T14:32:31.192Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-messages HTTP/1.1" 200
+2026-10-12T14:32:34.204Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-messages HTTP/1.1" 200
+2026-10-12T14:32:37.215Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-messages HTTP/1.1" 200
+[92mINFO [0m:      [Fleet.PushMessages] Push replies from node_id=16231204542992672222
+[92mINFO [0m:      [Fleet.PushMessages] Push replies from node_id=7375648060811479395
+[92mINFO [0m:      [Fleet.PushMessages] Push replies from node_id=10442872607971068025
+[92mINFO [0m:      [Fleet.PushMessages] Push replies from node_id=10074576750258311177
+2026-10-12T14:32:40.227Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-messages HTTP/1.1" 200
+2026-10-12T14:32:40.260Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:40.276Z INFO [uvicorn.access] 127.0.0.1:57317 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:40.296Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:40.308Z INFO [uvicorn.access] 127.0.0.1:57317 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:40.320Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:40.339Z INFO [uvicorn.access] 127.0.0.1:57317 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:40.360Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:40.383Z INFO [uvicorn.access] 127.0.0.1:57317 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:40.401Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:40.420Z INFO [uvicorn.access] 127.0.0.1:57317 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:40.432Z INFO [uvicorn.access] 127.0.0.1:57317 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:40.436Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:40.473Z INFO [uvicorn.access] 127.0.0.1:57317 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:40.476Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:40.521Z INFO [uvicorn.access] 127.0.0.1:57317 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:40.525Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:40.539Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/confirm-message-received HTTP/1.1" 200
+2026-10-12T14:32:40.568Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:40.581Z INFO [uvicorn.access] 127.0.0.1:57317 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:40.613Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:40.623Z INFO [uvicorn.access] 127.0.0.1:57317 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:40.642Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:40.648Z INFO [uvicorn.access] 127.0.0.1:57317 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:40.670Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:40.681Z INFO [uvicorn.access] 127.0.0.1:57317 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:40.698Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:40.728Z INFO [uvicorn.access] 127.0.0.1:57317 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:40.744Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:40.767Z INFO [uvicorn.access] 127.0.0.1:57317 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:40.796Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:40.809Z INFO [uvicorn.access] 127.0.0.1:57317 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:40.822Z INFO [uvicorn.access] 127.0.0.1:57317 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:40.823Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:40.842Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/confirm-message-received HTTP/1.1" 200
+2026-10-12T14:32:40.858Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:40.881Z INFO [uvicorn.access] 127.0.0.1:57317 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:40.882Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:40.919Z INFO [uvicorn.access] 127.0.0.1:57317 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:40.920Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:40.933Z INFO [uvicorn.access] 127.0.0.1:57317 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:40.933Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:40.948Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:40.958Z INFO [uvicorn.access] 127.0.0.1:57317 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:40.995Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:41.003Z INFO [uvicorn.access] 127.0.0.1:57317 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:41.028Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:41.038Z INFO [uvicorn.access] 127.0.0.1:57317 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:41.052Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:41.063Z INFO [uvicorn.access] 127.0.0.1:57317 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:41.068Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:41.080Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/confirm-message-received HTTP/1.1" 200
+2026-10-12T14:32:41.103Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:41.108Z INFO [uvicorn.access] 127.0.0.1:57317 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:41.123Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:41.130Z INFO [uvicorn.access] 127.0.0.1:57317 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:41.149Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:41.174Z INFO [uvicorn.access] 127.0.0.1:57317 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:41.181Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:41.194Z INFO [uvicorn.access] 127.0.0.1:57317 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:41.200Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:41.219Z INFO [uvicorn.access] 127.0.0.1:57317 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:41.229Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:41.255Z INFO [uvicorn.access] 127.0.0.1:57317 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:41.262Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:41.296Z INFO [uvicorn.access] 127.0.0.1:57317 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:41.302Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:41.310Z INFO [uvicorn.access] 127.0.0.1:57317 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:41.319Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/confirm-message-received HTTP/1.1" 200
+2026-10-12T14:32:41.379Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-messages HTTP/1.1" 200
+2026-10-12T14:32:41.405Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:32:41.406Z INFO [uvicorn.access] 127.0.0.1:57317 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:32:41.436Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:32:41.449Z INFO [uvicorn.access] 127.0.0.1:57317 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:32:41.461Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:32:41.487Z INFO [uvicorn.access] 127.0.0.1:57317 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:32:41.511Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:32:41.521Z INFO [uvicorn.access] 127.0.0.1:57317 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:32:41.531Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:32:41.541Z INFO [uvicorn.access] 127.0.0.1:57317 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:32:41.556Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:32:41.563Z INFO [uvicorn.access] 127.0.0.1:57317 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:32:41.577Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:32:41.588Z INFO [uvicorn.access] 127.0.0.1:57317 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:32:41.598Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:32:41.608Z INFO [uvicorn.access] 127.0.0.1:57317 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:32:41.621Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:32:41.637Z INFO [uvicorn.access] 127.0.0.1:57317 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:32:41.641Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:32:41.650Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-messages HTTP/1.1" 200
+2026-10-12T14:32:44.660Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-messages HTTP/1.1" 200
+2026-10-12T14:32:47.671Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-messages HTTP/1.1" 200
+2026-10-12T14:32:50.682Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-messages HTTP/1.1" 200
+2026-10-12T14:32:53.692Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-messages HTTP/1.1" 200
+[92mINFO [0m:      [Fleet.PushMessages] Push replies from node_id=7375648060811479395
+[92mINFO [0m:      [Fleet.PushMessages] Push replies from node_id=16231204542992672222
+[92mINFO [0m:      [Fleet.PushMessages] Push replies from node_id=10074576750258311177
+[92mINFO [0m:      [Fleet.PushMessages] Push replies from node_id=10442872607971068025
+2026-10-12T14:32:56.703Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-messages HTTP/1.1" 200
+2026-10-12T14:32:56.731Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:56.734Z INFO [uvicorn.access] 127.0.0.1:57349 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:56.745Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:56.753Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/confirm-message-received HTTP/1.1" 200
+2026-10-12T14:32:56.769Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:56.799Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:56.802Z INFO [uvicorn.access] 127.0.0.1:57349 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:56.811Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/confirm-message-received HTTP/1.1" 200
+2026-10-12T14:32:56.844Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:56.850Z INFO [uvicorn.access] 127.0.0.1:57349 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:56.856Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:56.864Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/confirm-message-received HTTP/1.1" 200
+2026-10-12T14:32:56.882Z INFO [uvicorn.access] 127.0.0.1:57349 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:56.891Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:56.895Z INFO [uvicorn.access] 127.0.0.1:57349 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:32:56.924Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/confirm-message-received HTTP/1.1" 200
+2026-10-12T14:32:57.069Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-messages HTTP/1.1" 200
+2026-10-12T14:32:57.089Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:32:57.100Z INFO [uvicorn.access] 127.0.0.1:57349 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:32:57.111Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:32:57.122Z INFO [uvicorn.access] 127.0.0.1:57349 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:32:57.131Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:32:57.140Z INFO [uvicorn.access] 127.0.0.1:57349 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:32:57.155Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:32:57.176Z INFO [uvicorn.access] 127.0.0.1:57349 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:32:57.187Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:32:57.203Z INFO [uvicorn.access] 127.0.0.1:57349 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:32:57.205Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:32:57.244Z INFO [uvicorn.access] 127.0.0.1:57349 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:32:57.254Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:32:57.283Z INFO [uvicorn.access] 127.0.0.1:57349 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:32:57.295Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:32:57.306Z INFO [uvicorn.access] 127.0.0.1:57349 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:32:57.324Z INFO [uvicorn.access] 127.0.0.1:57349 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:32:57.328Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:32:57.341Z INFO [uvicorn.access] 127.0.0.1:57349 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:32:57.352Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-messages HTTP/1.1" 200
+2026-10-12T14:33:00.360Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-messages HTTP/1.1" 200
+2026-10-12T14:33:03.369Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-messages HTTP/1.1" 200
+2026-10-12T14:33:06.380Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-messages HTTP/1.1" 200
+2026-10-12T14:33:09.390Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-messages HTTP/1.1" 200
+2026-10-12T14:33:12.399Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-messages HTTP/1.1" 200
+2026-10-12T14:33:15.411Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-messages HTTP/1.1" 200
+2026-10-12T14:33:18.421Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-messages HTTP/1.1" 200
+[92mINFO [0m:      [Fleet.PushMessages] Push replies from node_id=7375648060811479395
+2026-10-12T14:33:21.433Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-messages HTTP/1.1" 200
+2026-10-12T14:33:21.453Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:33:21.458Z INFO [uvicorn.access] 127.0.0.1:57371 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:33:21.470Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:33:21.478Z INFO [uvicorn.access] 127.0.0.1:57371 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:33:21.488Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:33:21.496Z INFO [uvicorn.access] 127.0.0.1:57371 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:33:21.502Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:33:21.514Z INFO [uvicorn.access] 127.0.0.1:57371 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:33:21.521Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:33:21.532Z INFO [uvicorn.access] 127.0.0.1:57371 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:33:21.540Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:33:21.546Z INFO [uvicorn.access] 127.0.0.1:57371 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:33:21.559Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:33:21.569Z INFO [uvicorn.access] 127.0.0.1:57371 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:33:21.580Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:33:21.585Z INFO [uvicorn.access] 127.0.0.1:57371 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:33:21.596Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/confirm-message-received HTTP/1.1" 200
+[92mINFO [0m:      [Fleet.PushMessages] Push replies from node_id=10074576750258311177
+[92mINFO [0m:      [Fleet.PushMessages] Push replies from node_id=16231204542992672222
+[92mINFO [0m:      [Fleet.PushMessages] Push replies from node_id=10442872607971068025
+2026-10-12T14:33:24.606Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-messages HTTP/1.1" 200
+2026-10-12T14:33:24.621Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:33:24.629Z INFO [uvicorn.access] 127.0.0.1:57371 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:33:24.659Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:33:24.666Z INFO [uvicorn.access] 127.0.0.1:57371 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:33:24.675Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:33:24.774Z INFO [uvicorn.access] 127.0.0.1:57371 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:33:24.785Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:33:24.800Z INFO [uvicorn.access] 127.0.0.1:57371 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:33:24.808Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:33:24.815Z INFO [uvicorn.access] 127.0.0.1:57371 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:33:24.822Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:33:24.829Z INFO [uvicorn.access] 127.0.0.1:57371 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:33:24.838Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:33:24.846Z INFO [uvicorn.access] 127.0.0.1:57371 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:33:24.852Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:33:24.858Z INFO [uvicorn.access] 127.0.0.1:57371 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:33:24.867Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/confirm-message-received HTTP/1.1" 200
+2026-10-12T14:33:24.884Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:33:24.886Z INFO [uvicorn.access] 127.0.0.1:57371 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:33:24.900Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:33:24.903Z INFO [uvicorn.access] 127.0.0.1:57371 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:33:24.920Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:33:24.924Z INFO [uvicorn.access] 127.0.0.1:57371 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:33:24.939Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:33:24.945Z INFO [uvicorn.access] 127.0.0.1:57371 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:33:24.959Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:33:24.967Z INFO [uvicorn.access] 127.0.0.1:57371 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:33:24.977Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:33:24.984Z INFO [uvicorn.access] 127.0.0.1:57371 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:33:24.993Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:33:25.001Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:33:25.005Z INFO [uvicorn.access] 127.0.0.1:57371 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:33:25.012Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:33:25.022Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/confirm-message-received HTTP/1.1" 200
+2026-10-12T14:33:25.039Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:33:25.046Z INFO [uvicorn.access] 127.0.0.1:57371 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:33:25.053Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:33:25.060Z INFO [uvicorn.access] 127.0.0.1:57371 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:33:25.071Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:33:25.075Z INFO [uvicorn.access] 127.0.0.1:57371 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:33:25.086Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:33:25.095Z INFO [uvicorn.access] 127.0.0.1:57371 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:33:25.102Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:33:25.111Z INFO [uvicorn.access] 127.0.0.1:57371 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:33:25.115Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:33:25.126Z INFO [uvicorn.access] 127.0.0.1:57371 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:33:25.129Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:33:25.140Z INFO [uvicorn.access] 127.0.0.1:57371 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:33:25.145Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:33:25.152Z INFO [uvicorn.access] 127.0.0.1:57371 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:33:25.163Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/confirm-message-received HTTP/1.1" 200
+2026-10-12T14:33:25.205Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-messages HTTP/1.1" 200
+2026-10-12T14:33:25.221Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:33:25.236Z INFO [uvicorn.access] 127.0.0.1:57371 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:33:25.246Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:33:25.256Z INFO [uvicorn.access] 127.0.0.1:57371 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:33:25.261Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:33:25.270Z INFO [uvicorn.access] 127.0.0.1:57371 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:33:25.276Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:33:25.284Z INFO [uvicorn.access] 127.0.0.1:57371 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:33:25.292Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:33:25.300Z INFO [uvicorn.access] 127.0.0.1:57371 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:33:25.307Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:33:25.313Z INFO [uvicorn.access] 127.0.0.1:57371 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:33:25.322Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:33:25.329Z INFO [uvicorn.access] 127.0.0.1:57371 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:33:25.338Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:33:25.345Z INFO [uvicorn.access] 127.0.0.1:57371 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:33:25.352Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:33:25.360Z INFO [uvicorn.access] 127.0.0.1:57371 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:33:25.364Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:33:25.372Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-messages HTTP/1.1" 200
+2026-10-12T14:33:28.380Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-messages HTTP/1.1" 200
+2026-10-12T14:33:31.393Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-messages HTTP/1.1" 200
+2026-10-12T14:33:34.403Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-messages HTTP/1.1" 200
+2026-10-12T14:33:37.412Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-messages HTTP/1.1" 200
+[92mINFO [0m:      [Fleet.PushMessages] Push replies from node_id=16231204542992672222
+[92mINFO [0m:      [Fleet.PushMessages] Push replies from node_id=10442872607971068025
+2026-10-12T14:33:40.422Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-messages HTTP/1.1" 200
+2026-10-12T14:33:40.435Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:33:40.446Z INFO [uvicorn.access] 127.0.0.1:51374 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:33:40.451Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:33:40.461Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/confirm-message-received HTTP/1.1" 200
+2026-10-12T14:33:40.476Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:33:40.481Z INFO [uvicorn.access] 127.0.0.1:51374 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:33:40.488Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:33:40.495Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/confirm-message-received HTTP/1.1" 200
+[92mINFO [0m:      [Fleet.PushMessages] Push replies from node_id=7375648060811479395
+[92mINFO [0m:      [Fleet.PushMessages] Push replies from node_id=10074576750258311177
+2026-10-12T14:33:43.507Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-messages HTTP/1.1" 200
+2026-10-12T14:33:43.520Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:33:43.528Z INFO [uvicorn.access] 127.0.0.1:51374 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:33:43.532Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:33:43.540Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/confirm-message-received HTTP/1.1" 200
+2026-10-12T14:33:43.558Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:33:43.561Z INFO [uvicorn.access] 127.0.0.1:51374 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:33:43.567Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:33:43.576Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/confirm-message-received HTTP/1.1" 200
+2026-10-12T14:33:43.658Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-messages HTTP/1.1" 200
+2026-10-12T14:33:43.669Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:33:43.672Z INFO [uvicorn.access] 127.0.0.1:51374 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:33:43.684Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:33:43.685Z INFO [uvicorn.access] 127.0.0.1:51374 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:33:43.698Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:33:43.698Z INFO [uvicorn.access] 127.0.0.1:51374 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:33:43.710Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:33:43.711Z INFO [uvicorn.access] 127.0.0.1:51374 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:33:43.734Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:33:43.737Z INFO [uvicorn.access] 127.0.0.1:51374 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:33:43.754Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:33:43.754Z INFO [uvicorn.access] 127.0.0.1:51374 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:33:43.767Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:33:43.768Z INFO [uvicorn.access] 127.0.0.1:51374 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:33:43.797Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:33:43.798Z INFO [uvicorn.access] 127.0.0.1:51374 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:33:43.811Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:33:43.819Z INFO [uvicorn.access] 127.0.0.1:51374 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:33:43.823Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:33:43.835Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-messages HTTP/1.1" 200
+2026-10-12T14:33:46.847Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-messages HTTP/1.1" 200
+2026-10-12T14:33:49.855Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-messages HTTP/1.1" 200
+2026-10-12T14:33:52.865Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-messages HTTP/1.1" 200
+2026-10-12T14:33:55.874Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-messages HTTP/1.1" 200
+[92mINFO [0m:      [Fleet.PushMessages] Push replies from node_id=7375648060811479395
+2026-10-12T14:33:58.882Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-messages HTTP/1.1" 200
+2026-10-12T14:33:58.913Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:33:58.921Z INFO [uvicorn.access] 127.0.0.1:51402 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:33:58.925Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:33:58.935Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/confirm-message-received HTTP/1.1" 200
+[92mINFO [0m:      [Fleet.PushMessages] Push replies from node_id=10074576750258311177
+[92mINFO [0m:      [Fleet.PushMessages] Push replies from node_id=10442872607971068025
+[92mINFO [0m:      [Fleet.PushMessages] Push replies from node_id=16231204542992672222
+2026-10-12T14:34:01.946Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-messages HTTP/1.1" 200
+2026-10-12T14:34:01.969Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:34:01.976Z INFO [uvicorn.access] 127.0.0.1:51402 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:34:01.987Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:34:01.997Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/confirm-message-received HTTP/1.1" 200
+2026-10-12T14:34:02.017Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:34:02.022Z INFO [uvicorn.access] 127.0.0.1:51402 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:34:02.036Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:34:02.050Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/confirm-message-received HTTP/1.1" 200
+2026-10-12T14:34:02.090Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:34:02.098Z INFO [uvicorn.access] 127.0.0.1:51402 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:34:02.105Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:34:02.119Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/confirm-message-received HTTP/1.1" 200
+2026-10-12T14:34:02.153Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-messages HTTP/1.1" 200
+2026-10-12T14:34:02.171Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:34:02.200Z INFO [uvicorn.access] 127.0.0.1:51402 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:34:02.202Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:34:02.217Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:34:02.225Z INFO [uvicorn.access] 127.0.0.1:51402 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:34:02.236Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:34:02.245Z INFO [uvicorn.access] 127.0.0.1:51402 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:34:02.264Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:34:02.275Z INFO [uvicorn.access] 127.0.0.1:51402 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:34:02.284Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:34:02.295Z INFO [uvicorn.access] 127.0.0.1:51402 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:34:02.304Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:34:02.319Z INFO [uvicorn.access] 127.0.0.1:51402 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:34:02.326Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:34:02.335Z INFO [uvicorn.access] 127.0.0.1:51402 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:34:02.341Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:34:02.352Z INFO [uvicorn.access] 127.0.0.1:51402 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:34:02.364Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:34:02.369Z INFO [uvicorn.access] 127.0.0.1:51402 - "POST /v1/runtime/push-object HTTP/1.1" 200
+2026-10-12T14:34:02.382Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-messages HTTP/1.1" 200
+2026-10-12T14:34:05.391Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-messages HTTP/1.1" 200
+2026-10-12T14:34:08.401Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-messages HTTP/1.1" 200
+2026-10-12T14:34:11.411Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-messages HTTP/1.1" 200
+2026-10-12T14:34:14.419Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-messages HTTP/1.1" 200
+2026-10-12T14:34:17.428Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-messages HTTP/1.1" 200
+[92mINFO [0m:      [Fleet.PushMessages] Push replies from node_id=10074576750258311177
+[92mINFO [0m:      [Fleet.PushMessages] Push replies from node_id=10442872607971068025
+[92mINFO [0m:      [Fleet.PushMessages] Push replies from node_id=7375648060811479395
+[92mINFO [0m:      [Fleet.PushMessages] Push replies from node_id=16231204542992672222
+2026-10-12T14:34:20.437Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-messages HTTP/1.1" 200
+2026-10-12T14:34:20.450Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:34:20.454Z INFO [uvicorn.access] 127.0.0.1:51442 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:34:20.461Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:34:20.471Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/confirm-message-received HTTP/1.1" 200
+2026-10-12T14:34:20.489Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:34:20.498Z INFO [uvicorn.access] 127.0.0.1:51442 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:34:20.502Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:34:20.513Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/confirm-message-received HTTP/1.1" 200
+2026-10-12T14:34:20.531Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:34:20.535Z INFO [uvicorn.access] 127.0.0.1:51442 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:34:20.544Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:34:20.557Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/confirm-message-received HTTP/1.1" 200
+2026-10-12T14:34:20.575Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:34:20.578Z INFO [uvicorn.access] 127.0.0.1:51442 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:34:20.587Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/pull-object HTTP/1.1" 200
+2026-10-12T14:34:20.597Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/confirm-message-received HTTP/1.1" 200
+[92mINFO [0m:      Finished task 11699074504522512823 of run 18022119505372697734
+2026-10-12T14:34:21.996Z INFO [uvicorn.access] 127.0.0.1:61110 - "POST /v1/runtime/push-task-output HTTP/1.1" 200
+[92mINFO [0m:      All logs for run ID `18022119505372697734` returned
+[92mINFO [0m:      SuperExec terminated gracefully.

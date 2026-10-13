@@ -9,6 +9,7 @@ to results/demo_8b/run_<time>.log in the server's data folder.
 """
 import argparse
 import subprocess
+import sys
 from datetime import datetime
 
 from ml.data.load import DATA_ROOT
@@ -16,6 +17,10 @@ from ml.federated.demo.launch import DEMO, env_for, flwr_run_cmd
 
 
 def run(arm: str, rounds: int, expected_banks: int, flwr_home, log_path) -> int:
+    # Flower prints emoji. When this window's output is redirected (file, Tee-Object), Windows Python
+    # encodes it as cp1252 and would crash on the first emoji; replace such characters instead.
+    if hasattr(sys.stdout, "reconfigure"):
+        sys.stdout.reconfigure(errors="replace")
     log_path.parent.mkdir(parents=True, exist_ok=True)
     with open(log_path, "w", encoding="utf-8") as log:
         proc = subprocess.Popen(flwr_run_cmd(arm, rounds, expected_banks), env=env_for(DATA_ROOT, flwr_home),

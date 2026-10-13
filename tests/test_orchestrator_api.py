@@ -1,6 +1,5 @@
 """Step 10: API tests with FastAPI's TestClient (no real network, own temp jobs/audit folders)."""
 import os
-import time
 
 import pytest
 
@@ -74,6 +73,19 @@ def test_predict_examples_and_prediction(client):
         assert p.status_code == 200
         body = p.json()
         assert 0 <= body["fraud_probability"] <= 1 and body["model"]["arm"] == "arm3_federated_real"
+
+
+def test_predict_examples_are_random_rows_with_correct_labels(client):
+    fixed = client.get("/predict/examples?random=false", headers=H(client)).json()
+    again = client.get("/predict/examples?random=false", headers=H(client)).json()
+    assert fixed == again                                  # random=false: always the first rows
+    fraud_rows = set()
+    for _ in range(8):                                     # default: a new random row each call
+        ex = client.get("/predict/examples", headers=H(client)).json()
+        assert ex["fraud"]["true_label"] == 1 and ex["genuine"]["true_label"] == 0
+        assert 0 <= ex["fraud"]["row"] < ex["fraud"]["rows_in_test_set"]
+        fraud_rows.add(ex["fraud"]["row"])
+    assert len(fraud_rows) > 1                             # 95 frauds: 8 identical picks is ~1e-14
 
 
 def test_export_only_to_own_bank_and_audited(client):

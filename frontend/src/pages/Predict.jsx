@@ -10,6 +10,7 @@ const blank = Object.fromEntries(FIELDS.map((f) => [f, ""]));
 export default function Predict() {
   const [tx, setTx] = useState(blank);
   const [truth, setTruth] = useState(null);
+  const [source, setSource] = useState(null);   // which global-test row the example came from
   const [result, setResult] = useState(null);
   const [error, setError] = useState(null);
   const [busy, setBusy] = useState(false);
@@ -18,9 +19,10 @@ export default function Predict() {
     setError(null);
     setResult(null);
     try {
-      const ex = await api("/predict/examples");
+      const ex = await api("/predict/examples");     // a NEW random row on every click
       setTx(Object.fromEntries(FIELDS.map((f) => [f, String(ex[kind].transaction[f])])));
       setTruth(ex[kind].true_label);
+      setSource({ kind, row: ex[kind].row, total: ex[kind].rows_in_test_set, candidates: ex[kind].candidates });
     } catch (e) { setError(e.message); }
   }
 
@@ -34,7 +36,7 @@ export default function Predict() {
     } catch (err) { setError(err.message); setResult(null); } finally { setBusy(false); }
   }
 
-  const set = (f) => (e) => { setTx({ ...tx, [f]: e.target.value }); setTruth(null); setResult(null); };
+  const set = (f) => (e) => { setTx({ ...tx, [f]: e.target.value }); setTruth(null); setSource(null); setResult(null); };
 
   return (
     <div className="grid cols-2">
@@ -43,9 +45,16 @@ export default function Predict() {
           <div className="row">
             <button type="button" className="btn" onClick={() => loadExample("fraud")}>Load a fraud example</button>
             <button type="button" className="btn" onClick={() => loadExample("genuine")}>Load a genuine example</button>
-            <button type="button" className="btn" onClick={() => { setTx(blank); setTruth(null); setResult(null); }}>Clear</button>
+            <button type="button" className="btn" onClick={() => { setTx(blank); setTruth(null); setSource(null); setResult(null); }}>Clear</button>
           </div>
         </header>
+        <p className="note">
+          {source
+            ? <>Loaded {source.kind} transaction <strong className="num">#{source.row.toLocaleString("en-IN")}</strong> of
+                the {source.total.toLocaleString("en-IN")}-row global test set ({source.candidates.toLocaleString("en-IN")}{" "}
+                {source.kind} rows to pick from). Click again for a different one.</>
+            : "Each click loads a different random transaction from the global test set (never used for training)."}
+        </p>
         <div className="row">
           <div className="field"><label htmlFor="f-Time">Time (seconds, 0–172,792)</label>
             <input id="f-Time" type="number" step="any" min="0" max="172792" required value={tx.Time} onChange={set("Time")} /></div>

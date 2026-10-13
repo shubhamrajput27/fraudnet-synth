@@ -8,7 +8,7 @@ Show, as our guide asked, that the fraud model **really travels between separate
 |---|---|
 | 1. One-laptop fallback (5 processes, one command) | ✅ **Passed** 2026-10-10 (10 rounds, logs in `results/demo_8b/fallback_20261010_185747/`) |
 | 2. Two laptops (Shubham + Prachi) on a phone hotspot | ✅ **Passed** 2026-10-11 (10 rounds over a OnePlus phone hotspot, logs in `results/demo_8b/two_laptop_2026-10-11/`, §5.4) |
-| 3. All four laptops on one hotspot | ⏳ **Pending, planned for Monday** |
+| 3. All four laptops on one hotspot | ⏳ **Not yet run** (missed Monday 12/10; now Rehearsal 1 on 13/10, see §5.5) |
 
 ## 2. Concepts explained simply
 - **Simulation vs deployment:** in Step 8, Flower *pretended* there were four banks inside one program. In deployment, each bank is a **separate program**, potentially on a separate laptop, and messages really cross the network. **Analogy:** a cricket net session with one bowler pretending to be four, versus a real match with four players on the field.
@@ -151,8 +151,17 @@ Bank D  Round 10: received global model (17.1 KB) -> trained on 20,854 rows (36 
 - **Problems met:** (1) `ipconfig` lists a Hyper-V virtual adapter (`vEthernet (Default Switch)`, 172.17.240.1) first. The correct IP is the one under *Wi-Fi*. (2) Creating the firewall rule needs an Administrator terminal. (3) Prachi's clone is at `C:\Users\y16pr\fraudnet-synth-latest`, not the path in the setup guide. That works, because the commands only need to run from the project folder.
 - **Provenance:** `client_bank_b.log` was copied from Prachi's laptop (pasted text, not transferred as a file). All the other files in the folder come from the server laptop.
 
-### 5.5 Four-laptop test
-**Pending (Monday).**
+### 5.5 Four-laptop test and two rehearsals
+**Not yet run.** It did not take place on Monday 2026-10-12. That evening only the one-laptop fallback ran again (`results/demo_8b/fallback_20261012_195939/`, F1 0.7953, 3 rounds). Rehearsal 1 on demo day (13/10, 09:45) counts as the four-laptop test.
+
+How to record each run: copy Shubham's `C:\Projects\fraudnet-demo\results\demo_8b\` and each teammate's `results\demo_8b\client_bank_x.log` into `results/demo_8b/four_laptop_<date>_r<N>/`. Then fill in the table **from those files only**.
+
+| Run | Date/time | Banks that joined | Rounds | Duration | Global test P / R / F1 / PR-AUC | Problems met | Log folder |
+|---|---|---|---|---|---|---|---|
+| Rehearsal 1 (= four-laptop test) | not yet run | | | | | | |
+| Rehearsal 2 (8B + dashboard, timed) | not yet run | | | | | | |
+
+Code version note: the demo folder is at commit `b1387f9` (Step 9). That is the code that passed the two-laptop test. It logs **5 scalars** per bank, which matches DEMO_SCRIPT_8B.md. The main folder logs 6, because the extra `global-model-loss` scalar was added for extension E1. If the demo folder is ever updated, change the script line to 6.
 
 ### 5.6 Regression and tests
 - The Step 8 simulation, re-run after these changes, is **bit-identical** to the committed results (30 rounds, both arms). Demo settings apply only through `flwr run`.

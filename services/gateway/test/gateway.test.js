@@ -1,4 +1,4 @@
-// Gateway tests: run with `npm test` (needs the local MongoDB service; uses database fraudnet_synth_test).
+// Gateway tests: run with `npm test` (needs the local MongoDB service; uses database fraudnet_gateway_test).
 // A fake orchestrator stands in for FastAPI so these tests are fast and independent of Tier 3.
 import { after, before, test } from "node:test";
 import assert from "node:assert/strict";
@@ -159,6 +159,17 @@ test("browser WebSocket replays stored rounds for a finished run; rejects missin
     ws.on("error", () => {});
   });
   assert.equal(status, 401);
+});
+
+test("a malformed live URL is refused with 400 and does not crash the gateway", async () => {
+  const t = await tokenFor("guide");
+  const status = await new Promise((resolve) => {
+    const ws = new WebSocket(`ws://127.0.0.1:${gwPort}/ws/runs/%E0%A4%A?token=${t}`);   // invalid percent-encoding
+    ws.on("unexpected-response", (req, res) => resolve(res.statusCode));
+    ws.on("error", () => {});
+  });
+  assert.equal(status, 400);
+  assert.equal((await request.get("/api/health")).body.gateway, "ok");   // still alive
 });
 
 test("export: only the bank's own operator; scope comes from the token, not the request", async () => {

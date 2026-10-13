@@ -61,8 +61,11 @@ export async function download(path, filename) {
   }
   const url = URL.createObjectURL(await res.blob());
   const a = Object.assign(document.createElement("a"), { href: url, download: filename });
+  // Attached to the page and revoked a moment later: some browsers cancel the download otherwise.
+  document.body.appendChild(a);
   a.click();
-  URL.revokeObjectURL(url);
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
 // Browsers can't put headers on WebSockets, so the gateway accepts the token as ?token= (D-049).

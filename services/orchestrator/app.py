@@ -9,7 +9,9 @@ import asyncio
 import json
 import secrets
 from datetime import datetime, timezone
+from functools import lru_cache
 
+import numpy as np
 import pandas as pd
 from fastapi import Depends, FastAPI, Header, HTTPException, Query, WebSocket, WebSocketDisconnect
 from fastapi.responses import FileResponse
@@ -215,14 +217,28 @@ def predict_one(tx: Transaction):
         raise HTTPException(503, str(e))
 
 
+@lru_cache(maxsize=1)
+def _global_test() -> pd.DataFrame:
+    return pd.read_csv(PROJECT_ROOT / load_config("partition")["processed_dir"] / "global_test.csv")
+
+
 @app.get("/predict/examples", dependencies=AUTH)
-def predict_examples():
+def predict_examples(random_pick: bool = Query(True, alias="random",
+                                               description="false = always the first fraud / genuine row")):
     """One fraud and one genuine transaction from the GLOBAL TEST set, which is held by the
-    experimenter (server side), not by any bank, to try /predict with. Disclosed design choice."""
-    gt = pd.read_csv(PROJECT_ROOT / load_config("partition")["processed_dir"] / "global_test.csv")
-    pick = {"fraud": gt[gt[LABEL_COLUMN] == 1].iloc[0], "genuine": gt[gt[LABEL_COLUMN] == 0].iloc[0]}
-    return {k: {"transaction": {c: float(r[c]) for c in FEATURE_COLUMNS}, "true_label": int(r[LABEL_COLUMN])}
-            for k, r in pick.items()}
+    experimenter (server side), not by any bank, to try /predict with. Disclosed design choice.
+    By default each call picks NEW random rows, so the demo isn't limited to one example; 'row' is
+    the transaction's position in global_test.csv, so any example can be looked up afterwards."""
+    gt = _global_test()
+    rng = np.random.default_rng()      # deliberately unseeded: a different example on every click
+    out = {}
+    for kind, label in (("fraud", 1), ("genuine", 0)):
+        rows = np.flatnonzero(gt[LABEL_COLUMN].to_numpy() == label)
+        i = int(rng.choice(rows)) if random_pick else int(rows[0])
+        r = gt.iloc[i]
+        out[kind] = {"transaction": {c: float(r[c]) for c in FEATURE_COLUMNS}, "true_label": int(r[LABEL_COLUMN]),
+                     "row": i, "rows_in_test_set": int(len(gt)), "candidates": int(len(rows))}
+    return out
 
 
 # ------------------------------------------------------------------ export ---

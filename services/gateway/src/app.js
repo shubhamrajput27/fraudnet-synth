@@ -146,32 +146,45 @@ export function createApp() {
 // so the login token comes as a query parameter (local deployment only, D-049).
 export function attachLiveSocket(server) {
   const wss = new WebSocketServer({ noServer: true });
+  // Everything below is wrapped in try/catch: this handler is async, and an unhandled rejection
+  // (a malformed URL, MongoDB hiccup) would make Node exit, taking the whole gateway down.
   server.on("upgrade", async (req, socket, head) => {
-    const url = new URL(req.url, "http://localhost");
-    const m = url.pathname.match(/^\/ws\/runs\/([^/]+)$/);
-    let user = null;
-    try { user = verifyToken(url.searchParams.get("token") ?? ""); } catch { user = null; }
-    if (!m || !user) {
-      socket.write("HTTP/1.1 401 Unauthorized\r\n\r\n");
-      return socket.destroy();
-    }
-    const jobId = decodeURIComponent(m[1]);
-    const run = await Run.findOne({ jobId }).lean();
-    if (!run) {
-      socket.write("HTTP/1.1 404 Not Found\r\n\r\n");
-      return socket.destroy();
-    }
-    wss.handleUpgrade(req, socket, head, async (ws) => {
-      // Catch-up first: everything already stored for this run, then live events.
-      ws.send(JSON.stringify({ type: "status", status: run.status }));
-      const rounds = await Round.find({ jobId }).sort({ arm: 1, seed: 1, round: 1 }).lean();
-      rounds.forEach(({ _id, __v, jobId: _j, receivedAt, ...r }) => ws.send(JSON.stringify({ type: "round", ...r })));
-      if (isFinal(run.status)) {
-        ws.send(JSON.stringify({ type: "end", status: run.status, result: run.result }));
-        return ws.close();
+    try {
+      const url = new URL(req.url, "http://localhost");
+      const m = url.pathname.match(/^\/ws\/runs\/([^/]+)$/);
+      let user = null;
+      try { user = verifyToken(url.searchParams.get("token") ?? ""); } catch { user = null; }
+      if (!m || !user) {
+        socket.write("HTTP/1.1 401 Unauthorized\r\n\r\n");
+        return socket.destroy();
       }
-      subscribe(jobId, ws);
-    });
+      const jobId = decodeURIComponent(m[1]);
+      const run = await Run.findOne({ jobId }).lean();
+      if (!run) {
+        socket.write("HTTP/1.1 404 Not Found\r\n\r\n");
+        return socket.destroy();
+      }
+      wss.handleUpgrade(req, socket, head, async (ws) => {
+        try {
+          // Catch-up first: everything already stored for this run, then live events.
+          ws.send(JSON.stringify({ type: "status", status: run.status }));
+          const rounds = await Round.find({ jobId }).sort({ arm: 1, seed: 1, round: 1 }).lean();
+          rounds.forEach(({ _id, __v, jobId: _j, receivedAt, ...r }) => ws.send(JSON.stringify({ type: "round", ...r })));
+          if (isFinal(run.status)) {
+            ws.send(JSON.stringify({ type: "end", status: run.status, result: run.result }));
+            return ws.close();
+          }
+          subscribe(jobId, ws);
+        } catch (err) {
+          console.error(`[live ${jobId}]`, err.message);
+          ws.close(1011);
+        }
+      });
+    } catch (err) {
+      console.error("[live upgrade]", err.message);
+      socket.write(`HTTP/1.1 ${err instanceof URIError ? "400 Bad Request" : "500 Internal Server Error"}\r\n\r\n`);
+      socket.destroy();
+    }
   });
   return wss;
 }
