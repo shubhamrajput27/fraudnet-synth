@@ -55,7 +55,16 @@ def describe_message(msg: Message) -> str:
 
 
 def _bank_idx(msg: Message) -> int:
+    if msg.has_error():   # a bank's step crashed: no content; sort last, Flower counts it as a failure
+        return len(BANKS)
     return int(next(iter(msg.content.metric_records.values()))["bank-idx"])
+
+
+def _log_failures(server_round: int, step: str, replies) -> None:
+    """Name the failed bank's node and its error instead of crashing (demo, 13/10/2026)."""
+    for r in replies:
+        if r.has_error():
+            demo_log(f"Round {server_round}: {step} FAILED on node {r.metadata.src_node_id}: {r.error.reason}")
 
 
 class OrderedFedAvg(FedAvg):
@@ -69,16 +78,20 @@ class OrderedFedAvg(FedAvg):
 
     def aggregate_train(self, server_round, replies):
         replies = sorted(replies, key=_bank_idx)
-        for r in replies:
+        _log_failures(server_round, "training", replies)
+        ok = [r for r in replies if not r.has_error()]
+        for r in ok:
             demo_log(f"Round {server_round}: update from {BANKS[_bank_idx(r)]} <- {describe_message(r)}")
         arrays, metrics = super().aggregate_train(server_round, replies)
         if arrays is not None:
-            demo_log(f"Round {server_round}: FedAvg of {len(replies)} bank updates (weighted by rows) -> "
+            demo_log(f"Round {server_round}: FedAvg of {len(ok)} bank updates (weighted by rows) -> "
                      f"new global model ({arrays.count_bytes():,} B) sent to every bank")
         return arrays, metrics
 
     def aggregate_evaluate(self, server_round, replies):
-        return super().aggregate_evaluate(server_round, sorted(replies, key=_bank_idx))
+        replies = sorted(replies, key=_bank_idx)
+        _log_failures(server_round, "evaluation", replies)
+        return super().aggregate_evaluate(server_round, replies)
 
 
 class OrderedQFedAvg(QFedAvg):
