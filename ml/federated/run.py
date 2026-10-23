@@ -17,11 +17,11 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 from ml.data.load import PROJECT_ROOT, load_config
+from ml.evaluation.plot_style import INK, INK_MUTED, SURFACE, style_axes
 
 ARMS = ["arm3_federated_real", "arm4_federated_aug"]
 BANK_COLORS = {"bank_a": "#2a78d6", "bank_b": "#eb6834", "bank_c": "#1baf7a", "bank_d": "#eda100"}
 ARM_COLORS = {"arm3_federated_real": "#2a78d6", "arm4_federated_aug": "#1baf7a"}
-INK, INK_MUTED, GRID, SURFACE = "#0b0b0b", "#52514e", "#e4e3df", "#fcfcfb"
 
 
 def simulate(arm: str, seed: int):
@@ -41,21 +41,10 @@ def simulate(arm: str, seed: int):
                                                         "num_gpus": 0.0}})
 
 
-def _style(ax):
-    ax.set_facecolor(SURFACE)
-    for side in ("top", "right"):
-        ax.spines[side].set_visible(False)
-    for side in ("left", "bottom"):
-        ax.spines[side].set_color(GRID)
-    ax.tick_params(colors=INK_MUTED, labelsize=8)
-    ax.grid(color=GRID, linewidth=0.8)
-    ax.set_axisbelow(True)
-
-
 def plot_convergence(results: dict, out_dir):
     # 1) Global test PR-AUC per round, both arms (plot only; never used to pick a round).
     fig, ax = plt.subplots(figsize=(8, 3.8), facecolor=SURFACE)
-    _style(ax)
+    style_axes(ax, grid="both")
     for arm, r in results.items():
         h = pd.DataFrame(r["global_test_per_round"])
         ax.plot(h["round"], h["global_test_pr_auc"], color=ARM_COLORS[arm], linewidth=2, marker="o", markersize=3,
@@ -73,7 +62,7 @@ def plot_convergence(results: dict, out_dir):
         fig, axes = plt.subplots(1, 2, figsize=(11, 3.8), facecolor=SURFACE)
         for ax, col, title in ((axes[0], "train_loss", "Local training loss (weighted BCE)"),
                                (axes[1], "val_pr_auc", "Global model's PR-AUC on each bank's local val")):
-            _style(ax)
+            style_axes(ax, grid="both")
             for bank, g in d.groupby("bank"):
                 ax.plot(g["round"], g[col], color=BANK_COLORS[bank], linewidth=2,
                         label=f"{bank.replace('bank_', 'Bank ').title()} (val fraud {int(g['val_fraud'].iloc[0])})")

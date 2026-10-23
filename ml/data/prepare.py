@@ -21,10 +21,10 @@ import pandas as pd
 from ml.data.load import LABEL_COLUMN, PROJECT_ROOT, load_config, load_raw
 from ml.data.partition import local_splits, partition_by_quota
 from ml.data.split import global_split
+from ml.evaluation.plot_style import INK, INK_MUTED, GRID, SURFACE
 
 # Same palette and styling conventions as the Step 1 EDA charts.
 BAR_COLOR = "#2a78d6"
-INK, INK_MUTED, GRID, SURFACE = "#0b0b0b", "#52514e", "#e4e3df", "#fcfcfb"
 
 
 def _stats(name: str, part: str, df: pd.DataFrame) -> dict:

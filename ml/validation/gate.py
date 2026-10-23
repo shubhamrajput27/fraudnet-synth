@@ -29,6 +29,7 @@ from ml.augmentation.schema_stats import local_bounds
 from ml.data.load import FEATURE_COLUMNS, LABEL_COLUMN, PROJECT_ROOT, load_config
 from ml.validation import diversity, fidelity
 from ml.validation.schema_checks import build_schema, edge_clamped_counts, schema_failures
+from ml.evaluation.plot_style import INK, INK_MUTED, GRID, SURFACE
 
 # Outcome categories in the order checks run; a row's PRIMARY reason is its first failure.
 OUTCOMES = ["passed", "schema_or_range", "edge_clamped", "too_close_to_real",
@@ -39,7 +40,6 @@ LABELS = {"passed": "Passed", "schema_or_range": "Out of range / schema", "edge_
           "batch_fidelity_too_low": "Batch fidelity below minimum"}
 # Validated categorical palette, fixed order (dataviz reference slots 1-7).
 COLORS = ["#2a78d6", "#eb6834", "#1baf7a", "#eda100", "#e87ba4", "#008300", "#4a3aa7"]
-INK, INK_MUTED, GRID, SURFACE = "#0b0b0b", "#52514e", "#e4e3df", "#fcfcfb"
 
 
 def _bucket(reason: str) -> str:

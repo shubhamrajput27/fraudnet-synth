@@ -21,6 +21,7 @@ import pandas as pd
 from scipy import stats
 
 from ml.data.load import PROJECT_ROOT, load_config
+from ml.evaluation.plot_style import INK, INK_MUTED, GRID, SURFACE, style_axes
 
 METRICS = ["precision", "recall", "f1", "pr_auc", "roc_auc", "accuracy"]
 HEADLINE = ["precision", "recall", "f1", "pr_auc"]
@@ -28,7 +29,6 @@ BANKS = list(load_config("partition")["banks"])
 ARM_LABEL = {1: "Isolated, real", 2: "Isolated, augmented", 3: "Federated, real",
              4: "Federated, augmented", 5: "Centralized, real", 6: "Centralized, augmented"}
 REAL_COLOR, AUG_COLOR = "#2a78d6", "#1baf7a"
-INK, INK_MUTED, GRID, SURFACE = "#0b0b0b", "#52514e", "#e4e3df", "#fcfcfb"
 
 
 # ------------------------------------------------------------------ load ---
@@ -140,16 +140,6 @@ def local_table(long: pd.DataFrame) -> pd.DataFrame:
 
 # ---------------------------------------------------------------- charts ---
 
-def _style(ax):
-    ax.set_facecolor(SURFACE)
-    for side in ("top", "right"):
-        ax.spines[side].set_visible(False)
-    for side in ("left", "bottom"):
-        ax.spines[side].set_color(GRID)
-    ax.tick_params(colors=INK_MUTED, labelsize=8)
-    ax.set_axisbelow(True)
-
-
 def plot_six_arms(long: pd.DataFrame, out):
     g = long[long["eval"] == "global"]
     groups = [("Bank A\nisolated", 1, 2, "bank_a"), ("Bank B\nisolated", 1, 2, "bank_b"),
@@ -159,7 +149,7 @@ def plot_six_arms(long: pd.DataFrame, out):
     x = np.arange(len(groups))
     for ax, metric, title in ((axes[0], "f1", "Fraud F1, global test (mean ± std, 5 seeds)"),
                               (axes[1], "pr_auc", "PR-AUC, global test (mean ± std, 5 seeds)")):
-        _style(ax)
+        style_axes(ax)
         ax.grid(axis="y", color=GRID, linewidth=0.8)
         for off, idx, color, label in ((-0.2, 1, REAL_COLOR, "Real only"), (0.2, 2, AUG_COLOR, "Real + validated synthetic")):
             means, sds = [], []
@@ -189,7 +179,7 @@ def plot_paired(comp: pd.DataFrame, out):
     labels = sel[sel.metric == "f1"].apply(lambda r: f"{r.comparison}  {r.bank}", axis=1).tolist()
     fig, axes = plt.subplots(1, 2, figsize=(12, 0.42 * len(labels) + 1.4), facecolor=SURFACE, sharey=True)
     for ax, metric, title in ((axes[0], "f1", "Δ F1 (paired, 95% CI)"), (axes[1], "pr_auc", "Δ PR-AUC (paired, 95% CI)")):
-        _style(ax)
+        style_axes(ax)
         ax.grid(axis="x", color=GRID, linewidth=0.8)
         s = sel[sel.metric == metric].reset_index(drop=True)
         y = np.arange(len(s))
@@ -210,7 +200,7 @@ def plot_paired(comp: pd.DataFrame, out):
 
 def plot_convergence(curves: dict, central_mean: float, out):
     fig, ax = plt.subplots(figsize=(8.5, 4), facecolor=SURFACE)
-    _style(ax)
+    style_axes(ax)
     ax.grid(color=GRID, linewidth=0.8)
     for key, color, label in (("arm3", REAL_COLOR, "Arm 3: federated, real"), ("arm4", AUG_COLOR, "Arm 4: federated, augmented")):
         c = np.array(curves[key])

@@ -28,9 +28,9 @@ from ml.evaluation.metrics import best_f1_threshold, compute_metrics
 from ml.models.classifier import build_model
 from ml.models.features import to_xy
 from ml.models.train import predict_scores, set_seed, train_model
+from ml.evaluation.plot_style import INK, INK_MUTED, GRID, SURFACE
 
 REAL_COLOR, AUG_COLOR = "#2a78d6", "#1baf7a"   # validated palette slots 1 (blue) and 3 (aqua)
-INK, INK_MUTED, GRID, SURFACE = "#0b0b0b", "#52514e", "#e4e3df", "#fcfcfb"
 HEADLINE = ["precision", "recall", "f1", "pr_auc"]
 SECONDARY = ["roc_auc", "accuracy"]
 

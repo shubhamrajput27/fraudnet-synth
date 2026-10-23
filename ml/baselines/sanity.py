@@ -22,8 +22,9 @@ from ml.evaluation.metrics import best_f1_threshold, compute_metrics
 from ml.models.classifier import build_model, count_parameters
 from ml.models.features import FEATURE_NAMES, to_xy
 from ml.models.train import predict_scores, set_seed, train_model
+from ml.evaluation.plot_style import INK, INK_MUTED, GRID, SURFACE
 
-LINE, INK, INK_MUTED, GRID, SURFACE = "#2a78d6", "#0b0b0b", "#52514e", "#e4e3df", "#fcfcfb"
+LINE = "#2a78d6"
 
 
 def _plot_history(history, out):

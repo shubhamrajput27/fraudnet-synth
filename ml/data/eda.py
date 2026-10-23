@@ -17,15 +17,12 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from ml.data.load import LABEL_COLUMN, PROJECT_ROOT, V_COLUMNS, load_config, load_raw
+from ml.evaluation.plot_style import INK, INK_MUTED, GRID, SURFACE
 
 # Validated categorical palette (dataviz reference, slots 1-2). Color follows the
 # class, never the rank, so the same two colors mean the same thing in every chart.
 GENUINE_COLOR = "#2a78d6"  # blue
 FRAUD_COLOR = "#eb6834"    # orange
-INK = "#0b0b0b"
-INK_MUTED = "#52514e"
-GRID = "#e4e3df"
-SURFACE = "#fcfcfb"
 
 
 def _style_axes(ax):

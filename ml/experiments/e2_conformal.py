@@ -28,12 +28,12 @@ from ml.federated.common import BANKS, bank_data, threshold_grid
 from ml.models.classifier import build_model
 from ml.models.features import to_xy
 from ml.models.train import predict_scores
+from ml.evaluation.plot_style import INK, INK_MUTED, GRID, SURFACE
 
 ARM = "arm3_federated_real"
 CFG = load_config("e2_conformal")
 ROOT = PROJECT_ROOT / CFG["results_dir"]
 COLORS = {"global": "#2a78d6", "per-bank": "#eb6834", "F1-tuned": "#898781"}
-INK, MUTED, GRID_C, SURF = "#0b0b0b", "#52514e", "#e4e3df", "#fcfcfb"
 
 
 def ensure_model(seed: int):
@@ -151,30 +151,30 @@ def summarise(long: pd.DataFrame, guar: pd.DataFrame):
 
 def plot(long):
     alphas = CFG["alphas"]
-    fig, axes = plt.subplots(1, 2, figsize=(12, 4.2), facecolor=SURF)
+    fig, axes = plt.subplots(1, 2, figsize=(12, 4.2), facecolor=SURFACE)
     # Left: realised miss rate on the global test vs target alpha (global calibration).
     ax = axes[0]
     for side in ("top", "right"):
         ax.spines[side].set_visible(False)
-    ax.set_facecolor(SURF)
-    ax.grid(color=GRID_C, linewidth=0.8)
+    ax.set_facecolor(SURFACE)
+    ax.grid(color=GRID, linewidth=0.8)
     g = long[(long["scope"] == "global") & (long["eval"] == "global test")]
     m = [g[g["alpha"] == a]["miss_rate"].mean() for a in alphas]
     s = [g[g["alpha"] == a]["miss_rate"].std(ddof=1) for a in alphas]
-    ax.plot([0, 0.25], [0, 0.25], color=MUTED, linestyle="--", linewidth=1, label="target: miss rate = α")
+    ax.plot([0, 0.25], [0, 0.25], color=INK_MUTED, linestyle="--", linewidth=1, label="target: miss rate = α")
     ax.errorbar(alphas, m, yerr=s, fmt="o-", color=COLORS["global"], capsize=3, linewidth=2, label="CRC, global calibration")
     f1 = long[(long["scope"] == "F1-tuned") & (long["eval"] == "global test")]["miss_rate"].mean()
     ax.axhline(f1, color=COLORS["F1-tuned"], linestyle=":", linewidth=1.5, label=f"F1-tuned threshold ({f1:.2f})")
-    ax.set_xlabel("target miss rate α", color=MUTED)
-    ax.set_ylabel("realised miss rate, global test (95 frauds)", color=MUTED)
+    ax.set_xlabel("target miss rate α", color=INK_MUTED)
+    ax.set_ylabel("realised miss rate, global test (95 frauds)", color=INK_MUTED)
     ax.set_title("Miss rate is held near or below α", loc="left", color=INK, fontsize=11)
     ax.legend(frameon=False, fontsize=8)
     # Right: the price, alert rate per bank at alpha = 0.10, global vs per-bank calibration (log scale).
     ax = axes[1]
     for side in ("top", "right"):
         ax.spines[side].set_visible(False)
-    ax.set_facecolor(SURF)
-    ax.grid(color=GRID_C, linewidth=0.8, axis="y")
+    ax.set_facecolor(SURFACE)
+    ax.grid(color=GRID, linewidth=0.8, axis="y")
     a = 0.10
     x = np.arange(len(BANKS))
     for i, scope in enumerate(("global", "per-bank")):
@@ -185,7 +185,7 @@ def plot(long):
             ax.text(xi, v + 2, f"{v:.1f}%", ha="center", fontsize=7, color=INK)
     ax.set_ylim(0, 110)
     ax.set_xticks(x, [f"Bank {b[-1].upper()}" for b in BANKS])
-    ax.set_ylabel("% of the bank's transactions flagged", color=MUTED)
+    ax.set_ylabel("% of the bank's transactions flagged", color=INK_MUTED)
     ax.set_title("The price at α = 0.10: alerts per bank", loc="left", color=INK, fontsize=11)
     ax.legend(frameon=False, fontsize=8)
     fig.tight_layout()

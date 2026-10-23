@@ -20,13 +20,13 @@ import pandas as pd
 
 from ml.data.load import PROJECT_ROOT, load_config
 from ml.evaluation.six_arm_report import paired
+from ml.evaluation.plot_style import INK, INK_MUTED, GRID, SURFACE, style_axes
 
 ARM = "arm3_federated_real"
 BANKS = ["bank_a", "bank_b", "bank_c", "bank_d"]
 CFG = load_config("e1_qfedavg")
 ROOT = PROJECT_ROOT / CFG["results_dir"]
 COLORS = ["#2a78d6", "#eb6834", "#1baf7a", "#eda100", "#e87ba4"]       # validated palette, fixed order
-INK, MUTED, GRID, SURF = "#0b0b0b", "#52514e", "#e4e3df", "#fcfcfb"
 
 
 def run_one(name: str, seed: int, strategy: str, q=None, L=None) -> dict:
@@ -121,21 +121,10 @@ def report(long: pd.DataFrame, cfgs) -> None:
         print("\nPAIRED vs FedAvg (95% CI)\n" + comp.to_string(index=False))
 
 
-def _style(ax):
-    ax.set_facecolor(SURF)
-    for s in ("top", "right"):
-        ax.spines[s].set_visible(False)
-    for s in ("left", "bottom"):
-        ax.spines[s].set_color(GRID)
-    ax.tick_params(colors=MUTED, labelsize=8)
-    ax.grid(color=GRID, linewidth=0.8, axis="y")
-    ax.set_axisbelow(True)
-
-
 def plot(long, order):
-    fig, axes = plt.subplots(1, 2, figsize=(12, 4.2), facecolor=SURF, gridspec_kw={"width_ratios": [3, 2]})
+    fig, axes = plt.subplots(1, 2, figsize=(12, 4.2), facecolor=SURFACE, gridspec_kw={"width_ratios": [3, 2]})
     ax = axes[0]
-    _style(ax)
+    style_axes(ax, grid="y")
     w = 0.8 / len(order)
     x = np.arange(len(BANKS))
     for i, name in enumerate(order):
@@ -143,23 +132,23 @@ def plot(long, order):
         means = [g[f"{b}_f1"].mean() for b in BANKS]
         sds = [g[f"{b}_f1"].std(ddof=1) for b in BANKS]
         ax.bar(x + (i - (len(order) - 1) / 2) * w, means, w * 0.9, yerr=sds, color=COLORS[i], label=name,
-               error_kw={"ecolor": MUTED, "capsize": 2, "elinewidth": 1})
+               error_kw={"ecolor": INK_MUTED, "capsize": 2, "elinewidth": 1})
     ax.set_xticks(x, [f"Bank {b[-1].upper()}" for b in BANKS])
     ax.set_ylim(0, 1.05)
-    ax.set_ylabel("fraud F1 on the bank's own local test", color=MUTED)
+    ax.set_ylabel("fraud F1 on the bank's own local test", color=INK_MUTED)
     ax.set_title("Per-bank fraud F1 (mean ± std, 5 seeds)", loc="left", color=INK, fontsize=11)
     ax.legend(frameon=False, fontsize=8, ncol=len(order), loc="upper center", bbox_to_anchor=(0.5, -0.1))
     ax = axes[1]
-    _style(ax)
+    style_axes(ax, grid="y")
     ax.grid(color=GRID, linewidth=0.8)
     for i, name in enumerate(order):
         g = long[long["config"] == name]
         ax.errorbar(g["global_f1"].mean(), g["worst_bank_f1"].mean(), xerr=g["global_f1"].std(ddof=1),
-                    yerr=g["worst_bank_f1"].std(ddof=1), fmt="o", ms=8, color=COLORS[i], ecolor=MUTED, capsize=2)
+                    yerr=g["worst_bank_f1"].std(ddof=1), fmt="o", ms=8, color=COLORS[i], ecolor=INK_MUTED, capsize=2)
         ax.annotate(name, (g["global_f1"].mean(), g["worst_bank_f1"].mean()), textcoords="offset points",
                     xytext=(6, 6), fontsize=8, color=INK)
-    ax.set_xlabel("global test fraud F1", color=MUTED)
-    ax.set_ylabel("worst bank's local F1", color=MUTED)
+    ax.set_xlabel("global test fraud F1", color=INK_MUTED)
+    ax.set_ylabel("worst bank's local F1", color=INK_MUTED)
     ax.set_title("Fairness vs overall performance", loc="left", color=INK, fontsize=11)
     fig.tight_layout()
     fig.savefig(ROOT / "e1_per_bank_f1.png", dpi=150)

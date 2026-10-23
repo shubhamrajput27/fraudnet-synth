@@ -25,20 +25,9 @@ from sdv.metadata import Metadata
 from sdv.single_table import CTGANSynthesizer
 
 from ml.data.load import FEATURE_COLUMNS, LABEL_COLUMN, PROJECT_ROOT, load_config
+from ml.evaluation.plot_style import INK, INK_MUTED, SURFACE, style_axes
 
 REAL_COLOR, SYNTH_COLOR = "#2a78d6", "#1baf7a"  # validated palette slots 1 (blue) and 3 (aqua)
-INK, INK_MUTED, GRID, SURFACE = "#0b0b0b", "#52514e", "#e4e3df", "#fcfcfb"
-
-
-def _style(ax):
-    ax.set_facecolor(SURFACE)
-    for side in ("top", "right"):
-        ax.spines[side].set_visible(False)
-    for side in ("left", "bottom"):
-        ax.spines[side].set_color(GRID)
-    ax.tick_params(colors=INK_MUTED, labelsize=8)
-    ax.grid(color=GRID, linewidth=0.8)
-    ax.set_axisbelow(True)
 
 
 def load_bank_fraud(bank_dir: Path) -> pd.DataFrame:
@@ -96,7 +85,7 @@ def plot_losses(losses: pd.DataFrame, bank: str, out: Path):
     fig, axes = plt.subplots(1, 2, figsize=(11, 3.6), facecolor=SURFACE)
     # Separate panels (not twin axes): the two losses are opponents with different scales.
     for ax, col in zip(axes, ("Generator Loss", "Discriminator Loss")):
-        _style(ax)
+        style_axes(ax, grid="both")
         vals = losses[col].astype(float)
         ax.plot(losses["Epoch"], vals, color=REAL_COLOR, linewidth=0.6, alpha=0.35)
         ax.plot(losses["Epoch"], vals.rolling(50, min_periods=1).mean(), color=REAL_COLOR, linewidth=2)
@@ -112,7 +101,7 @@ def plot_distributions(real: pd.DataFrame, synth: pd.DataFrame, cols, bank: str,
     fig = plt.figure(figsize=(11, 6.2), facecolor=SURFACE)
     for i, c in enumerate(cols):
         ax = fig.add_subplot(2, 3, i + 1)
-        _style(ax)
+        style_axes(ax, grid="both")
         r, s = real[c], synth[c]
         if c == "Amount":  # same log view as Step 1
             r, s = np.log10(r + 1), np.log10(s + 1)
