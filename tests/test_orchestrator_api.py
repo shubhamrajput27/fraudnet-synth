@@ -85,7 +85,23 @@ def test_predict_examples_are_random_rows_with_correct_labels(client):
         assert ex["fraud"]["true_label"] == 1 and ex["genuine"]["true_label"] == 0
         assert 0 <= ex["fraud"]["row"] < ex["fraud"]["rows_in_test_set"]
         fraud_rows.add(ex["fraud"]["row"])
-    assert len(fraud_rows) > 1                             # 95 frauds: 8 identical picks is ~1e-14
+    assert len(fraud_rows) > 1                             # 70 caught frauds: 8 identical picks is ~1e-13
+
+
+def test_predict_examples_match_the_model_verdict(client):
+    """'fraud'/'genuine' come from rows the model gets right, 'missed_fraud' from frauds it misses,
+    so the demo button and the verdict agree (the bug: a random fraud was 'Looks genuine' ~1 in 4)."""
+    from services.orchestrator.settings import MODEL_PATH
+    if not MODEL_PATH.exists():
+        pytest.skip("predict model not prepared")
+    for _ in range(5):
+        ex = client.get("/predict/examples", headers=H(client)).json()
+        for kind, label, flagged in (("fraud", 1, True), ("genuine", 0, False), ("missed_fraud", 1, False)):
+            assert ex[kind]["true_label"] == label and ex[kind]["filtered_by_model"]
+            assert ex[kind]["candidates"] <= ex[kind]["class_total"]
+            p = client.post("/predict", json=ex[kind]["transaction"], headers=H(client)).json()
+            assert p["is_fraud"] is flagged, kind
+    assert ex["fraud"]["candidates"] + ex["missed_fraud"]["candidates"] == ex["fraud"]["class_total"]
 
 
 def test_export_only_to_own_bank_and_audited(client):

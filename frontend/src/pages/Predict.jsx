@@ -6,6 +6,8 @@ import { fmt } from "../components.jsx";
 const V = Array.from({ length: 28 }, (_, i) => `V${i + 1}`);
 const FIELDS = ["Time", ...V, "Amount"];
 const blank = Object.fromEntries(FIELDS.map((f) => [f, ""]));
+const KIND_TEXT = { fraud: "fraud", genuine: "genuine", missed_fraud: "missed fraud" };
+const POOL_TEXT = { fraud: "correctly flags", genuine: "correctly passes", missed_fraud: "misses (false negatives)" };
 
 export default function Predict() {
   const [tx, setTx] = useState(blank);
@@ -22,7 +24,8 @@ export default function Predict() {
       const ex = await api("/predict/examples");     // a NEW random row on every click
       setTx(Object.fromEntries(FIELDS.map((f) => [f, String(ex[kind].transaction[f])])));
       setTruth(ex[kind].true_label);
-      setSource({ kind, row: ex[kind].row, total: ex[kind].rows_in_test_set, candidates: ex[kind].candidates });
+      setSource({ kind, row: ex[kind].row, total: ex[kind].rows_in_test_set, candidates: ex[kind].candidates,
+                  classTotal: ex[kind].class_total, filtered: ex[kind].filtered_by_model });
     } catch (e) { setError(e.message); }
   }
 
@@ -45,15 +48,21 @@ export default function Predict() {
           <div className="row">
             <button type="button" className="btn" onClick={() => loadExample("fraud")}>Load a fraud example</button>
             <button type="button" className="btn" onClick={() => loadExample("genuine")}>Load a genuine example</button>
+            <button type="button" className="btn" onClick={() => loadExample("missed_fraud")}>Load a missed fraud</button>
             <button type="button" className="btn" onClick={() => { setTx(blank); setTruth(null); setSource(null); setResult(null); }}>Clear</button>
           </div>
         </header>
         <p className="note">
           {source
-            ? <>Loaded {source.kind} transaction <strong className="num">#{source.row.toLocaleString("en-IN")}</strong> of
-                the {source.total.toLocaleString("en-IN")}-row global test set ({source.candidates.toLocaleString("en-IN")}{" "}
-                {source.kind} rows to pick from). Click again for a different one.</>
-            : "Each click loads a different random transaction from the global test set (never used for training)."}
+            ? <>Loaded {KIND_TEXT[source.kind]} transaction <strong className="num">#{source.row.toLocaleString("en-IN")}</strong> of
+                the {source.total.toLocaleString("en-IN")}-row global test set
+                {source.filtered
+                  ? <> (one of the {source.candidates.toLocaleString("en-IN")} of {source.classTotal.toLocaleString("en-IN")}{" "}
+                      {source.kind === "genuine" ? "genuine" : "fraud"} rows the model {POOL_TEXT[source.kind]})</>
+                  : <> ({source.candidates.toLocaleString("en-IN")} rows to pick from)</>}.
+                Click again for a different one.</>
+            : <>Each click loads a different random transaction from the global test set (never used for training).
+                The model catches about 3 in 4 test frauds, so "Load a missed fraud" shows one it gets wrong.</>}
         </p>
         <div className="row">
           <div className="field"><label htmlFor="f-Time">Time (seconds, 0–172,792)</label>

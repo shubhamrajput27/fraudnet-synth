@@ -222,22 +222,50 @@ def _global_test() -> pd.DataFrame:
     return pd.read_csv(PROJECT_ROOT / load_config("partition")["processed_dir"] / "global_test.csv")
 
 
+_flags_cache: list[np.ndarray] = []
+
+
+def _global_test_flags() -> np.ndarray | None:
+    """The demo model's verdict (is_fraud) for every global-test row, computed once. None if the
+    predict model isn't prepared yet (not cached, so it is picked up once prepared); the examples
+    then work unfiltered."""
+    if not _flags_cache:
+        from services.orchestrator.predictor import predict
+        try:
+            _flags_cache.append(np.array([p["is_fraud"] for p in
+                                          predict(_global_test()[FEATURE_COLUMNS].to_dict("records"))]))
+        except FileNotFoundError:
+            return None
+    return _flags_cache[0]
+
+
 @app.get("/predict/examples", dependencies=AUTH)
 def predict_examples(random_pick: bool = Query(True, alias="random",
-                                               description="false = always the first fraud / genuine row")):
-    """One fraud and one genuine transaction from the GLOBAL TEST set, which is held by the
-    experimenter (server side), not by any bank, to try /predict with. Disclosed design choice.
-    By default each call picks NEW random rows, so the demo isn't limited to one example; 'row' is
-    the transaction's position in global_test.csv, so any example can be looked up afterwards."""
+                                               description="false = always the first row of each kind")):
+    """Example transactions from the GLOBAL TEST set, which is held by the experimenter (server
+    side), not by any bank, to try /predict with. Disclosed design choice.
+    The model catches ~74% of test frauds (its recall), so a purely random fraud is missed about
+    1 click in 4. To keep the demo readable without hiding that, 'fraud' and 'genuine' are drawn
+    from rows the model classifies CORRECTLY, and 'missed_fraud' from frauds it MISSES; each
+    example reports how many rows it was drawn from out of how many of that class (the page shows
+    both). By default every call picks NEW random rows; 'row' is the position in global_test.csv."""
     gt = _global_test()
+    labels = gt[LABEL_COLUMN].to_numpy()
+    flags = _global_test_flags()
     rng = np.random.default_rng()      # deliberately unseeded: a different example on every click
     out = {}
-    for kind, label in (("fraud", 1), ("genuine", 0)):
-        rows = np.flatnonzero(gt[LABEL_COLUMN].to_numpy() == label)
+    for kind, label, model_correct in (("fraud", 1, True), ("genuine", 0, True), ("missed_fraud", 1, False)):
+        of_class = labels == label
+        pick = of_class if flags is None else of_class & ((flags == bool(label)) == model_correct)
+        rows = np.flatnonzero(pick)
+        if len(rows) == 0:             # e.g. a model that misses no fraud at all
+            out[kind] = None
+            continue
         i = int(rng.choice(rows)) if random_pick else int(rows[0])
         r = gt.iloc[i]
         out[kind] = {"transaction": {c: float(r[c]) for c in FEATURE_COLUMNS}, "true_label": int(r[LABEL_COLUMN]),
-                     "row": i, "rows_in_test_set": int(len(gt)), "candidates": int(len(rows))}
+                     "row": i, "rows_in_test_set": int(len(gt)), "candidates": int(len(rows)),
+                     "class_total": int(of_class.sum()), "filtered_by_model": flags is not None}
     return out
 
 
