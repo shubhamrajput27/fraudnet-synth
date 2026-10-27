@@ -393,3 +393,15 @@ Each entry records the decision, the alternatives considered, the reason and the
 ## D-065: Guarantee check by random re-splits
 - **Date:** 2026-10-12 (Extension E2). **Chosen by:** Shubham.
 - **Decision:** 2,000 random calibration/evaluation splits of each pool's val+test frauds per α and seed; report the average miss rate, its Monte Carlo standard error and the share of splits above α; "within α" = mean ≤ α + 2·SE. Used only to check the method; nothing reported is chosen on test data.
+
+## D-066: Dashboard readability pass (after an honest UI review)
+- **Date:** 2026-10-27 (post Step 14 polish).
+- **Decision:** jargon gets a plain-English tip on hover/focus/tap (`frontend/src/glossary.js`, every threshold quoted from `configs/validation.yaml`); long notes fold under "Why?" links (nothing honest is removed); Results reads top to bottom (headline → charts → table → significance); Predict makes "pick a real test transaction" the main path, adds paste-a-row, and explains D-040 (why Arm 3, not Arm 4) on screen, including that Arm 4 was lower on Bank A's local test; the login page no longer lists account names; run history pages ("Show older runs", up to the gateway's 200 cap).
+- **Alternatives:** switch `/predict` to Arm 4 (rejected: would reverse D-040 without new evidence); a separate glossary page (rejected: the meaning is needed where the word is).
+- **Reason:** a 5-minute viva audience cannot read dense notes or decode PR-AUC/CI/logit unaided.
+
+## D-067: Frontend unit tests with Vitest 5.0.4
+- **Date:** 2026-10-27.
+- **Decision:** pure logic (formatters, paste-a-row parser, live-run reducer, glossary coverage) moved into `format.js` / `runState.js` and tested with Vitest (`npm test`, Node environment, no browser). `frontend/.npmrc` sets `legacy-peer-deps=true` because npm 10.9 crashes ("reading 'edgesOut'") resolving Vitest's optional browser peers; every peer the app needs (react, vite) is already a direct dependency.
+- **Alternatives:** Jest (needs separate JSX/ESM config; Vitest reuses `vite.config.js`); React component tests with jsdom (more dependencies; layout was instead checked with headless-Chrome screenshots at 1280 px and 390 px).
+- **Reason:** cheap regression safety for the logic most likely to break silently.

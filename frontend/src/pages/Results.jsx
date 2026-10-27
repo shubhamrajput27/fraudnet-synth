@@ -3,16 +3,17 @@
 import { useMemo, useState } from "react";
 import { Area, Bar, BarChart, CartesianGrid, ComposedChart, ErrorBar, Line, ReferenceLine, ResponsiveContainer,
          Tooltip, XAxis, YAxis } from "recharts";
-import { ChartTooltip, Legend, Loading, bankName, fmt, int, parsePm, useApi } from "../components.jsx";
+import { ChartTooltip, Legend, Loading, More, PageHead, Term, WrapTick, bankName, fmt, int, parsePm, useApi } from "../components.jsx";
 import { ROLE, axisProps, usePalette } from "../theme.js";
 
 const GROUPS = [
-  { label: "Bank A alone", real: [1, "bank_a"], aug: [2, "bank_a"] },
-  { label: "Bank B alone", real: [1, "bank_b"], aug: [2, "bank_b"] },
-  { label: "Bank C alone", real: [1, "bank_c"], aug: [2, "bank_c"] },
-  { label: "Bank D alone", real: [1, "bank_d"], aug: [2, "bank_d"] },
+  // "\n" = line break under the bar group (WrapTick), so six names fit in a half-width card.
+  { label: "Bank A\nalone", real: [1, "bank_a"], aug: [2, "bank_a"] },
+  { label: "Bank B\nalone", real: [1, "bank_b"], aug: [2, "bank_b"] },
+  { label: "Bank C\nalone", real: [1, "bank_c"], aug: [2, "bank_c"] },
+  { label: "Bank D\nalone", real: [1, "bank_d"], aug: [2, "bank_d"] },
   { label: "Federated", real: [3, "federated"], aug: [4, "federated"] },
-  { label: "Centralized*", real: [5, "centralized"], aug: [6, "centralized"] },
+  { label: "Central-\nized*", real: [5, "centralized"], aug: [6, "centralized"] },
 ];
 const VERDICT = { higher: "▲ higher", lower: "▼ lower", "no clear difference": "● unclear" };
 
@@ -25,14 +26,14 @@ function ArmBars({ rows, metric, title, nSeeds, p }) {
   });
   return (
     <article className="card">
-      <header><h3>{title}</h3><span className="muted">mean ± std, {nSeeds} seeds, global test</span></header>
+      <header><h3>{title}</h3><span className="muted">mean <Term k="sd">± std</Term>, {nSeeds} <Term k="seeds">seeds</Term>, global test</span></header>
       <Legend items={[{ label: "Real data only", color: p.series[ROLE.real], box: true },
                       { label: "Real + validated synthetic", color: p.series[ROLE.augmented], box: true }]} />
       <div style={{ height: 260 }}>
         <ResponsiveContainer>
           <BarChart data={data} margin={{ top: 8, right: 8, bottom: 0, left: -12 }} barGap={2}>
             <CartesianGrid vertical={false} stroke={p.grid} />
-            <XAxis dataKey="group" interval={0} {...axisProps(p)} tick={{ fill: p.muted, fontSize: 11 }} />
+            <XAxis dataKey="group" interval={0} height={36} {...axisProps(p)} tick={<WrapTick fill={p.muted} />} />
             <YAxis domain={[0, 1]} {...axisProps(p)} />
             <Tooltip cursor={{ fill: p.grid, opacity: 0.4 }} content={<ChartTooltip />} />
             <Bar dataKey="real" name="real only" fill={p.series[ROLE.real]} radius={[4, 4, 0, 0]} maxBarSize={30}>
@@ -68,7 +69,7 @@ function Convergence({ curves, centralPrAuc, p }) {
   const span = data.flatMap((d) => [...d.arm3band, ...d.arm4band]);
   return (
     <article className="card">
-      <header><h3>Federated training converges</h3><span className="muted">global PR-AUC per round, mean ± std over {nSeeds} seeds</span></header>
+      <header><h3>Federated training converges</h3><span className="muted">global <Term k="pr_auc">PR-AUC</Term> per round, mean ± std over {nSeeds} seeds</span></header>
       <Legend items={[{ label: "Arm 3 · federated, real", color: p.series[ROLE.real] },
                       { label: "Arm 4 · federated, augmented", color: p.series[ROLE.augmented] },
                       { label: "centralized real (mean)", color: p.muted }]} />
@@ -87,8 +88,8 @@ function Convergence({ curves, centralPrAuc, p }) {
           </ComposedChart>
         </ResponsiveContainer>
       </div>
-      {span.length > 0 && <p className="note">The y-axis is zoomed (the curves span {fmt(Math.min(...span), 2)}–{fmt(Math.max(...span), 2)}),
-        so small differences look bigger than they are.</p>}
+      {span.length > 0 && <p className="note">Zoomed y-axis ({fmt(Math.min(...span), 2)}–{fmt(Math.max(...span), 2)}):
+        small gaps look bigger than they are.</p>}
     </article>
   );
 }
@@ -102,7 +103,7 @@ function Headline({ rows, paired }) {
     { k: "Federated, real only", sub: "Arm 3", v: f1(3, "federated") },
     { k: "Each bank alone", sub: "Arm 1 · range over Banks A–D",
       v: alone.length ? `${fmt(Math.min(...alone), 3)} – ${fmt(Math.max(...alone), 3)}` : null },
-    { k: "Centralized (upper bound)", sub: "Arm 5 · pools all data, not private", v: f1(5, "centralized") },
+    { k: "Centralized (upper bound)", term: "centralized", sub: "Arm 5 · pools all data, not private", v: f1(5, "centralized") },
   ];
   // The tiles alone invite "Arm 4 > Arm 3"; show the paired test's verdict right beside them.
   const aug = paired.find((c) => c.comparison === "Arm 4 - Arm 3" && c.eval_set === "global test" && c.metric === "f1");
@@ -111,16 +112,16 @@ function Headline({ rows, paired }) {
     <section className="grid cols-4">
       {tiles.map((t) => (
         <article key={t.k} className={`card kpi${t.main ? " main" : ""}`}>
-          <div className="k">{t.k}</div>
+          <div className="k">{t.term ? <Term k={t.term}>{t.k}</Term> : t.k}</div>
           <div className="v num">{t.v ? String(t.v).split("±")[0].trim() : "—"}
             {String(t.v ?? "").includes("±") && <small> ± {String(t.v).split("±")[1].trim()}</small>}</div>
-          <div className="muted">fraud F1 · {t.sub}</div>
+          <div className="muted">fraud <Term k="f1">F1</Term> · {t.sub}</div>
         </article>
       ))}
     </section>
-    {aug && <p className="callout">Augmentation inside federation (Arm 4 − Arm 3, global test F1): {aug.mean_diff >= 0 ? "+" : ""}
-      {aug.mean_diff.toFixed(4)}, 95% CI [{aug.ci_low.toFixed(3)}, {aug.ci_high.toFixed(3)}] over {aug.n} seeds:{" "}
-      <strong>{aug.verdict === "no clear difference" ? "no clear difference" : `clearly ${aug.verdict}`}</strong>.</p>}
+    {aug && <p className="callout">Does synthetic data help inside federation? <strong>{aug.verdict === "no clear difference"
+      ? "No clear difference" : `Arm 4 is clearly ${aug.verdict}`}</strong>: Arm 4 − Arm 3 F1 = {aug.mean_diff >= 0 ? "+" : ""}
+      {aug.mean_diff.toFixed(4)}, <Term k="ci">95% CI</Term> [{aug.ci_low.toFixed(3)}, {aug.ci_high.toFixed(3)}] over {aug.n} seeds.</p>}
     </>
   );
 }
@@ -139,8 +140,16 @@ export default function Results() {
   const nShown = (res.data?.paired_comparisons ?? []).filter((c) => ["f1", "pr_auc"].includes(c.metric)).length;
 
   return (
-    <Loading state={res}>
+    <>
+    <PageHead title="Six-arm results"
+              lead="Fraud F1 on the same global test set for every arm. Read top to bottom: headline, charts, full table, then whether the gaps are real." />
+    <Loading state={res} height={320}>
       <Headline rows={rows} paired={res.data?.paired_comparisons ?? []} />
+      <section className="grid cols-2">
+        <ArmBars rows={rows} metric="f1" title="Fraud F1 by arm" nSeeds={nSeeds} p={p} />
+        <ArmBars rows={rows} metric="pr_auc" title="PR-AUC by arm" nSeeds={nSeeds} p={p} />
+      </section>
+
       <section className="card">
         <header><h2>Six-arm comparison</h2><span className="muted">seeds {res.data?.seeds?.join(", ")} ·{" "}
           {int(res.data?.test_frauds)} frauds among {int(res.data?.test_rows)} global test transactions</span></header>
@@ -149,9 +158,9 @@ export default function Results() {
             <thead>
               <tr>
                 <th>Arm</th><th>Model</th>
-                <th className="num headline">Precision</th><th className="num headline">Recall</th>
-                <th className="num headline">F1 (fraud)</th><th className="num headline">PR-AUC</th>
-                <th className="num secondary">ROC-AUC</th><th className="num secondary">Accuracy</th>
+                <th className="num headline"><Term k="precision">Precision</Term></th><th className="num headline"><Term k="recall">Recall</Term></th>
+                <th className="num headline"><Term k="f1">F1 (fraud)</Term></th><th className="num headline"><Term k="pr_auc">PR-AUC</Term></th>
+                <th className="num secondary"><Term k="roc_auc">ROC-AUC</Term></th><th className="num secondary"><Term k="accuracy">Accuracy</Term></th>
               </tr>
             </thead>
             <tbody>
@@ -166,22 +175,17 @@ export default function Results() {
             </tbody>
           </table>
         </div>
-        <p className="note">Accuracy is at least {fmt(minAcc === null ? null : minAcc * 100, 2)}% for every model because{" "}
-          {fmt(genuinePct, 2)}% of test transactions are genuine, so it is shown only as a secondary column. *Centralized pools all banks' data: an upper bound that would be illegal in practice.</p>
+        <p className="note">Accuracy is greyed out: it is at least {fmt(minAcc === null ? null : minAcc * 100, 2)}% for every model,
+          because {fmt(genuinePct, 2)}% of test transactions are genuine. *Centralized pools all banks' data: an upper bound, not private.</p>
       </section>
 
       <section className="grid cols-2">
-        <ArmBars rows={rows} metric="f1" title="Fraud F1 by arm" nSeeds={nSeeds} p={p} />
-        <ArmBars rows={rows} metric="pr_auc" title="PR-AUC by arm" nSeeds={nSeeds} p={p} />
-      </section>
-
-      <section className="grid cols-2">
-        <Loading state={conv}>
+        <Loading state={conv} height={300}>
           <Convergence curves={conv.data} centralPrAuc={central ? parsePm(central.pr_auc).mean : null} p={p} />
         </Loading>
         <article className="card">
           <header>
-            <h3>Is the difference real? (paired, 95% CI)</h3>
+            <h3>Is the difference real? <span className="muted">(paired, <Term k="ci">95% CI</Term>)</span></h3>
             <select value={family} onChange={(e) => setFamily(e.target.value)} aria-label="comparison family">
               <option value="federation">Federation vs alone</option>
               <option value="augmentation">Augmentation effect</option>
@@ -190,8 +194,8 @@ export default function Results() {
           </header>
           <div className="table-wrap">
             <table className="compact">
-              <thead><tr><th>Comparison</th><th>Bank</th><th>Test set</th><th>Metric</th><th className="num">Δ mean</th>
-                <th className="num">95% CI</th><th className="num">Seeds up</th><th>Verdict</th></tr></thead>
+              <thead><tr><th>Comparison</th><th>Bank</th><th>Test set</th><th>Metric</th><th className="num"><Term k="delta">Δ mean</Term></th>
+                <th className="num"><Term k="ci">95% CI</Term></th><th className="num"><Term k="seeds_up">Seeds up</Term></th><th>Verdict</th></tr></thead>
               <tbody>
                 {(res.data?.paired_comparisons ?? []).filter((c) => c.family === family && ["f1", "pr_auc"].includes(c.metric))
                   .map((c, i) => (
@@ -207,10 +211,12 @@ export default function Results() {
               </tbody>
             </table>
           </div>
-          <p className="note">"Unclear" = the 95% CI includes 0. A difference counts only if its 95% CI excludes 0. With {nShown} comparisons
-            (all three families), about {Math.round(nShown * 0.05)} "clear" results are expected by chance.</p>
+          <p className="note">"Unclear" = the 95% CI includes 0, so neither side is shown to be better.</p>
+          <More label="How many “clear” results could be luck?">With {nShown} comparisons across all three families, about{" "}
+            {Math.round(nShown * 0.05)} would look "clear" by chance alone at 95% confidence, so one isolated ▲ or ▼ is weak evidence.</More>
         </article>
       </section>
     </Loading>
+    </>
   );
 }

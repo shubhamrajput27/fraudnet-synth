@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getUser, logout, onAuthChange } from "./api.js";
+import Logo from "./Logo.jsx";
 import Login from "./pages/Login.jsx";
 import Overview from "./pages/Overview.jsx";
 import Results from "./pages/Results.jsx";
@@ -40,7 +41,8 @@ export default function App() {
   return (
     <>
       <nav className="topbar" aria-label="main">
-        <div className="brand"><strong>FraudNet-Synth</strong><small>federated fraud detection · synthetic augmentation</small></div>
+        <div className="brand"><Logo />
+          <div><strong>FraudNet-Synth</strong><small>federated fraud detection · synthetic augmentation</small></div></div>
         <div className="tabs">
           {pages.map((p) => (
             <button key={p.id} className="tab" aria-current={p.id === page ? "page" : undefined} onClick={() => setPage(p.id)}>{p.label}</button>

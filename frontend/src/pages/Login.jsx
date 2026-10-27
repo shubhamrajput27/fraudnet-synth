@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { login } from "../api.js";
+import Logo from "../Logo.jsx";
 
 export default function Login() {
   const [username, setUsername] = useState("");
@@ -17,7 +18,8 @@ export default function Login() {
   return (
     <div className="login">
       <form className="card" onSubmit={submit}>
-        <div>
+        <div className="login-brand">
+          <Logo size={44} />
           <h1>FraudNet-Synth</h1>
           <p className="muted">Privacy-preserving fraud detection with federated learning and synthetic data</p>
         </div>
@@ -31,7 +33,8 @@ export default function Login() {
         </div>
         {error && <p className="error" role="alert">{error}</p>}
         <button className="btn primary" disabled={busy}>{busy ? "Signing in…" : "Sign in"}</button>
-        <p className="note">Accounts: admin · bank_a … bank_d (bank operators) · guide (viewer).</p>
+        {/* Account names are not listed here: each person gets only their own (docs/steps/STEP_11). */}
+        <p className="note">Use the account the project admin gave you.</p>
       </form>
     </div>
   );

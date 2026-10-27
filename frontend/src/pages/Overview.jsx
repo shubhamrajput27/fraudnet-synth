@@ -1,6 +1,7 @@
 // Overview: the four banks (mode indicators) and the synthetic data quality panel.
 import { Bar, BarChart, CartesianGrid, Cell, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
-import { ChartTooltip, Legend, Loading, ModeBadge, bankName, fmt, int, pct, useApi } from "../components.jsx";
+import { ChartTooltip, Legend, Loading, ModeBadge, More, PageHead, Term, bankName, fmt, int, pct, useApi } from "../components.jsx";
+import { REASON_TERM } from "../glossary.js";
 import { axisProps, usePalette } from "../theme.js";
 
 const REASONS = ["Out of range / schema", "Edge-clamped (3+ values)", "Too close to a real row",
@@ -12,7 +13,7 @@ function FlowDiagram({ banks }) {
   return (
     <figure className="flow" aria-label="One federated training round">
       <div className="flow-server">
-        <strong>Server · FedAvg</strong>
+        <strong>Server · <Term k="fedavg">FedAvg</Term></strong>
         <small>averages the banks' weights, weighted by data size · never sees a transaction</small>
       </div>
       <div className="flow-links" aria-hidden="true">
@@ -55,17 +56,18 @@ export default function Overview() {
 
   return (
     <>
-      <section className="card">
-        <header><h2>Four banks, one shared model</h2><span className="muted">no bank's data ever leaves it</span></header>
-        <p className="ink2">
-          Each bank holds a private slice of the ULB credit-card dataset. Data-rich banks (A, B) make extra fraud
-          examples with <strong>CTGAN</strong>; data-poor banks (C, D) with an <strong>LLM</strong> that sees only summary statistics.
-          Every synthetic row passes the same validation gate before training.
-        </p>
+      <PageHead title="Four banks, one shared model"
+                lead="The banks train one fraud detector together. Only model weights travel; no transaction ever leaves its bank." />
+      <section className="card hero">
         <FlowDiagram banks={banks.data} />
+        <More label="Where do the synthetic frauds come from?">
+          Fraud is rare, so each bank makes extra fraud examples. Data-rich banks (A, B) train <strong>CTGAN</strong> on their
+          own fraud rows; data-poor banks (C, D) ask an <strong>LLM</strong> that sees only summary statistics, never a real row.
+          Every synthetic row must pass the same validation gate before it is used for training.
+        </More>
       </section>
 
-      <Loading state={banks}>
+      <Loading state={banks} height={150}>
         <div className="grid cols-4">
           {(banks.data ?? []).map((b) => (
             <article key={b.bank} className="card">
@@ -77,7 +79,8 @@ export default function Overview() {
                 <div className="stat"><div className="v num">{int(b.syntheticValidated)}</div>
                   <div className="k">synthetic rows passed (of {int(b.syntheticCandidates)})</div></div>
               </div>
-              <p className="note">Gate pass rate <strong>{pct(b.passRatePct)}</strong> · fidelity <strong className="num">{fmt(b.fidelityValidated, 3)}</strong> (SDMetrics, 0–1)</p>
+              <p className="note"><Term k="pass_rate">Pass rate</Term> <strong>{pct(b.passRatePct)}</strong> ·{" "}
+                <Term k="fidelity">fidelity</Term> <strong className="num">{fmt(b.fidelityValidated, 3)}</strong> <span className="muted">(0–1)</span></p>
             </article>
           ))}
         </div>
@@ -85,10 +88,10 @@ export default function Overview() {
 
       <section className="grid cols-2">
         <article className="card">
-          <header><h2>Synthetic quality: gate pass rate</h2><span className="muted">% of candidate rows admitted</span></header>
+          <header><h2>Synthetic quality: <Term k="pass_rate">gate pass rate</Term></h2><span className="muted">% of candidate rows admitted</span></header>
           <Legend items={[{ label: "Augment mode (CTGAN)", color: p.series[0], box: true },
                           { label: "Schema mode (LLM)", color: p.series[2], box: true }]} />
-          <Loading state={banks}>
+          <Loading state={banks} height={240}>
             <div style={{ height: 240 }}>
               <ResponsiveContainer>
                 <BarChart data={banks.data ?? []} margin={{ top: 8, right: 8, bottom: 0, left: -12 }}>
@@ -108,7 +111,7 @@ export default function Overview() {
 
         <article className="card">
           <header><h2>Why rows were rejected</h2><span className="muted">primary reason, counts</span></header>
-          <Loading state={validation}>
+          <Loading state={validation} height={240}>
             <div className="table-wrap">
               <table className="compact">
                 <thead>
@@ -116,9 +119,9 @@ export default function Overview() {
                 </thead>
                 <tbody>
                   {REASONS.map((r) => (
-                    <tr key={r}><td className="wrap">{r}</td>{(validation.data ?? []).map((v) => <td key={v.bank} className="num">{v[r]}</td>)}</tr>
+                    <tr key={r}><td className="wrap"><Term k={REASON_TERM[r]}>{r}</Term></td>{(validation.data ?? []).map((v) => <td key={v.bank} className="num">{v[r]}</td>)}</tr>
                   ))}
-                  <tr><td className="wrap"><strong>Fidelity, validated</strong> (all candidates)</td>
+                  <tr><td className="wrap"><strong><Term k="fidelity">Fidelity</Term>, kept rows</strong> <span className="muted">(all)</span></td>
                     {(validation.data ?? []).map((v) => (
                       <td key={v.bank} className="num"><strong>{fmt(v.fidelity_validated, 3)}</strong> <span className="muted">({fmt(v.fidelity_all, 3)})</span></td>))}
                   </tr>
@@ -126,8 +129,9 @@ export default function Overview() {
               </table>
             </div>
           </Loading>
-          <p className="note">No synthetic row was a near-copy of a real one (privacy check). The LLM rows that pass are
-            still clumped and use patterned digits (Step 5–6), which is reported, not hidden.</p>
+          <p className="note">No kept synthetic row is a near-copy of a real one (privacy check).</p>
+          <More label="Known weakness">The LLM rows that pass are still clumped and use patterned digits (Steps 5–6).
+            This is reported, not hidden.</More>
         </article>
       </section>
     </>

@@ -1,7 +1,7 @@
 // Dataset export (bank operators, own bank only, D-045) and the audit log (admin).
 import { useState } from "react";
 import { download, getUser } from "../api.js";
-import { Loading, bankName, int, useApi } from "../components.jsx";
+import { Loading, PageHead, bankName, int, useApi } from "../components.jsx";
 
 export function ExportPage() {
   const user = getUser();
@@ -18,6 +18,8 @@ export function ExportPage() {
   }
 
   return (
+    <>
+    <PageHead title="Export" lead="Download your own bank's validated synthetic fraud rows." />
     <article className="card">
       <header><h2>Export synthetic data</h2></header>
       <div className="callout">Only a bank's <strong>own operator</strong> may download that bank's <strong>validated synthetic</strong>{" "}
@@ -33,12 +35,15 @@ export function ExportPage() {
       )}
       {msg && <p className={msg.startsWith("Error") ? "error" : "note"}>{msg}</p>}
     </article>
+    </>
   );
 }
 
 export function AuditPage() {
   const audit = useApi("/audit?limit=200");
   return (
+    <>
+    <PageHead title="Audit log" lead="Logins, started and cancelled jobs, exports and refused requests, allowed or not, newest first." />
     <article className="card">
       <header><h2>Audit log</h2><button className="btn" onClick={audit.reload}>Refresh</button></header>
       <Loading state={audit}>
@@ -59,5 +64,6 @@ export function AuditPage() {
         </div>
       </Loading>
     </article>
+    </>
   );
 }

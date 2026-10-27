@@ -2,12 +2,13 @@
 import { useEffect, useMemo, useState } from "react";
 import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { api, getUser } from "../api.js";
-import { ChartTooltip, Legend, StatusBadge, bankName, fmt, int } from "../components.jsx";
+import { ChartTooltip, Legend, PageHead, StatusBadge, Term, bankName, fmt, int } from "../components.jsx";
 import { useRunStream } from "../live.js";
 import { ROLE, axisProps, usePalette } from "../theme.js";
 
 const ARMS = { 1: "Isolated, real", 2: "Isolated, augmented", 3: "Federated, real",
                4: "Federated, augmented", 5: "Centralized, real", 6: "Centralized, augmented" };
+const PAGE = 30;          // runs per "page" of history; the gateway caps a request at 200
 const ARM_KEY = { arm3_federated_real: "Arm 3 · federated, real", arm4_federated_aug: "Arm 4 · federated, augmented" };
 
 function StartPanel({ onStarted }) {
@@ -138,7 +139,7 @@ function RunDetail({ jobId, onEnded }) {
         </header>
         {s.error && <p className="error">{s.error}</p>}
         {lastRound && <p className="ink2">Latest: round <strong>{lastRound.round}</strong> of {ARM_KEY[lastRound.arm] ?? lastRound.arm},
-          seed {lastRound.seed} → global PR-AUC <strong className="num">{fmt(lastRound.globalTestPrAuc)}</strong></p>}
+          seed {lastRound.seed} → global <Term k="pr_auc">PR-AUC</Term> <strong className="num">{fmt(lastRound.globalTestPrAuc)}</strong></p>}
         {s.rounds.length > 0 ? <RoundsChart rounds={s.rounds} p={p} />
           : <p className="muted">No federated rounds yet (non-federated arms report when each model finishes).</p>}
         {s.messages.length > 0 && <div className="log" aria-label="progress messages">{s.messages.map((m, i) => <div key={i}>{m}</div>)}</div>}
@@ -149,8 +150,9 @@ function RunDetail({ jobId, onEnded }) {
           <header><h3>Finished models (global test)</h3><span className="muted">{s.models.length} so far</span></header>
           <div className="table-wrap">
             <table>
-              <thead><tr><th>Seed</th><th>Arm</th><th>Model</th><th className="num headline">Precision</th>
-                <th className="num headline">Recall</th><th className="num headline">F1</th><th className="num headline">PR-AUC</th></tr></thead>
+              <thead><tr><th>Seed</th><th>Arm</th><th>Model</th><th className="num headline"><Term k="precision">Precision</Term></th>
+                <th className="num headline"><Term k="recall">Recall</Term></th><th className="num headline"><Term k="f1">F1</Term></th>
+                <th className="num headline"><Term k="pr_auc">PR-AUC</Term></th></tr></thead>
               <tbody>
                 {[...s.models].sort((a, b) => a.seed - b.seed || a.arm.localeCompare(b.arm) || a.model.localeCompare(b.model)).map((m) => (
                   <tr key={`${m.seed}-${m.arm}-${m.model}`}>
@@ -177,37 +179,40 @@ function RunDetail({ jobId, onEnded }) {
 
 export default function Runs() {
   const isAdmin = getUser()?.role === "admin";
-  const [runs, setRuns] = useState([]);
+  const [runs, setRuns] = useState(null);     // null = first load not finished yet
+  const [limit, setLimit] = useState(PAGE);
   const [selected, setSelected] = useState(null);
   const [error, setError] = useState(null);
 
   const [refresh, setRefresh] = useState(0);
   const reload = () => setRefresh((r) => r + 1);
   // Poll only while a run is queued or running; an idle history list doesn't change on its own.
-  const active = runs.some((r) => r.status === "queued" || r.status === "running");
+  const active = (runs ?? []).some((r) => r.status === "queued" || r.status === "running");
   useEffect(() => {
     let alive = true;
-    const load = () => api("/runs?limit=30").then((r) => { if (alive) { setRuns(r); setError(null); } })
+    const load = () => api(`/runs?limit=${limit}`).then((r) => { if (alive) { setRuns(r); setError(null); } })
       .catch((e) => alive && setError(e.message));
     load();
     const t = active ? setInterval(load, 4000) : null;
     return () => { alive = false; clearInterval(t); };
-  }, [refresh, active]);
-  useEffect(() => { if (!selected && runs.length) setSelected(runs[0].jobId); }, [runs, selected]);
+  }, [refresh, active, limit]);
+  useEffect(() => { if (!selected && runs?.length) setSelected(runs[0].jobId); }, [runs, selected]);
 
   return (
     <>
+      <PageHead title="Runs" lead="Every training run, stored by the gateway. Click a run to replay it, or watch a running one live." />
       {isAdmin && <StartPanel onStarted={(id) => { setSelected(id); reload(); }} />}
       <article className="card">
         <header><h2>Run history</h2>
           <div className="row"><span className="muted">stored in MongoDB by the gateway</span>
             <button className="btn" onClick={reload}>Refresh</button></div></header>
         {error && <p className="error">{error}</p>}
+        {runs === null && !error ? <div className="skeleton" style={{ height: 160 }} role="status" aria-label="Loading" /> : (
         <div className="table-wrap">
           <table>
             <thead><tr><th className="num">Started</th><th>Type</th><th>Arms · seeds</th><th>By</th><th>Status</th><th className="num">Rounds</th></tr></thead>
             <tbody>
-              {runs.map((r) => (
+              {(runs ?? []).map((r) => (
                 <tr key={r.jobId} className={`clickable ${r.jobId === selected ? "selected" : ""}`} onClick={() => setSelected(r.jobId)}>
                   <td className="num">{new Date(r.createdAt).toLocaleString()}</td>
                   <td>{r.type}</td>
@@ -217,10 +222,15 @@ export default function Runs() {
                   <td className="num">{r.roundsReceived}</td>
                 </tr>
               ))}
-              {!runs.length && <tr><td colSpan={6} className="muted">No runs yet{isAdmin ? ": start one above." : "."}</td></tr>}
+              {runs?.length === 0 && <tr><td colSpan={6} className="muted">No runs yet{isAdmin ? ": start one above." : "."}</td></tr>}
             </tbody>
           </table>
-        </div>
+        </div>)}
+        {/* A full page back means there may be older runs. */}
+        {runs?.length === limit && limit < 200 && (
+          <div className="row"><button className="btn" onClick={() => setLimit((l) => Math.min(l + PAGE, 200))}>Show older runs</button>
+            <span className="muted">showing the latest {runs.length}</span></div>
+        )}
       </article>
       {selected && <RunDetail jobId={selected} key={selected} onEnded={reload} />}
     </>
