@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import { Area, Bar, BarChart, CartesianGrid, ComposedChart, ErrorBar, Line, ReferenceLine, ResponsiveContainer,
          Tooltip, XAxis, YAxis } from "recharts";
-import { ChartTooltip, Legend, Loading, bankName, parsePm, useApi } from "../components.jsx";
+import { ChartTooltip, Legend, Loading, bankName, fmt, int, parsePm, useApi } from "../components.jsx";
 import { ROLE, axisProps, usePalette } from "../theme.js";
 
 const GROUPS = [
@@ -16,7 +16,7 @@ const GROUPS = [
 ];
 const VERDICT = { higher: "▲ higher", lower: "▼ lower", "no clear difference": "● unclear" };
 
-function ArmBars({ rows, metric, title, p }) {
+function ArmBars({ rows, metric, title, nSeeds, p }) {
   const find = ([arm, model]) => rows.find((r) => r.arm === arm && r.model === model);
   const data = GROUPS.map((g) => {
     const r = parsePm(find(g.real)?.[metric]);
@@ -25,7 +25,7 @@ function ArmBars({ rows, metric, title, p }) {
   });
   return (
     <article className="card">
-      <header><h3>{title}</h3><span className="muted">mean ± std, 5 seeds, global test</span></header>
+      <header><h3>{title}</h3><span className="muted">mean ± std, {nSeeds} seeds, global test</span></header>
       <Legend items={[{ label: "Real data only", color: p.series[ROLE.real], box: true },
                       { label: "Real + validated synthetic", color: p.series[ROLE.augmented], box: true }]} />
       <div style={{ height: 260 }}>
@@ -64,9 +64,11 @@ function Convergence({ curves, centralPrAuc, p }) {
       return { round: i + 1, arm3: m3, arm3band: [m3 - s3, m3 + s3], arm4: m4, arm4band: [m4 - s4, m4 + s4] };
     });
   }, [curves]);
+  const nSeeds = curves ? Object.keys(curves.arm3_federated_real).length : 0;
+  const span = data.flatMap((d) => [...d.arm3band, ...d.arm4band]);
   return (
     <article className="card">
-      <header><h3>Federated training converges</h3><span className="muted">global PR-AUC per round, mean ± std over 5 seeds</span></header>
+      <header><h3>Federated training converges</h3><span className="muted">global PR-AUC per round, mean ± std over {nSeeds} seeds</span></header>
       <Legend items={[{ label: "Arm 3 · federated, real", color: p.series[ROLE.real] },
                       { label: "Arm 4 · federated, augmented", color: p.series[ROLE.augmented] },
                       { label: "centralized real (mean)", color: p.muted }]} />
@@ -85,8 +87,41 @@ function Convergence({ curves, centralPrAuc, p }) {
           </ComposedChart>
         </ResponsiveContainer>
       </div>
-      <p className="note">The y-axis is zoomed (≈0.67–0.73), so small differences look bigger than they are.</p>
+      {span.length > 0 && <p className="note">The y-axis is zoomed (the curves span {fmt(Math.min(...span), 2)}–{fmt(Math.max(...span), 2)}),
+        so small differences look bigger than they are.</p>}
     </article>
+  );
+}
+
+// The headline figures, read from the results table: fraud F1 (mean ± std) for the main settings.
+function Headline({ rows, paired }) {
+  const f1 = (arm, model) => rows.find((r) => r.arm === arm && r.model === model)?.f1;
+  const alone = rows.filter((r) => r.arm === 1).map((r) => parsePm(r.f1).mean);
+  const tiles = [
+    { k: "Federated + synthetic", sub: "Arm 4 · FraudNet-Synth", v: f1(4, "federated"), main: true },
+    { k: "Federated, real only", sub: "Arm 3", v: f1(3, "federated") },
+    { k: "Each bank alone", sub: "Arm 1 · range over Banks A–D",
+      v: alone.length ? `${fmt(Math.min(...alone), 3)} – ${fmt(Math.max(...alone), 3)}` : null },
+    { k: "Centralized (upper bound)", sub: "Arm 5 · pools all data, not private", v: f1(5, "centralized") },
+  ];
+  // The tiles alone invite "Arm 4 > Arm 3"; show the paired test's verdict right beside them.
+  const aug = paired.find((c) => c.comparison === "Arm 4 - Arm 3" && c.eval_set === "global test" && c.metric === "f1");
+  return (
+    <>
+    <section className="grid cols-4">
+      {tiles.map((t) => (
+        <article key={t.k} className={`card kpi${t.main ? " main" : ""}`}>
+          <div className="k">{t.k}</div>
+          <div className="v num">{t.v ? String(t.v).split("±")[0].trim() : "—"}
+            {String(t.v ?? "").includes("±") && <small> ± {String(t.v).split("±")[1].trim()}</small>}</div>
+          <div className="muted">fraud F1 · {t.sub}</div>
+        </article>
+      ))}
+    </section>
+    {aug && <p className="callout">Augmentation inside federation (Arm 4 − Arm 3, global test F1): {aug.mean_diff >= 0 ? "+" : ""}
+      {aug.mean_diff.toFixed(4)}, 95% CI [{aug.ci_low.toFixed(3)}, {aug.ci_high.toFixed(3)}] over {aug.n} seeds:{" "}
+      <strong>{aug.verdict === "no clear difference" ? "no clear difference" : `clearly ${aug.verdict}`}</strong>.</p>}
+    </>
   );
 }
 
@@ -97,11 +132,18 @@ export default function Results() {
   const [family, setFamily] = useState("federation");
   const rows = res.data?.global_table ?? [];
   const central = rows.find((r) => r.arm === 5);
+  const nSeeds = res.data?.seeds?.length ?? 0;
+  const minAcc = rows.length ? Math.min(...rows.map((r) => parsePm(r.accuracy).mean)) : null;
+  const genuinePct = res.data?.test_rows ? 100 * (1 - res.data.test_frauds / res.data.test_rows) : null;
+  // How many F1/PR-AUC comparisons the table can show in total, and how many "clear" ones chance alone would give.
+  const nShown = (res.data?.paired_comparisons ?? []).filter((c) => ["f1", "pr_auc"].includes(c.metric)).length;
 
   return (
     <Loading state={res}>
+      <Headline rows={rows} paired={res.data?.paired_comparisons ?? []} />
       <section className="card">
-        <header><h2>Six-arm comparison</h2><span className="muted">seeds {res.data?.seeds?.join(", ")} · 95 frauds in the global test set</span></header>
+        <header><h2>Six-arm comparison</h2><span className="muted">seeds {res.data?.seeds?.join(", ")} ·{" "}
+          {int(res.data?.test_frauds)} frauds among {int(res.data?.test_rows)} global test transactions</span></header>
         <div className="table-wrap">
           <table>
             <thead>
@@ -114,8 +156,8 @@ export default function Results() {
             </thead>
             <tbody>
               {rows.map((r) => (
-                <tr key={`${r.arm}-${r.model}`}>
-                  <td>{r.arm} · {r.setting}</td>
+                <tr key={`${r.arm}-${r.model}`} className={r.arm === 4 ? "highlight" : undefined}>
+                  <td>{r.arm} · {r.setting}{r.arm === 4 && <span className="badge tag">FraudNet-Synth</span>}</td>
                   <td>{r.model.startsWith("bank_") ? bankName(r.model) : r.model}</td>
                   {["precision", "recall", "f1", "pr_auc"].map((k) => <td key={k} className="num headline">{r[k]}</td>)}
                   {["roc_auc", "accuracy"].map((k) => <td key={k} className="num secondary">{r[k]}</td>)}
@@ -124,13 +166,13 @@ export default function Results() {
             </tbody>
           </table>
         </div>
-        <p className="note">Accuracy is ≈99.9% for every model because 99.83% of transactions are genuine, so it is shown
-          only as a secondary column. *Centralized pools all banks' data: an upper bound that would be illegal in practice.</p>
+        <p className="note">Accuracy is at least {fmt(minAcc === null ? null : minAcc * 100, 2)}% for every model because{" "}
+          {fmt(genuinePct, 2)}% of test transactions are genuine, so it is shown only as a secondary column. *Centralized pools all banks' data: an upper bound that would be illegal in practice.</p>
       </section>
 
       <section className="grid cols-2">
-        <ArmBars rows={rows} metric="f1" title="Fraud F1 by arm" p={p} />
-        <ArmBars rows={rows} metric="pr_auc" title="PR-AUC by arm" p={p} />
+        <ArmBars rows={rows} metric="f1" title="Fraud F1 by arm" nSeeds={nSeeds} p={p} />
+        <ArmBars rows={rows} metric="pr_auc" title="PR-AUC by arm" nSeeds={nSeeds} p={p} />
       </section>
 
       <section className="grid cols-2">
@@ -165,8 +207,8 @@ export default function Results() {
               </tbody>
             </table>
           </div>
-          <p className="note">"Unclear" = the 95% CI includes 0. A difference counts only if its 95% CI excludes 0. With 56 comparisons, about 3 "clear" results
-            are expected by chance.</p>
+          <p className="note">"Unclear" = the 95% CI includes 0. A difference counts only if its 95% CI excludes 0. With {nShown} comparisons
+            (all three families), about {Math.round(nShown * 0.05)} "clear" results are expected by chance.</p>
         </article>
       </section>
     </Loading>

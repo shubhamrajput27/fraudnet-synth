@@ -26,7 +26,8 @@ def load_predictor():
     meta = json.loads(meta_path.read_text(encoding="utf-8")) if meta_path.exists() else {}
     info = {"arm": ckpt["arm"], "seed": ckpt["seed"], "num_rounds": ckpt["num_rounds"],
             "global_test_f1": meta.get("global_test", {}).get("f1"),
-            "global_test_pr_auc": meta.get("global_test", {}).get("pr_auc")}
+            "global_test_pr_auc": meta.get("global_test", {}).get("pr_auc"),
+            "global_test_recall": meta.get("global_test", {}).get("recall")}
     return model, float(ckpt["threshold_logit"]), info
 
 

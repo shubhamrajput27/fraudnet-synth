@@ -33,7 +33,8 @@ export function Legend({ items }) {
   return (
     <div className="legend">
       {items.map((it) => (
-        <span key={it.label}><i className={it.box ? "box" : ""} style={{ background: it.color }} />{it.label}</span>
+        <span key={it.label}><i className={it.box ? "box" : ""} style={{ background: it.dash
+          ? `repeating-linear-gradient(90deg, ${it.color} 0 5px, transparent 5px 8px)` : it.color }} />{it.label}</span>
       ))}
     </div>
   );

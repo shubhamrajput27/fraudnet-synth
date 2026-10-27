@@ -67,11 +67,17 @@ function RoundsChart({ rounds, p }) {
     }
     return [...byRound.values()].sort((a, b) => a.round - b.round);
   }, [rounds]);
-  const color = (k) => p.series[k.startsWith("arm4") ? ROLE.augmented : ROLE.real];
+  // With one arm, colour tells the seeds apart; with several seeds per arm, colour = seed and the
+  // line style = arm (solid: real only, dashed: augmented), so every line stays distinguishable.
+  const seeds = [...new Set(keys.map((k) => k.split("|")[1]))];
+  const color = (k) => (seeds.length > 1
+    ? p.series[seeds.indexOf(k.split("|")[1]) % p.series.length]
+    : p.series[k.startsWith("arm4") ? ROLE.augmented : ROLE.real]);
+  const dashed = (k) => k.startsWith("arm4");
   const label = (k) => `${ARM_KEY[k.split("|")[0]] ?? k.split("|")[0]} · seed ${k.split("|")[1]}`;
   return (
     <>
-      <Legend items={keys.map((k) => ({ label: label(k), color: color(k) }))} />
+      <Legend items={keys.map((k) => ({ label: label(k), color: color(k), dash: dashed(k) }))} />
       <div style={{ height: 260 }}>
         <ResponsiveContainer>
           <LineChart data={data} margin={{ top: 8, right: 12, bottom: 0, left: -6 }}>
@@ -79,9 +85,9 @@ function RoundsChart({ rounds, p }) {
             <XAxis dataKey="round" {...axisProps(p)} />
             <YAxis domain={["auto", "auto"]} tickFormatter={(v) => v.toFixed(2)} {...axisProps(p)} />
             <Tooltip content={<ChartTooltip labelFormatter={(r) => `Round ${r}`} />} />
-            {keys.map((k, i) => (
+            {keys.map((k) => (
               <Line key={k} dataKey={k} name={label(k)} stroke={color(k)} strokeWidth={2} isAnimationActive={false}
-                    strokeDasharray={i >= 2 ? "5 3" : undefined} dot={{ r: 3 }} connectNulls />
+                    strokeDasharray={dashed(k) ? "6 4" : undefined} dot={{ r: 3 }} connectNulls />
             ))}
           </LineChart>
         </ResponsiveContainer>
@@ -176,21 +182,26 @@ export default function Runs() {
   const [error, setError] = useState(null);
 
   const [refresh, setRefresh] = useState(0);
+  const reload = () => setRefresh((r) => r + 1);
+  // Poll only while a run is queued or running; an idle history list doesn't change on its own.
+  const active = runs.some((r) => r.status === "queued" || r.status === "running");
   useEffect(() => {
     let alive = true;
     const load = () => api("/runs?limit=30").then((r) => { if (alive) { setRuns(r); setError(null); } })
       .catch((e) => alive && setError(e.message));
     load();
-    const t = setInterval(load, 4000);          // refresh the history list while the page is open
+    const t = active ? setInterval(load, 4000) : null;
     return () => { alive = false; clearInterval(t); };
-  }, [refresh]);
+  }, [refresh, active]);
   useEffect(() => { if (!selected && runs.length) setSelected(runs[0].jobId); }, [runs, selected]);
 
   return (
     <>
-      {isAdmin && <StartPanel onStarted={setSelected} />}
+      {isAdmin && <StartPanel onStarted={(id) => { setSelected(id); reload(); }} />}
       <article className="card">
-        <header><h2>Run history</h2><span className="muted">stored in MongoDB by the gateway</span></header>
+        <header><h2>Run history</h2>
+          <div className="row"><span className="muted">stored in MongoDB by the gateway</span>
+            <button className="btn" onClick={reload}>Refresh</button></div></header>
         {error && <p className="error">{error}</p>}
         <div className="table-wrap">
           <table>
@@ -211,7 +222,7 @@ export default function Runs() {
           </table>
         </div>
       </article>
-      {selected && <RunDetail jobId={selected} key={selected} onEnded={() => setRefresh((r) => r + 1)} />}
+      {selected && <RunDetail jobId={selected} key={selected} onEnded={reload} />}
     </>
   );
 }

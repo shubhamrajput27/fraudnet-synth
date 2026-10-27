@@ -92,7 +92,9 @@ def six_arm_results():
     read = lambda n: pd.read_csv(root / n).to_dict(orient="records")  # noqa: E731
     return {"arm_names": ARM_NAMES, "seeds": load_config("experiments")["six_arms"]["seeds"],
             "global_table": read("six_arm_global_table.csv"), "local_table": read("local_test_table.csv"),
-            "paired_comparisons": read("paired_comparisons.csv")}
+            "paired_comparisons": read("paired_comparisons.csv"),
+            # so the dashboard never hard-codes the test-set size
+            "test_rows": int(len(_global_test())), "test_frauds": int(_global_test()[LABEL_COLUMN].sum())}
 
 
 @app.get("/results/six-arms/convergence", dependencies=AUTH)

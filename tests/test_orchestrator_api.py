@@ -51,6 +51,7 @@ def test_banks_returns_aggregates_only(client):
 def test_six_arm_results(client):
     r = client.get("/results/six-arms", headers=H(client)).json()
     assert len(r["seeds"]) == 5 and r["global_table"] and r["paired_comparisons"]
+    assert 0 < r["test_frauds"] < r["test_rows"]
 
 
 def test_run_request_validation(client):

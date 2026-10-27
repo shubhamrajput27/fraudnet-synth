@@ -22,10 +22,20 @@ export default function App() {
   const [page, setPage] = useState(() => location.hash.slice(1) || "overview");
   useEffect(() => onAuthChange(setUser), []);
   useEffect(() => { location.hash = page; }, [page]);
+  // Browser Back/Forward change the hash: follow it, so the tabs behave like normal pages.
+  useEffect(() => {
+    const on = () => setPage(location.hash.slice(1) || "overview");
+    window.addEventListener("hashchange", on);
+    return () => window.removeEventListener("hashchange", on);
+  }, []);
+
+  const pages = user ? PAGES.filter((p) => p.roles.includes(user.role)) : [];
+  const current = pages.find((p) => p.id === page) ?? pages[0];
+  // A page this role can't see (e.g. #audit as a viewer) falls back to the first one; keep the URL honest.
+  useEffect(() => { if (current && current.id !== page) setPage(current.id); }, [current, page]);
 
   if (!user) return <Login />;
-  const pages = PAGES.filter((p) => p.roles.includes(user.role));
-  const Current = (pages.find((p) => p.id === page) ?? pages[0]).el;
+  const Current = current.el;
 
   return (
     <>

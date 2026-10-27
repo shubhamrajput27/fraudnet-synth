@@ -6,6 +6,47 @@ import { axisProps, usePalette } from "../theme.js";
 const REASONS = ["Out of range / schema", "Edge-clamped (3+ values)", "Too close to a real row",
   "Identical text embedding", "Near-duplicate of a kept synthetic row", "Batch fidelity below minimum"];
 
+// The core idea in one picture: model weights travel, transactions never do.
+function FlowDiagram({ banks }) {
+  const list = banks ?? ["bank_a", "bank_b", "bank_c", "bank_d"].map((bank) => ({ bank }));
+  return (
+    <figure className="flow" aria-label="One federated training round">
+      <div className="flow-server">
+        <strong>Server · FedAvg</strong>
+        <small>averages the banks' weights, weighted by data size · never sees a transaction</small>
+      </div>
+      <div className="flow-links" aria-hidden="true">
+        {list.map((b) => (
+          <div key={b.bank} className="flow-link">
+            <span className="down">▼ global model</span><span className="up">▲ weights only</span>
+          </div>
+        ))}
+      </div>
+      <div className="flow-banks">
+        {list.map((b) => {
+          const augment = String(b.mode ?? "").toLowerCase().startsWith("augment");
+          return (
+            <div key={b.bank} className={`flow-bank ${b.mode ? (augment ? "augment" : "schema") : ""}`}>
+              <strong>{bankName(b.bank)}</strong>
+              {b.mode && <small>{augment ? "CTGAN" : "LLM"} synthetic frauds</small>}
+              {b.rows !== undefined && <small className="num">{int(b.rows)} rows · {int(b.fraud)} frauds</small>}
+              <span className="lock">🔒 data stays here</span>
+            </div>
+          );
+        })}
+      </div>
+      <figcaption>
+        <ol>
+          <li>The server sends the current model to every bank.</li>
+          <li>Each bank trains it on its own private rows (real + validated synthetic).</li>
+          <li>Each bank sends back only the updated weights, a list of numbers, not data.</li>
+          <li>The server averages the weights into a new global model. Repeat.</li>
+        </ol>
+      </figcaption>
+    </figure>
+  );
+}
+
 export default function Overview() {
   const banks = useApi("/banks");
   const validation = useApi("/validation");
@@ -21,6 +62,7 @@ export default function Overview() {
           examples with <strong>CTGAN</strong>; data-poor banks (C, D) with an <strong>LLM</strong> that sees only summary statistics.
           Every synthetic row passes the same validation gate before training.
         </p>
+        <FlowDiagram banks={banks.data} />
       </section>
 
       <Loading state={banks}>

@@ -12,14 +12,16 @@ const DARK = {
   surface: "#1a1a19", ink: "#ffffff", ink2: "#c3c2b7", muted: "#898781", grid: "#2c2c2a", axis: "#383835",
 };
 
+// One shared query object: matchMedia() returns a new one per call, which would re-subscribe every render.
+const DARK_MQ = window.matchMedia("(prefers-color-scheme: dark)");
+
 export function usePalette() {
-  const mq = window.matchMedia("(prefers-color-scheme: dark)");
-  const [dark, setDark] = useState(mq.matches);
+  const [dark, setDark] = useState(DARK_MQ.matches);
   useEffect(() => {
     const on = (e) => setDark(e.matches);
-    mq.addEventListener("change", on);
-    return () => mq.removeEventListener("change", on);
-  }, [mq]);
+    DARK_MQ.addEventListener("change", on);
+    return () => DARK_MQ.removeEventListener("change", on);
+  }, []);
   return dark ? DARK : LIGHT;
 }
 
