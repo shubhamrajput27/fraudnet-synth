@@ -1,7 +1,7 @@
 // Dataset export (bank operators, own bank only, D-045) and the audit log (admin).
 import { useState } from "react";
 import { download, getUser } from "../api.js";
-import { Loading, PageHead, bankName, int, useApi } from "../components.jsx";
+import { Loading, PageHead, bankName, int, useApi, when } from "../components.jsx";
 
 export function ExportPage() {
   const user = getUser();
@@ -53,7 +53,7 @@ export function AuditPage() {
             <tbody>
               {(audit.data ?? []).map((e) => (
                 <tr key={e._id}>
-                  <td className="num">{new Date(e.time).toLocaleString()}</td><td>{e.user}</td><td>{e.role}</td>
+                  <td className="tnum">{when(e.time)}</td><td>{e.user}</td><td>{e.role}</td>
                   <td>{e.action}</td><td>{e.target}</td>
                   <td>{e.allowed ? <span className="badge"><span style={{ color: "var(--good)" }}>✓</span>yes</span>
                                   : <span className="badge"><span style={{ color: "var(--critical)" }}>✕</span>no</span>}</td>

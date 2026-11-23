@@ -23,7 +23,9 @@ export async function orch(path, { method = "GET", body, headers = {}, raw = fal
   }
   if (raw) return res;                                    // e.g. CSV export: caller streams it
   const text = await res.text();
-  const data = text ? JSON.parse(text) : null;
+  let data = null;
+  // FastAPI answers JSON, but a crash page or proxy error may be plain text: keep its status, don't throw a SyntaxError.
+  try { data = text ? JSON.parse(text) : null; } catch { data = { error: text.slice(0, 200) }; }
   if (!res.ok) throw new OrchestratorError(res.status, data);
   return data;
 }

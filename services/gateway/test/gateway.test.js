@@ -24,6 +24,7 @@ function startFakeOrchestrator() {
   app.post("/runs", (req, res) => res.status(202).json({ id: "job-1", type: "run", params: req.body, status: "queued",
                                                           created: new Date().toISOString() }));
   app.get("/jobs/:id", (req, res) => res.json({ id: req.params.id, status: "succeeded", result: { ok: true } }));
+  app.delete("/jobs/:id", (req, res) => res.json({ id: req.params.id, status: "cancelled" }));
   app.post("/predict", (req, res) => res.json({ score_logit: 5, is_fraud: true }));
   app.get("/banks/:bank/synthetic/export", (req, res) => {
     seen.exportScopes.push(req.get("x-bank-scope"));
@@ -196,4 +197,26 @@ test("audit log is admin-only", async () => {
   const r = await request.get("/api/audit").set("Authorization", `Bearer ${await tokenFor("admin")}`);
   assert.equal(r.status, 200);
   assert.ok(r.body.length > 5);
+});
+
+test("?limit is clamped: junk or negative values can't bypass the cap", async () => {
+  const { parseLimit } = await import("../src/app.js");
+  assert.equal(parseLimit("abc", 50, 200), 50);
+  assert.equal(parseLimit("-3", 50, 200), 50);
+  assert.equal(parseLimit("0", 50, 200), 50);
+  assert.equal(parseLimit("9999", 50, 200), 200);
+  assert.equal(parseLimit("7", 50, 200), 7);
+  assert.equal(parseLimit(undefined, 50, 200), 50);
+  const r = await request.get("/api/runs?limit=abc").set("Authorization", `Bearer ${await tokenFor("guide")}`);
+  assert.equal(r.status, 200);
+});
+
+test("cancel: admin only, status saved and audited", async () => {
+  const run = await models.Run.create({ jobId: "job-cancel", type: "run", params: {}, status: "running", requestedBy: "admin" });
+  const viewer = await request.delete(`/api/runs/${run.jobId}`).set("Authorization", `Bearer ${await tokenFor("guide")}`);
+  assert.equal(viewer.status, 403);
+  const r = await request.delete(`/api/runs/${run.jobId}`).set("Authorization", `Bearer ${await tokenFor("admin")}`);
+  assert.equal(r.status, 200);
+  assert.equal((await models.Run.findOne({ jobId: run.jobId })).status, "cancelled");
+  assert.ok(await models.AuditEvent.findOne({ action: "cancel", target: run.jobId, allowed: true }));
 });

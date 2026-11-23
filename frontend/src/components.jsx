@@ -1,10 +1,29 @@
 // Small shared building blocks.
-import { useEffect, useId, useState } from "react";
+import { Component, useEffect, useId, useState } from "react";
 import { createPortal } from "react-dom";
 import { api } from "./api.js";
 import { TERMS } from "./glossary.js";
 
-export { bankName, fmt, int, parsePm, pct } from "./format.js";
+export { armName, bankName, fmt, int, parsePm, pct, when } from "./format.js";
+
+// One page failing to render (e.g. a results file with a missing column) shows a message in that
+// page only: the tabs keep working, instead of the whole dashboard going blank mid-demo.
+export class PageBoundary extends Component {
+  state = { error: null };
+  static getDerivedStateFromError(error) { return { error }; }
+  componentDidCatch(error, info) { console.error(error, info.componentStack); }
+  render() {
+    if (!this.state.error) return this.props.children;
+    return (
+      <article className="card" role="alert">
+        <h2>This page couldn't be shown</h2>
+        <p className="error">{String(this.state.error.message ?? this.state.error)}</p>
+        <p className="note">The other tabs still work. Reload the page to try again; details are in the browser console.</p>
+        <div className="row"><button className="btn" onClick={() => location.reload()}>Reload</button></div>
+      </article>
+    );
+  }
+}
 
 // Job status: the status palette is reserved for states, and always pairs colour with an icon + label.
 const STATUS = {

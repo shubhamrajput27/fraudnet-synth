@@ -1,11 +1,17 @@
+import { errorText } from "./format.js";
+
 // Everything the dashboard sends goes to the GATEWAY (/api, /ws), never to FastAPI directly.
 // Login token: kept in memory and in sessionStorage, so it survives a refresh in the same tab
 // and is cleared when the tab closes (decision D-054).
 
 const TOKEN_KEY = "fns_token";
 const USER_KEY = "fns_user";
-let token = sessionStorage.getItem(TOKEN_KEY);
-let user = JSON.parse(sessionStorage.getItem(USER_KEY) ?? "null");
+// A damaged or blocked sessionStorage must mean "logged out", not a blank page.
+function restore() {
+  try { return [sessionStorage.getItem(TOKEN_KEY), JSON.parse(sessionStorage.getItem(USER_KEY) ?? "null")]; } catch { return [null, null]; }
+}
+let [token, user] = restore();
+if (!token || !user) [token, user] = [null, null];
 const listeners = new Set();
 
 export const getUser = () => user;
@@ -45,10 +51,7 @@ export async function api(path, { method = "GET", body } = {}) {
     throw new Error("session expired, please log in again");
   }
   const data = await res.json().catch(() => null);
-  if (!res.ok) {
-    const detail = data?.detail ? JSON.stringify(data.detail) : data?.error;
-    throw new Error(detail ?? `request failed (${res.status})`);
-  }
+  if (!res.ok) throw new Error(errorText(data) ?? `request failed (${res.status})`);
   return data;
 }
 

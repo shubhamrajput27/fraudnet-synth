@@ -2,14 +2,23 @@
 import { useEffect, useMemo, useState } from "react";
 import { CartesianGrid, Line, LineChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
 import { api, getUser } from "../api.js";
-import { ChartTooltip, Legend, PageHead, StatusBadge, Term, bankName, fmt, int } from "../components.jsx";
+import { ChartTooltip, Legend, PageHead, StatusBadge, Term, armName, bankName, fmt, int, when } from "../components.jsx";
+import { ARMS } from "../format.js";
 import { useRunStream } from "../live.js";
 import { ROLE, axisProps, usePalette } from "../theme.js";
 
-const ARMS = { 1: "Isolated, real", 2: "Isolated, augmented", 3: "Federated, real",
-               4: "Federated, augmented", 5: "Centralized, real", 6: "Centralized, augmented" };
 const PAGE = 30;          // runs per "page" of history; the gateway caps a request at 200
-const ARM_KEY = { arm3_federated_real: "Arm 3 · federated, real", arm4_federated_aug: "Arm 4 · federated, augmented" };
+const ACTIVE = ["queued", "running"];
+
+// "all · seeds 42, 43" / "3, 4 · seed 42" / "replay": what a job was asked to do, in words.
+function describe(run) {
+  if (!run) return "";
+  if (run.type !== "run") return run.type === "generate" ? `generation · ${run.params?.mode ?? "replay"}` : "prepare demo model";
+  const list = run.params?.arms;
+  const arms = Array.isArray(list) ? `Arm${list.length === 1 ? "" : "s"} ${list.join(", ")}` : "All six arms";
+  const seeds = run.params?.seeds ?? [];
+  return `${arms} · seed${seeds.length === 1 ? "" : "s"} ${seeds.join(", ")}`;
+}
 
 function StartPanel({ onStarted }) {
   const [arms, setArms] = useState(new Set([3]));
@@ -75,7 +84,7 @@ function RoundsChart({ rounds, p }) {
     ? p.series[seeds.indexOf(k.split("|")[1]) % p.series.length]
     : p.series[k.startsWith("arm4") ? ROLE.augmented : ROLE.real]);
   const dashed = (k) => k.startsWith("arm4");
-  const label = (k) => `${ARM_KEY[k.split("|")[0]] ?? k.split("|")[0]} · seed ${k.split("|")[1]}`;
+  const label = (k) => `${armName(k.split("|")[0])} · seed ${k.split("|")[1]}`;
   return (
     <>
       <Legend items={keys.map((k) => ({ label: label(k), color: color(k), dash: dashed(k) }))} />
@@ -105,7 +114,7 @@ function BankLossChart({ rounds, p }) {
   const banks = last.banks.map((b) => b.bank);
   return (
     <article className="card">
-      <header><h3>Each bank's local training loss</h3><span className="muted">{ARM_KEY[last.arm] ?? last.arm} · seed {last.seed}</span></header>
+      <header><h3>Each bank's local training loss</h3><span className="muted">{armName(last.arm)} · seed {last.seed}</span></header>
       <Legend items={banks.map((b) => ({ label: bankName(b), color: p.series[ROLE.banks[b]] }))} />
       <div style={{ height: 220 }}>
         <ResponsiveContainer>
@@ -125,20 +134,38 @@ function BankLossChart({ rounds, p }) {
   );
 }
 
-function RunDetail({ jobId, onEnded }) {
+function RunDetail({ jobId, run, isAdmin, onChanged }) {
   const s = useRunStream(jobId);
   const p = usePalette();
-  useEffect(() => { if (s.ended) onEnded?.(); }, [s.ended]);   // refresh the history list at once
+  const [cancelMsg, setCancelMsg] = useState(null);
+  useEffect(() => { if (s.ended) onChanged?.(); }, [s.ended]);   // refresh the history list at once
   const lastRound = s.rounds[s.rounds.length - 1];
+  const status = s.status ?? run?.status;
+
+  async function cancel() {
+    if (!window.confirm("Stop this run? Results finished so far are kept; the rest is not computed.")) return;
+    setCancelMsg(null);
+    try { await api(`/runs/${encodeURIComponent(jobId)}`, { method: "DELETE" }); onChanged?.(); }
+    catch (e) { setCancelMsg(e.message); }
+  }
+
   return (
     <>
       <article className="card">
         <header>
-          <h2>Run {jobId}</h2>
-          <div className="row">{s.status && <StatusBadge status={s.status} />}{!s.ended && s.status === "running" && <span className="muted">live</span>}</div>
+          <div>
+            <h2>{describe(run) || "Run"}</h2>
+            <small className="muted">{run && `${when(run.createdAt)} · by ${run.requestedBy} · `}job {jobId}</small>
+          </div>
+          <div className="row">
+            {status && <StatusBadge status={status} />}
+            {!s.ended && status === "running" && <span className="live" aria-label="receiving live updates">live</span>}
+            {isAdmin && ACTIVE.includes(status) && !s.ended && <button className="btn danger" onClick={cancel}>Cancel run</button>}
+          </div>
         </header>
-        {s.error && <p className="error">{s.error}</p>}
-        {lastRound && <p className="ink2">Latest: round <strong>{lastRound.round}</strong> of {ARM_KEY[lastRound.arm] ?? lastRound.arm},
+        {cancelMsg && <p className="error" role="alert">Couldn't cancel: {cancelMsg}</p>}
+        {s.error && <p className={s.error.includes("reconnecting") ? "note" : "error"}>{s.error}</p>}
+        {lastRound && <p className="ink2">Latest: round <strong>{lastRound.round}</strong> of {armName(lastRound.arm)},
           seed {lastRound.seed} → global <Term k="pr_auc">PR-AUC</Term> <strong className="num">{fmt(lastRound.globalTestPrAuc)}</strong></p>}
         {s.rounds.length > 0 ? <RoundsChart rounds={s.rounds} p={p} />
           : <p className="muted">No federated rounds yet (non-federated arms report when each model finishes).</p>}
@@ -148,15 +175,15 @@ function RunDetail({ jobId, onEnded }) {
         <BankLossChart rounds={s.rounds} p={p} />
         <article className="card">
           <header><h3>Finished models (global test)</h3><span className="muted">{s.models.length} so far</span></header>
-          <div className="table-wrap">
-            <table>
+          <div className="table-wrap scroll">
+            <table className="compact">
               <thead><tr><th>Seed</th><th>Arm</th><th>Model</th><th className="num headline"><Term k="precision">Precision</Term></th>
                 <th className="num headline"><Term k="recall">Recall</Term></th><th className="num headline"><Term k="f1">F1</Term></th>
                 <th className="num headline"><Term k="pr_auc">PR-AUC</Term></th></tr></thead>
               <tbody>
                 {[...s.models].sort((a, b) => a.seed - b.seed || a.arm.localeCompare(b.arm) || a.model.localeCompare(b.model)).map((m) => (
                   <tr key={`${m.seed}-${m.arm}-${m.model}`}>
-                    <td className="num">{m.seed}</td><td>{m.arm.replace(/_/g, " ")}</td>
+                    <td className="num">{m.seed}</td><td>{armName(m.arm)}</td>
                     <td>{m.model.startsWith("bank_") ? bankName(m.model) : m.model}</td>
                     <td className="num">{fmt(m.precision)}</td><td className="num">{fmt(m.recall)}</td>
                     <td className="num headline">{fmt(m.f1)}</td><td className="num headline">{fmt(m.prAuc)}</td>
@@ -187,7 +214,7 @@ export default function Runs() {
   const [refresh, setRefresh] = useState(0);
   const reload = () => setRefresh((r) => r + 1);
   // Poll only while a run is queued or running; an idle history list doesn't change on its own.
-  const active = (runs ?? []).some((r) => r.status === "queued" || r.status === "running");
+  const active = (runs ?? []).some((r) => ACTIVE.includes(r.status));
   useEffect(() => {
     let alive = true;
     const load = () => api(`/runs?limit=${limit}`).then((r) => { if (alive) { setRuns(r); setError(null); } })
@@ -210,19 +237,19 @@ export default function Runs() {
         {runs === null && !error ? <div className="skeleton" style={{ height: 160 }} role="status" aria-label="Loading" /> : (
         <div className="table-wrap">
           <table>
-            <thead><tr><th className="num">Started</th><th>Type</th><th>Arms · seeds</th><th>By</th><th>Status</th><th className="num">Rounds</th></tr></thead>
+            <thead><tr><th>Started</th><th>What</th><th>By</th><th>Status</th><th className="num">Rounds</th></tr></thead>
             <tbody>
               {(runs ?? []).map((r) => (
-                <tr key={r.jobId} className={`clickable ${r.jobId === selected ? "selected" : ""}`} onClick={() => setSelected(r.jobId)}>
-                  <td className="num">{new Date(r.createdAt).toLocaleString()}</td>
-                  <td>{r.type}</td>
-                  <td>{r.type === "run" ? `${Array.isArray(r.params.arms) ? r.params.arms.join(", ") : r.params.arms} · ${r.params.seeds?.join(", ")}`
-                       : r.params.mode ?? "—"}</td>
+                <tr key={r.jobId} className={`clickable ${r.jobId === selected ? "selected" : ""}`} onClick={() => setSelected(r.jobId)}
+                    tabIndex={0} aria-selected={r.jobId === selected}
+                    onKeyDown={(e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); setSelected(r.jobId); } }}>
+                  <td className="tnum">{when(r.createdAt)}</td>
+                  <td>{describe(r)}</td>
                   <td>{r.requestedBy}</td><td><StatusBadge status={r.status} /></td>
                   <td className="num">{r.roundsReceived}</td>
                 </tr>
               ))}
-              {runs?.length === 0 && <tr><td colSpan={6} className="muted">No runs yet{isAdmin ? ": start one above." : "."}</td></tr>}
+              {runs?.length === 0 && <tr><td colSpan={5} className="muted">No runs yet{isAdmin ? ": start one above." : "."}</td></tr>}
             </tbody>
           </table>
         </div>)}
@@ -232,7 +259,8 @@ export default function Runs() {
             <span className="muted">showing the latest {runs.length}</span></div>
         )}
       </article>
-      {selected && <RunDetail jobId={selected} key={selected} onEnded={reload} />}
+      {selected && <RunDetail jobId={selected} key={selected} isAdmin={isAdmin} onChanged={reload}
+                              run={(runs ?? []).find((r) => r.jobId === selected)} />}
     </>
   );
 }

@@ -23,6 +23,13 @@ const camelBank = (b) => ({ bank: b.bank, mode: b.mode, rows: b.rows, fraud: b.f
   trainFraud: b.train_fraud, syntheticCandidates: b.synthetic_candidates, syntheticValidated: b.synthetic_validated,
   passRatePct: b.pass_rate_pct, fidelityValidated: b.fidelity_validated });
 
+// ?limit=... as a whole number in [1, max]. Number("abc") is NaN, and Mongo treats limit(NaN) as
+// "no limit" and limit(-n) as n, so an unchecked value would bypass the cap.
+export function parseLimit(value, fallback, max) {
+  const n = Number.parseInt(value, 10);
+  return Number.isFinite(n) && n > 0 ? Math.min(n, max) : fallback;
+}
+
 export function createApp() {
   const app = express();
   app.disable("x-powered-by");
@@ -75,8 +82,7 @@ export function createApp() {
   api.post("/admin/prepare-model", admin, (req, res) => startJob(req, res, "/admin/prepare-model"));
 
   api.get("/runs", async (req, res) => {
-    const limit = Math.min(Number(req.query.limit ?? 50), 200);
-    res.json(await Run.find().sort({ createdAt: -1 }).limit(limit).lean());
+    res.json(await Run.find().sort({ createdAt: -1 }).limit(parseLimit(req.query.limit, 50, 200)).lean());
   });
   api.get("/runs/:jobId", async (req, res) => {
     const run = await Run.findOne({ jobId: req.params.jobId }).lean();
@@ -118,7 +124,7 @@ export function createApp() {
   });
 
   api.get("/audit", admin, async (req, res) => {
-    res.json(await AuditEvent.find().sort({ time: -1 }).limit(Math.min(Number(req.query.limit ?? 100), 500)).lean());
+    res.json(await AuditEvent.find().sort({ time: -1 }).limit(parseLimit(req.query.limit, 100, 500)).lean());
   });
 
   app.use("/api", api);
