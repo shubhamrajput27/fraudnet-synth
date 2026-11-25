@@ -124,4 +124,7 @@ Logs are saved in `results\demo_8b\fallback_<time>\`. It's the same code as the 
 | Run waits forever at "Sampled 0 nodes" | Fewer banks connected than `--expected-banks` | Start the missing bank, or use `--expected-banks` = number connected |
 | `Address already in use` on port 9094 | Two banks on one laptop | Give the second one `--runtime-port 9095` |
 | `ipconfig` shows several IPv4 addresses | Ethernet + Wi-Fi | Use the one under the *Wireless LAN adapter Wi-Fi* section |
+| `Fatal error in launcher: Unable to create process using '"C:\...\python.exe"'` (also for `pip`) | The project folder was **moved** after `.venv` was created; the venv's `.exe` launchers still point to the old place | `python -m pip install --force-reinstall --no-deps flwr==1.39.0` (use `python -m pip`, not `pip`), then `flower-supernode --help` to check |
+| `An Application Control policy has blocked this file` | Windows 11 **Smart App Control** blocks pip's unsigned launchers (`flower-supernode.exe` and the two it starts) | Windows Security → App & browser control → Smart App Control settings → **Off** (the laptop owner decides: on most Windows 11 versions it can't be turned back on without resetting Windows; Defender stays on). Reopen PowerShell. |
+| `KeyboardInterrupt` traceback after pressing Ctrl+C on a client | Our wrapper was waiting for Flower when you stopped it | Harmless if you see `SuperNode terminated gracefully` above it |
 | Each round takes ~25 s | Normal: Flower starts a fresh process per message on every bank | Just wait; 10 rounds take about 5 minutes |

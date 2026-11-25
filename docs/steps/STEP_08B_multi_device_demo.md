@@ -8,7 +8,7 @@ Show, as our guide asked, that the fraud model **really travels between separate
 |---|---|
 | 1. One-laptop fallback (5 processes, one command) | ✅ **Passed** 2026-10-10 (10 rounds, logs in `results/demo_8b/fallback_20261010_185747/`) |
 | 2. Two laptops (Shubham + Prachi) on a phone hotspot | ✅ **Passed** 2026-10-11 (10 rounds over a OnePlus phone hotspot, logs in `results/demo_8b/two_laptop_2026-10-11/`, §5.4) |
-| 3. All four laptops on one hotspot | ⏳ **Not yet run** (missed Monday 12/10; now Rehearsal 1 on 13/10, see §5.5) |
+| 3. All four laptops on one hotspot | ✅ **Passed** 2026-11-25 (10 rounds, 4 banks on 4 laptops over a OnePlus phone hotspot, logs in `results/demo_8b/four_laptop_2026-11-25_r1/`, §5.5). An earlier attempt on 2026-10-13 crashed after round 1 (§5.5) |
 
 ## 2. Concepts explained simply
 - **Simulation vs deployment:** in Step 8, Flower *pretended* there were four banks inside one program. In deployment, each bank is a **separate program**, potentially on a separate laptop, and messages really cross the network. **Analogy:** a cricket net session with one bowler pretending to be four, versus a real match with four players on the field.
@@ -152,7 +152,46 @@ Bank D  Round 10: received global model (17.1 KB) -> trained on 20,854 rows (36 
 - **Provenance:** `client_bank_b.log` was copied from Prachi's laptop (pasted text, not transferred as a file). All the other files in the folder come from the server laptop.
 
 ### 5.5 Four-laptop test and two rehearsals
-**Not yet run.** It did not take place on Monday 2026-10-12. That evening only the one-laptop fallback ran again (`results/demo_8b/fallback_20261012_195939/`, F1 0.7953, 3 rounds). Rehearsal 1 on demo day (13/10, 09:45) counts as the four-laptop test.
+**Four-laptop test: passed, 2026-11-25** (`results/demo_8b/four_laptop_2026-11-25_r1/`).
+
+- **Network:** Shubham's OnePlus 9RT phone hotspot (Windows: *Public*; the `-Profile Any` firewall rule from the two-laptop test was still in place). Server laptop `10.145.202.93`. Prachi `10.145.202.212`, Pradeepa `10.145.202.44`, Sathvik `10.145.202.197`. Every teammate got `TcpTestSucceeded : True` on port 9092.
+- **Data checks (all `RESULT: OK`):** bank_a 69,546 real rows (149 fraud) + global test on the server laptop; bank_b 59,599 (116 fraud); bank_c 39,695 (40 fraud); bank_d 29,767 (26 fraud). Before the test, all four zips in `exports/` were re-checked against the current bank files (SHA-256 identical), so no new handover was needed.
+- **Server log (`run_20261125_160940.log`), first and last rounds:**
+```
+Successfully started run 6923742371016146371
+Round 1: update from bank_a <- ArrayRecord 'arrays' (6 weight tensors, 17,478 B), MetricRecord 'metrics' (5 scalars)
+Round 1: update from bank_b <- ArrayRecord 'arrays' (6 weight tensors, 17,478 B), MetricRecord 'metrics' (5 scalars)
+Round 1: update from bank_c <- ArrayRecord 'arrays' (6 weight tensors, 17,478 B), MetricRecord 'metrics' (5 scalars)
+Round 1: update from bank_d <- ArrayRecord 'arrays' (6 weight tensors, 17,478 B), MetricRecord 'metrics' (5 scalars)
+Round 1: FedAvg of 4 bank updates (weighted by rows) -> new global model (17,478 B) sent to every bank
+...
+Round 10: FedAvg of 4 bank updates (weighted by rows) -> new global model (17,478 B) sent to every bank
+Threshold step: summed counts -> cut-off logit 3.25 (pooled val F1 0.7527)
+=== Done in 330s. Global test (95 fraud): precision 0.8182 recall 0.7579 F1 0.7869 PR-AUC 0.7274. DEMO ONLY: reported results come from the single-machine runs. ===
+```
+  The log has 40 `update from bank_` lines: 10 rounds × 4 banks, so every bank took part in every round.
+- **Round 10 on each laptop** (from each laptop's own `client_bank_x.log`):
+```
+[Shubham,  bank_a] 2026-11-25T16:15:08  Round 10: ... trained on 48,787 rows (210 fraud) -> sent weights back (17.1 KB) | local loss 0.1722
+[Prachi,   bank_b] 2026-11-25T16:15:10  Round 10: ... trained on 41,801 rows (164 fraud) -> sent weights back (17.1 KB) | local loss 0.2451
+[Pradeepa, bank_c] 2026-11-25T16:13:23  Round 10: ... trained on 27,813 rows (56 fraud) -> sent weights back (17.1 KB) | local loss 0.4285
+[Sathvik,  bank_d] 2026-11-25T16:15:05  Round 10: ... trained on 20,854 rows (36 fraud) -> sent weights back (17.1 KB) | local loss 0.4528
+```
+- **Outcome (demo only, 4 banks, 10 rounds):** global test precision 0.8182, recall 0.7579, F1 0.7869, PR-AUC 0.7274, in 330 s (≈33 s per round). The F1 equals the one-laptop fallback's (0.7869, §5.3), which fits: it is the same code, with the same seed and data, on four machines instead of one.
+- **Problems met (and fixes):**
+  1. **Pradeepa: `Fatal error in launcher: Unable to create process using '"C:\Users\LENOVO\Desktop\...\python.exe"'`.** Her project had been moved to `D:\` after `.venv` was created. Windows `.exe` launchers in a venv (`flower-supernode.exe`, `pip.exe`) store the old Python path. Fix: `python -m pip install --force-reinstall --no-deps flwr==1.39.0` (through `python -m pip`, because `pip.exe` was broken too). This rebuilt Flower's launchers.
+  2. **Sathvik: `An Application Control policy has blocked this file`** for `flower-supernode.exe`. Windows 11 **Smart App Control** blocks unsigned `.exe` files, and pip-made launchers are unsigned. A SuperNode starts three of them in a chain (`flower-supernode`, `flower-superexec`, `flwr-clientapp`), so reinstalling doesn't help. Fix, with Sathvik's agreement: Smart App Control set to **Off** (Defender antivirus stays on; on most Windows 11 versions it can't be turned back on without resetting Windows).
+  3. **Laptop clocks disagree.** Pradeepa's timestamps run about 1¾ minutes behind the server (her Round 10 is stamped 16:13:23; the server's Round 10 arrivals are about 16:15:10). The server log is the reference timeline. The client logs show *what* each laptop did, not exact times.
+  4. Ctrl+C on a client prints a `KeyboardInterrupt` traceback from our wrapper (`start_client.py`, `proc.wait()`) after `SuperNode terminated gracefully`. It's cosmetic.
+- **Provenance:** `server.log`, `run_20261125_160940.log`, `arm4_federated_aug_seed42.json` and `client_bank_a.log` come from the server laptop (`C:\Projects\fraudnet-demo\results\demo_8b\`). `client_bank_b/c/d.log` were copied from the teammates' laptops (b pasted as text, c and d sent as files). Client logs and `server.log` **add to the end of the file** on every run, so they also hold lines from 2026-10-11 and 2026-10-13. Only the lines dated 2026-11-25 belong to this run. `run_20261125_160940.log` holds only this run.
+
+**Earlier attempt, 2026-10-13 (failed)** (`results/demo_8b/four_laptop_attempt_2026-10-13/run_20261013_150905.log`): all 4 banks joined and round 1's FedAvg completed, then the ServerApp stopped with `ValueError: Message content is None` inside `aggregate_evaluate` (exit code 201). An evaluation reply arrived with no content, which most likely means one client hit an error. **The cause was not diagnosed** (the client-side consoles were not saved), and the 2026-11-25 run didn't repeat it. It remains an open risk for the review. The one-laptop fallback is the backup.
+
+| Run | Date/time | Banks that joined | Rounds | Duration | Global test P / R / F1 / PR-AUC | Problems met | Log folder |
+|---|---|---|---|---|---|---|---|
+| Attempt (13/10) | 2026-10-13 15:09 | A, B, C, D | 1 of 10, then crash | n/a | n/a | `Message content is None` in `aggregate_evaluate` (not diagnosed) | `four_laptop_attempt_2026-10-13/` |
+| Rehearsal 1 (= four-laptop test) | 2026-11-25 16:09 | A, B, C, D (4 laptops) | 10 | 330 s | 0.8182 / 0.7579 / 0.7869 / 0.7274 | moved venv (C), Smart App Control (D), clock skew (C) | `four_laptop_2026-11-25_r1/` |
+| Rehearsal 2 (8B + dashboard, timed) | not yet run | | | | | | |
 
 How to record each run: copy Shubham's `C:\Projects\fraudnet-demo\results\demo_8b\` and each teammate's `results\demo_8b\client_bank_x.log` into `results/demo_8b/four_laptop_<date>_r<N>/`. Then fill in the table **from those files only**.
 
@@ -178,7 +217,8 @@ Code version note: the demo folder is at commit `b1387f9` (Step 9). That is the 
 5. **Is the traffic encrypted?** No. The demo uses Flower's insecure mode on a private hotspot. The content is only weights and counts, but a real deployment would enable TLS certificates. We state this as a limitation.
 
 ## 8. Limitations and honest notes
-- **The four-laptop test is not done yet** (planned for Monday). The one-laptop fallback (2026-10-10) and the two-laptop test (2026-10-11) have passed. §5.5 must be filled with real logs before the review, and two full four-laptop rehearsals are required (8B.5).
+- **Four-laptop test passed (2026-11-25), but only one full four-laptop rehearsal is done.** 8B.5 needs two. The 2026-10-13 attempt crashed after round 1 for an undiagnosed reason (§5.5), so a run can still fail on the day. The one-laptop fallback is the backup.
+- **Windows set-up friction on teammates' laptops:** a moved venv breaks pip's `.exe` launchers, and Smart App Control blocks them entirely. Both were fixed on the day (§5.5) and are now in the setup guide's troubleshooting table.
 - **The handover is simulation set-up** (see Q3). Code can check a laptop's contents but cannot stop a person deliberately copying files, which is why the handover is in person and zips are deleted.
 - **Synthetic data was generated on Shubham's laptop** (Steps 4–6, D-033: ready-made files for every bank). Teammates must not claim it was generated on their machines.
 - **The server holds the global test set** to measure results, a disclosed design choice. The server process reads nothing else.
