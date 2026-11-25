@@ -1,0 +1,11 @@
+# Transcribed from a screenshot of Prachi's laptop (Get-Content ... -Tail 10), 2026-11-25. Not a file copy.
+2026-11-25T17:26:47  Round 1: received global model (17.1 KB) -> trained on 41,801 rows (164 fraud) -> sent weights back (17.1 KB) | local loss 0.7418
+2026-11-25T17:27:24  Round 2: received global model (17.1 KB) -> trained on 41,801 rows (164 fraud) -> sent weights back (17.1 KB) | local loss 0.2957
+2026-11-25T17:27:59  Round 3: received global model (17.1 KB) -> trained on 41,801 rows (164 fraud) -> sent weights back (17.1 KB) | local loss 0.2447
+2026-11-25T17:28:36  Round 4: received global model (17.1 KB) -> trained on 41,801 rows (164 fraud) -> sent weights back (17.1 KB) | local loss 0.2607
+2026-11-25T17:29:13  Round 5: received global model (17.1 KB) -> trained on 41,801 rows (164 fraud) -> sent weights back (17.1 KB) | local loss 0.2291
+2026-11-25T17:29:48  Round 6: received global model (17.1 KB) -> trained on 41,801 rows (164 fraud) -> sent weights back (17.1 KB) | local loss 0.2429
+2026-11-25T17:30:26  Round 7: received global model (17.1 KB) -> trained on 41,801 rows (164 fraud) -> sent weights back (17.1 KB) | local loss 0.2050
+2026-11-25T17:31:06  Round 8: received global model (17.1 KB) -> trained on 41,801 rows (164 fraud) -> sent weights back (17.1 KB) | local loss 0.2122
+2026-11-25T17:31:43  Round 9: received global model (17.1 KB) -> trained on 41,801 rows (164 fraud) -> sent weights back (17.1 KB) | local loss 0.1971
+2026-11-25T17:32:17  Round 10: received global model (17.1 KB) -> trained on 41,801 rows (164 fraud) -> sent weights back (17.1 KB) | local loss 0.2451

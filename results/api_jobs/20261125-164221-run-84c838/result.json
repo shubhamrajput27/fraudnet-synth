@@ -1,0 +1,16 @@
+{
+  "arms": [
+    3
+  ],
+  "seeds": [
+    42
+  ],
+  "global_test": {
+    "seed42/arm3_federated_real/federated": {
+      "precision": 0.8641975308641975,
+      "recall": 0.7368421052631579,
+      "f1": 0.7954545454545454,
+      "pr_auc": 0.7261349578423669
+    }
+  }
+}

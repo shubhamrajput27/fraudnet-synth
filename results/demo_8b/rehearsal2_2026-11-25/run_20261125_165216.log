@@ -1,0 +1,89 @@
+Using SuperLink: fraudnet (127.0.0.1:9093)
+Successfully started run 17822088029003558738
+[92mINFO [0m:      Starting logstream for run_id `17822088029003558738`
+[92mINFO [0m:      Start `flwr-serverapp` process
+[92mINFO [0m:      No non-`flwr` dependencies found in pyproject.toml. Proceeding with isolated runtime environment creation.
+[92mINFO [0m:      Created env for run in: C:\Projects\fraudnet-demo\.flwr_server\runtime-envs\17822088029003558738
+[92mINFO [0m:      Installing application dependencies...
+[92mINFO [0m:      uv sync took 0.4 seconds.
+[92mINFO [0m:      No additional application dependencies needed installation.
+[92mINFO [0m:      App dependencies installed successfully via uv sync.
+=== FraudNet-Synth demo run: arm4_federated_aug, 10 rounds, waiting for 4 banks; server data folder holds only the global test set ===
+[92mINFO [0m:      Starting OrderedFedAvg strategy:
+[92mINFO [0m:      	├── Number of rounds: 10
+[92mINFO [0m:      	├── ArrayRecord (0.02 MB)
+[92mINFO [0m:      	├── ConfigRecord (train): {'augmented': True, 'seed': 42}
+[92mINFO [0m:      	├── ConfigRecord (evaluate): {'augmented': True, 'seed': 42}
+[92mINFO [0m:      	├──> Sampling:
+[92mINFO [0m:      	│	├──Fraction: train (1.00) | evaluate ( 1.00)
+[92mINFO [0m:      	│	├──Minimum nodes: train (4) | evaluate (4)
+[92mINFO [0m:      	│	└──Minimum available nodes: 4
+[92mINFO [0m:      	└──> Keys in records:
+[92mINFO [0m:      		├── Weighted by: 'num-examples'
+[92mINFO [0m:      		├── ArrayRecord key: 'arrays'
+[92mINFO [0m:      		└── ConfigRecord key: 'config'
+[92mINFO [0m:      
+[92mINFO [0m:      Initial global evaluation results: {'global_test_pr_auc': 0.0048652830515440015, 'global_test_roc_auc': 0.40981856593788935}
+[92mINFO [0m:      
+[92mINFO [0m:      [ROUND 1/10]
+[92mINFO [0m:      Waiting for nodes to connect: 0 connected (minimum required: 4).
+[92mINFO [0m:      Waiting for nodes to connect: 0 connected (minimum required: 4).
+[92mINFO [0m:      Waiting for nodes to connect: 0 connected (minimum required: 4).
+[92mINFO [0m:      Waiting for nodes to connect: 0 connected (minimum required: 4).
+[92mINFO [0m:      Waiting for nodes to connect: 0 connected (minimum required: 4).
+[92mINFO [0m:      Waiting for nodes to connect: 0 connected (minimum required: 4).
+[92mINFO [0m:      Waiting for nodes to connect: 0 connected (minimum required: 4).
+[92mINFO [0m:      Waiting for nodes to connect: 0 connected (minimum required: 4).
+[92mINFO [0m:      Waiting for nodes to connect: 0 connected (minimum required: 4).
+[92mINFO [0m:      Waiting for nodes to connect: 0 connected (minimum required: 4).
+[92mINFO [0m:      Waiting for nodes to connect: 0 connected (minimum required: 4).
+[92mINFO [0m:      Waiting for nodes to connect: 0 connected (minimum required: 4).
+[92mINFO [0m:      Waiting for nodes to connect: 0 connected (minimum required: 4).
+[92mINFO [0m:      Waiting for nodes to connect: 0 connected (minimum required: 4).
+[92mINFO [0m:      Waiting for nodes to connect: 0 connected (minimum required: 4).
+[92mINFO [0m:      Waiting for nodes to connect: 0 connected (minimum required: 4).
+[92mINFO [0m:      Waiting for nodes to connect: 0 connected (minimum required: 4).
+[92mINFO [0m:      Waiting for nodes to connect: 0 connected (minimum required: 4).
+[92mINFO [0m:      Waiting for nodes to connect: 0 connected (minimum required: 4).
+[92mINFO [0m:      Waiting for nodes to connect: 0 connected (minimum required: 4).
+[92mINFO [0m:      Waiting for nodes to connect: 0 connected (minimum required: 4).
+[92mINFO [0m:      Waiting for nodes to connect: 0 connected (minimum required: 4).
+[92mINFO [0m:      Waiting for nodes to connect: 0 connected (minimum required: 4).
+[92mINFO [0m:      Waiting for nodes to connect: 0 connected (minimum required: 4).
+[92mINFO [0m:      Waiting for nodes to connect: 0 connected (minimum required: 4).
+[92mINFO [0m:      Waiting for nodes to connect: 0 connected (minimum required: 4).
+[92mINFO [0m:      Waiting for nodes to connect: 0 connected (minimum required: 4).
+[92mINFO [0m:      Waiting for nodes to connect: 0 connected (minimum required: 4).
+[92mINFO [0m:      Waiting for nodes to connect: 0 connected (minimum required: 4).
+[92mINFO [0m:      Waiting for nodes to connect: 0 connected (minimum required: 4).
+[92mINFO [0m:      Waiting for nodes to connect: 0 connected (minimum required: 4).
+[92mINFO [0m:      Waiting for nodes to connect: 0 connected (minimum required: 4).
+[92mINFO [0m:      Waiting for nodes to connect: 0 connected (minimum required: 4).
+[92mINFO [0m:      Waiting for nodes to connect: 0 connected (minimum required: 4).
+[92mINFO [0m:      Waiting for nodes to connect: 0 connected (minimum required: 4).
+[92mINFO [0m:      Waiting for nodes to connect: 0 connected (minimum required: 4).
+[92mINFO [0m:      Waiting for nodes to connect: 0 connected (minimum required: 4).
+[92mINFO [0m:      Waiting for nodes to connect: 0 connected (minimum required: 4).
+[92mINFO [0m:      Waiting for nodes to connect: 0 connected (minimum required: 4).
+[92mINFO [0m:      Waiting for nodes to connect: 0 connected (minimum required: 4).
+[92mINFO [0m:      Waiting for nodes to connect: 0 connected (minimum required: 4).
+[92mINFO [0m:      Waiting for nodes to connect: 0 connected (minimum required: 4).
+[92mINFO [0m:      Waiting for nodes to connect: 0 connected (minimum required: 4).
+[92mINFO [0m:      Waiting for nodes to connect: 0 connected (minimum required: 4).
+[92mINFO [0m:      Waiting for nodes to connect: 0 connected (minimum required: 4).
+[92mINFO [0m:      Waiting for nodes to connect: 0 connected (minimum required: 4).
+[92mINFO [0m:      Waiting for nodes to connect: 0 connected (minimum required: 4).
+[92mINFO [0m:      Waiting for nodes to connect: 0 connected (minimum required: 4).
+[92mINFO [0m:      Waiting for nodes to connect: 0 connected (minimum required: 4).
+[92mINFO [0m:      Waiting for nodes to connect: 0 connected (minimum required: 4).
+[92mINFO [0m:      Waiting for nodes to connect: 0 connected (minimum required: 4).
+[92mINFO [0m:      Waiting for nodes to connect: 0 connected (minimum required: 4).
+[92mINFO [0m:      Waiting for nodes to connect: 0 connected (minimum required: 4).
+[92mINFO [0m:      Waiting for nodes to connect: 0 connected (minimum required: 4).
+[92mINFO [0m:      Waiting for nodes to connect: 0 connected (minimum required: 4).
+[92mINFO [0m:      Waiting for nodes to connect: 0 connected (minimum required: 4).
+[92mINFO [0m:      Waiting for nodes to connect: 0 connected (minimum required: 4).
+[92mINFO [0m:      Waiting for nodes to connect: 0 connected (minimum required: 4).
+[92mINFO [0m:      Waiting for nodes to connect: 0 connected (minimum required: 4).
+[92mINFO [0m:      Waiting for nodes to connect: 0 connected (minimum required: 4).
+[92mINFO [0m:      Waiting for nodes to connect: 0 connected (minimum required: 4).
