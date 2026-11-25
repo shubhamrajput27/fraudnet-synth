@@ -51,7 +51,7 @@ All six arms use the same classifier: a multi-layer perceptron (31 → 64 → 32
 **Figures:** F06 (F1 and PR-AUC by arm), F07 (paired differences), F08 (federated convergence: mean global PR-AUC 0.688 at round 1, 0.715 at round 10, 0.716 at round 30) [results/final_annexure/figures/].
 
 ### A.4 System integration
-A full experiment (six arms × five seeds) was started from the React dashboard as the admin user. It passed through the Node.js gateway (JWT authentication, role check, MongoDB persistence) to the FastAPI orchestrator and the four simulated banks, streamed 300 federated rounds live, and stored 60 model results. All 180 metric rows were **identical** to the command-line run (maximum absolute difference 0.0) [results/final_annexure/consistency.json; results/integration/README.md]. A live deployment across two laptops over a phone hotspot also completed 10 rounds (Section C.3).
+A full experiment (six arms × five seeds) was started from the React dashboard as the admin user. It passed through the Node.js gateway (JWT authentication, role check, MongoDB persistence) to the FastAPI orchestrator and the four simulated banks, streamed 300 federated rounds live, and stored 60 model results. All 180 metric rows were **identical** to the command-line run (maximum absolute difference 0.0) [results/final_annexure/consistency.json; results/integration/README.md]. A live deployment across four laptops (one bank per laptop) over a phone hotspot also completed 10 rounds (Section C.3).
 
 ---
 
@@ -114,12 +114,19 @@ Fixed seeds, a fixed aggregation order (D-032), versioned decisions and generate
 3. Banks C and D cannot certify α below 0.143 and 0.200 alone and must flag every transaction at α = 0.10, whereas global calibration through counts gives them the guarantee at about 19% of transactions flagged. Federation therefore also helps small banks *calibrate*.
 
 ### C.3 Multi-laptop federated demonstration
-To show the model moving between machines while data stays put (a guide request, D-020), the system was deployed with Flower's deployment API. A server laptop ran the SuperLink and Bank A, and a second laptop ran Bank B, over a phone hotspot.
-- **Before training:** each laptop passed a data check proving it held only its own bank.
-- **During training:** each round, both banks received the global model, trained locally and returned 17,478 bytes of weights; the threshold step exchanged only integer counts.
-- **Run:** 10 rounds completed in 274 s; global test F1 0.781, PR-AUC 0.726 (two banks only, demonstration rather than an experimental arm) [docs/steps/STEP_08B_multi_device_demo.md §5.4].
+To show the model moving between machines while data stays put (a guide request, D-020), the system was deployed with Flower's deployment API over a phone hotspot, in two stages: first two laptops, then all four.
 
-The four-laptop run is **pending** at the time of this draft.
+- **Before training:** each laptop passed a data check proving it held only its own bank (manifest bank name, SHA-256 checksums, no other bank's files, no raw dataset, no global train/val split).
+- **During training:** each round, every bank received the global model, trained locally and returned 17,478 bytes of weights plus 5 scalar metrics; the threshold step exchanged only integer counts (241 TP + 241 FP per bank).
+
+| Run (demonstration, arm 4 configuration, seed 42) | Laptops / banks | Rounds | Time | Global test precision / recall / F1 / PR-AUC |
+|---|---|---|---|---|
+| Two-laptop test, 2026-10-11 | 2 / A, B | 10 | 274 s | 0.773 / 0.790 / 0.781 / 0.726 |
+| Four-laptop test, 2026-11-25 | 4 / A, B, C, D | 10 | 330 s | 0.818 / 0.758 / 0.787 / 0.727 |
+
+[docs/steps/STEP_08B_multi_device_demo.md §5.4–5.5; results/demo_8b/two_laptop_2026-10-11/, results/demo_8b/four_laptop_2026-11-25_r1/]
+
+In the four-laptop run, the server log records 40 bank updates (10 rounds × 4 banks), so every bank took part in every round. The F1 (0.787) equals the one-laptop fallback run with five processes, as expected: the same code, seed and data, spread over four machines instead of one. An earlier four-laptop attempt (2026-10-13) stopped after round 1 with an error whose cause was not diagnosed. Set-up problems met on the teammates' Windows laptops (a moved virtual environment, Smart App Control blocking unsigned launchers) were fixed on the day and added to the setup guide. These are demonstration runs of 10 rounds, not experimental results; the reported numbers in Chapter A come from the single-machine runs.
 
 ---
 

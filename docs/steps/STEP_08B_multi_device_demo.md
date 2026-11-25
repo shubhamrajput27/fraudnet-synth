@@ -191,14 +191,9 @@ Threshold step: summed counts -> cut-off logit 3.25 (pooled val F1 0.7527)
 |---|---|---|---|---|---|---|---|
 | Attempt (13/10) | 2026-10-13 15:09 | A, B, C, D | 1 of 10, then crash | n/a | n/a | `Message content is None` in `aggregate_evaluate` (not diagnosed) | `four_laptop_attempt_2026-10-13/` |
 | Rehearsal 1 (= four-laptop test) | 2026-11-25 16:09 | A, B, C, D (4 laptops) | 10 | 330 s | 0.8182 / 0.7579 / 0.7869 / 0.7274 | moved venv (C), Smart App Control (D), clock skew (C) | `four_laptop_2026-11-25_r1/` |
-| Rehearsal 2 (8B + dashboard, timed) | not yet run | | | | | | |
+| Rehearsal 2 (8B + dashboard, timed) | 2026-11-25 (afternoon) | logs saved, **not yet written up** | | | | | `rehearsal2_2026-11-25/` |
 
 How to record each run: copy Shubham's `C:\Projects\fraudnet-demo\results\demo_8b\` and each teammate's `results\demo_8b\client_bank_x.log` into `results/demo_8b/four_laptop_<date>_r<N>/`. Then fill in the table **from those files only**.
-
-| Run | Date/time | Banks that joined | Rounds | Duration | Global test P / R / F1 / PR-AUC | Problems met | Log folder |
-|---|---|---|---|---|---|---|---|
-| Rehearsal 1 (= four-laptop test) | not yet run | | | | | | |
-| Rehearsal 2 (8B + dashboard, timed) | not yet run | | | | | | |
 
 Code version note: the demo folder is at commit `b1387f9` (Step 9). That is the code that passed the two-laptop test. It logs **5 scalars** per bank, which matches DEMO_SCRIPT_8B.md. The main folder logs 6, because the extra `global-model-loss` scalar was added for extension E1. If the demo folder is ever updated, change the script line to 6.
 
@@ -207,7 +202,7 @@ Code version note: the demo folder is at commit `b1387f9` (Step 9). That is the 
 - **52 tests pass** (9 new in `test_demo_checks.py`).
 
 ## 6. Explain it to the guide (script)
-"Sir, you asked to see the model really move between banks, so in Step 8B we run federated learning across separate laptops on a phone hotspot. My laptop runs the Flower server, and each teammate's laptop runs one bank. Each bank received only its own data file, in person by pen drive, and a check program proves the laptop holds nothing else: no other bank's data, no raw dataset. The client refuses to start if that check fails. In every round, my server sends the current model, about 17 kilobytes, to every bank. Each bank trains it on its own rows and sends back only updated weights, and my server log shows exactly what arrived: one weight record and five numbers per bank, nothing else. Flower even ships our code to each laptop, but we limited that package to code files, so no data can travel with it. We tested a one-laptop fallback with five separate processes, and its results match our simulation exactly. Then we ran ten rounds between my laptop and Prachi's over a phone hotspot, and in every round her laptop's log and my server log agree. The four-laptop test is next. This demo shows the mechanism; our reported results still come from the controlled single-machine experiments."
+"Sir, you asked to see the model really move between banks, so in Step 8B we run federated learning across separate laptops on a phone hotspot. My laptop runs the Flower server, and each teammate's laptop runs one bank. Each bank received only its own data file, in person by pen drive, and a check program proves the laptop holds nothing else: no other bank's data, no raw dataset. The client refuses to start if that check fails. In every round, my server sends the current model, about 17 kilobytes, to every bank. Each bank trains it on its own rows and sends back only updated weights, and my server log shows exactly what arrived: one weight record and five numbers per bank, nothing else. Flower even ships our code to each laptop, but we limited that package to code files, so no data can travel with it. We tested a one-laptop fallback with five separate processes, and its results match our simulation exactly. Then we ran ten rounds between my laptop and Prachi's over a phone hotspot, and in every round her laptop's log and my server log agree. Finally, on 25 November, all four of us ran one bank each on our own laptops: ten rounds, all four banks in every round, and a global test F1 of 0.787, the same as the one-laptop run, because it is the same code and data on four machines. This demo shows the mechanism; our reported results still come from the controlled single-machine experiments."
 
 ## 7. Likely viva questions
 1. **What travels over the network?** Each round: the global model (17,478 bytes) from server to bank, and the updated weights (17,478 bytes) plus 5 scalar metrics from bank to server. After training: 241 TP and 241 FP integer counts per bank, and scalar local-test metrics. Also the code bundle once (154 KB, code and configs only).
@@ -228,4 +223,4 @@ Code version note: the demo folder is at commit `b1387f9` (Step 9). That is the 
 - **Report reminder:** the project report and synopsis must be updated to describe this multi-device demo setup (D-020).
 
 ## 9. Next step
-The two-laptop test has passed (§5.4). Next is the **four-laptop test** on Monday (§4.4): Pradeepa and Sathvik first complete `docs/MULTI_DEVICE_SETUP.md` Parts 1–2. Then come two full rehearsals before the review.
+The two-laptop test (§5.4) and the four-laptop test (§5.5) have both passed. Next: write up rehearsal 2 from its saved logs (`results/demo_8b/rehearsal2_2026-11-25/`) so 8B.5's "two full rehearsals" is documented, then present the demo at the review.

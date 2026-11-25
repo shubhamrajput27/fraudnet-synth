@@ -16,7 +16,7 @@ One page that ties the existing demo documents together. The detailed scripts ar
 | Dashboard smoke tour (login, banks, six-arm results, predict) | ✅ passed; the fraud example was flagged as fraud |
 | One-laptop fallback (`ml.federated.demo.fallback`) | ✅ completed 2026-10-12 20:04 in 177 s, logs in `results/demo_8b/fallback_20261012_195939/` |
 | Two-laptop test (Shubham + Prachi) | ✅ 2026-10-11 |
-| **Four-laptop test** | ❌ **never run**: this morning's top priority |
+| **Four-laptop test** | ✅ 2026-11-25: 10 rounds, 4 banks on 4 laptops, 330 s, global test F1 0.7869, logs in `results/demo_8b/four_laptop_2026-11-25_r1/` |
 | Clean demo folder `C:\Projects\fraudnet-demo` | ✅ exists |
 
 ## 2. Timeline for today
